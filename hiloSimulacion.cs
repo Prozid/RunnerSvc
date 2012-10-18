@@ -9,28 +9,18 @@ namespace runnerSvc
 {
     class hiloSimulacion
     {
-        private runnerDBDataClassesDataContext db;
+        private runnerDBDataContext db;
         private int idHilo;
 
         public hiloSimulacion()
         {
-            db = new runnerDBDataClassesDataContext();
+            db = new runnerDBDataContext();
             idHilo = Thread.CurrentThread.ManagedThreadId;
         }
 
         public void run()
         {
-            logThread row = new logThread
-            {
-                idMensaje = Guid.NewGuid(),
-                idThread = Thread.CurrentThread.ManagedThreadId.ToString(),
-                texto = "Cerrando hilo",
-                fecha = DateTime.Now
-            };
-            db.Connection.Open();
-            db.logThread.InsertOnSubmit(row);
-            db.SubmitChanges();
-            db.Connection.Close();
+            
         }
     }
 }
