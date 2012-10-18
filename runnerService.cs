@@ -6,17 +6,18 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
-using System.Threading;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace runnerSvc
 {
     public partial class runnerService : ServiceBase
     {
         private static int puerto = 1989;
-        private Thread server;
-        private runnerDBDataClassesDataContext db;
+        private Thread hiloServer;
+        private runnerDBDataContext db;
+
         public runnerService()
         {
             InitializeComponent();
@@ -33,18 +34,18 @@ namespace runnerSvc
 
         protected override void OnStart(string[] args)
         {
-            db = new runnerDBDataClassesDataContext();   
+            db = new runnerDBDataContext();   
             runner_eventLog.WriteEntry("Entrando en el servicio");
-            server = new Thread(new ThreadStart(runnerServerSocket));
-            server.Start();
-            runner_eventLog.WriteEntry("Creado hilo servidor socket con id:" + server.ManagedThreadId);
+            hiloServer = new Thread(new ThreadStart(runnerServerSocket));
+            hiloServer.Start();
+            runner_eventLog.WriteEntry("Creado hilo servidor socket con id:" + hiloServer.ManagedThreadId);
         }
 
         protected override void OnStop()
         {
             runner_eventLog.WriteEntry("Parando servidor socket");
-            server.Interrupt();
-            if (!server.IsAlive) runner_eventLog.WriteEntry("Servidor socket interrumpido");
+            hiloServer.Interrupt();
+            if (!hiloServer.IsAlive) runner_eventLog.WriteEntry("Servidor socket interrumpido");
             runner_eventLog.WriteEntry("Parando el servicio");
         }
 
@@ -92,43 +93,34 @@ namespace runnerSvc
                 runner_eventLog.WriteEntry("[" + thread.ManagedThreadId + "] RunnerThread creado");
 
 
-                // Registro de nuevo hilo de simulación
-                logThread infoHilo = new logThread
-                {
-                    idMensaje = Guid.NewGuid(),
-                    idThread = thread.ManagedThreadId.ToString(),
-                    fecha = DateTime.Now,
-                    texto = "Creación"
-                };                
-
-                // Datos de la simulación
-                logThread row = new logThread
-                {
-                    idMensaje = Guid.NewGuid(),
-                    idThread = thread.ManagedThreadId.ToString(),
-                    fecha = DateTime.Now,
-                    texto = mensaje                    
-                };
-
-
-                // Inserción en BD
-                
-                db.logThread.InsertOnSubmit(infoHilo);
-                db.logThread.InsertOnSubmit(row);
-                runner_eventLog.WriteEntry("Preparadas ROW para log en BD");               
-
                 try
                 {
-                    db.Connection.Open();
-                    db.SubmitChanges();
-                    runner_eventLog.WriteEntry("[SEARCH]"+db.logThread.Where(r => r.idMensaje == row.idMensaje).Single().texto);
-                    db.Connection.Close();
+                    // Registro de nuevo hilo de simulación
+                    EstadoHilo infoHilo = new EstadoHilo
+                    {
+                        idSimulacion = Guid.Parse(mensaje),
+                        pid = thread.ManagedThreadId,
+                        idThread = Guid.NewGuid()
+                    };
+                    // Inserción en BD
+
+                    db.EstadoHilo.InsertOnSubmit(infoHilo);
+                    runner_eventLog.WriteEntry("Preparadas ROW para log en BD");
+                
+                    try
+                    { 
+                        db.SubmitChanges();
+                        runner_eventLog.WriteEntry("[SEARCH]"+db.EstadoHilo.Where(r => r.idSimulacion == infoHilo.idSimulacion).Single().pid);
+                    }
+                    catch (Exception e)
+                    {
+                        runner_eventLog.WriteEntry("ERROR en BD: " + e);
+                    }
                 }
                 catch (Exception e)
                 {
-                    runner_eventLog.WriteEntry("ERROR en BD: " + e);
+                    runner_eventLog.WriteEntry("[ERROR AL INSERTAR] "+e);
                 }
-
 
                 // Ejecución del hilo de simulación
                 try
