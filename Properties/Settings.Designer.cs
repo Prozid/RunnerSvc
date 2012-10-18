@@ -33,5 +33,38 @@ namespace runnerSvc.Properties {
                 return ((string)(this["runnerStateDBConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;AttachDbFilename=|DataDirectory|\\webappDB.mdf;Integrated" +
+            " Security=True;User Instance=True")]
+        public string webappDBConnectionString {
+            get {
+                return ((string)(this["webappDBConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;AttachDbFilename=|DataDirectory|\\runnerThreadDB.mdf;Inte" +
+            "grated Security=True;User Instance=True")]
+        public string runnerThreadDBConnectionString {
+            get {
+                return ((string)(this["runnerThreadDBConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;AttachDbFilename=|DataDirectory|\\runnerDB.mdf;Integrated" +
+            " Security=True;User Instance=True")]
+        public string runnerDBConnectionString {
+            get {
+                return ((string)(this["runnerDBConnectionString"]));
+            }
+        }
     }
 }
