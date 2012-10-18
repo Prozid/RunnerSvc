@@ -22,153 +22,89 @@ namespace runnerSvc
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="runnerStateDB")]
-	public partial class runnerDBDataClassesDataContext : System.Data.Linq.DataContext
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="runnerDB")]
+	public partial class runnerDBDataContext : System.Data.Linq.DataContext
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
 		
     #region Definiciones de métodos de extensibilidad
     partial void OnCreated();
-    partial void InsertlogThread(logThread instance);
-    partial void UpdatelogThread(logThread instance);
-    partial void DeletelogThread(logThread instance);
+    partial void InsertEstadoHilo(EstadoHilo instance);
+    partial void UpdateEstadoHilo(EstadoHilo instance);
+    partial void DeleteEstadoHilo(EstadoHilo instance);
     #endregion
 		
-		public runnerDBDataClassesDataContext() : 
-				base(global::runnerSvc.Properties.Settings.Default.runnerStateDBConnectionString, mappingSource)
+		public runnerDBDataContext() : 
+				base(global::runnerSvc.Properties.Settings.Default.runnerDBConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public runnerDBDataClassesDataContext(string connection) : 
+		public runnerDBDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public runnerDBDataClassesDataContext(System.Data.IDbConnection connection) : 
+		public runnerDBDataContext(System.Data.IDbConnection connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public runnerDBDataClassesDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public runnerDBDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public runnerDBDataClassesDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public runnerDBDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<logThread> logThread
+		public System.Data.Linq.Table<EstadoHilo> EstadoHilo
 		{
 			get
 			{
-				return this.GetTable<logThread>();
+				return this.GetTable<EstadoHilo>();
 			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.logThread")]
-	public partial class logThread : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.EstadoHilo")]
+	public partial class EstadoHilo : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private System.Guid _idMensaje;
+		private System.Guid _idThread;
 		
-		private string _texto;
+		private int _pid;
 		
-		private System.DateTime _fecha;
-		
-		private string _idThread;
+		private System.Guid _idSimulacion;
 		
     #region Definiciones de métodos de extensibilidad
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnidMensajeChanging(System.Guid value);
-    partial void OnidMensajeChanged();
-    partial void OntextoChanging(string value);
-    partial void OntextoChanged();
-    partial void OnfechaChanging(System.DateTime value);
-    partial void OnfechaChanged();
-    partial void OnidThreadChanging(string value);
+    partial void OnidThreadChanging(System.Guid value);
     partial void OnidThreadChanged();
+    partial void OnpidChanging(int value);
+    partial void OnpidChanged();
+    partial void OnidSimulacionChanging(System.Guid value);
+    partial void OnidSimulacionChanged();
     #endregion
 		
-		public logThread()
+		public EstadoHilo()
 		{
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idMensaje", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid idMensaje
-		{
-			get
-			{
-				return this._idMensaje;
-			}
-			set
-			{
-				if ((this._idMensaje != value))
-				{
-					this.OnidMensajeChanging(value);
-					this.SendPropertyChanging();
-					this._idMensaje = value;
-					this.SendPropertyChanged("idMensaje");
-					this.OnidMensajeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_texto", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
-		public string texto
-		{
-			get
-			{
-				return this._texto;
-			}
-			set
-			{
-				if ((this._texto != value))
-				{
-					this.OntextoChanging(value);
-					this.SendPropertyChanging();
-					this._texto = value;
-					this.SendPropertyChanged("texto");
-					this.OntextoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fecha", DbType="DateTime NOT NULL")]
-		public System.DateTime fecha
-		{
-			get
-			{
-				return this._fecha;
-			}
-			set
-			{
-				if ((this._fecha != value))
-				{
-					this.OnfechaChanging(value);
-					this.SendPropertyChanging();
-					this._fecha = value;
-					this.SendPropertyChanged("fecha");
-					this.OnfechaChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idThread", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
-		public string idThread
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idThread", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid idThread
 		{
 			get
 			{
@@ -183,6 +119,46 @@ namespace runnerSvc
 					this._idThread = value;
 					this.SendPropertyChanged("idThread");
 					this.OnidThreadChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_pid", DbType="Int NOT NULL")]
+		public int pid
+		{
+			get
+			{
+				return this._pid;
+			}
+			set
+			{
+				if ((this._pid != value))
+				{
+					this.OnpidChanging(value);
+					this.SendPropertyChanging();
+					this._pid = value;
+					this.SendPropertyChanged("pid");
+					this.OnpidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idSimulacion", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid idSimulacion
+		{
+			get
+			{
+				return this._idSimulacion;
+			}
+			set
+			{
+				if ((this._idSimulacion != value))
+				{
+					this.OnidSimulacionChanging(value);
+					this.SendPropertyChanging();
+					this._idSimulacion = value;
+					this.SendPropertyChanged("idSimulacion");
+					this.OnidSimulacionChanged();
 				}
 			}
 		}

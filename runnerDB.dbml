@@ -1,11 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="runnerStateDB" Class="runnerDBDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\runnerStateDB.mdf;Integrated Security=True;User Instance=True" SettingsObjectName="runnerSvc.Properties.Settings" SettingsPropertyName="runnerStateDBConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.logThread" Member="logThread">
-    <Type Name="logThread">
-      <Column Name="idMensaje" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="texto" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="fecha" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="idThread" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="runnerDB" Class="runnerDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\runnerDB.mdf;Integrated Security=True;User Instance=True" SettingsObjectName="runnerSvc.Properties.Settings" SettingsPropertyName="runnerDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.EstadoHilo" Member="EstadoHilo">
+    <Type Name="EstadoHilo">
+      <Column Name="idThread" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="pid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="idSimulacion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>
