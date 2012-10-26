@@ -74,7 +74,6 @@ namespace runnerSvc
 
         protected override void OnStop()
         {
-            runner_eventLog.WriteEntry("Parando servidor socket");
             //hiloServer.Interrupt();
             //if (!hiloServer.IsAlive) runner_eventLog.WriteEntry("Servidor socket interrumpido");
             runner_eventLog.WriteEntry("Parando el servicio");
@@ -117,63 +116,12 @@ namespace runnerSvc
                 // Confirmar al demonio la recepción de los datos
                 sBytes = Encoding.ASCII.GetBytes(mensaje);
                 cliente.Send(sBytes);
-
+                
                 
                 // Procesamos los resultados
-            
-            
-                // Creación de hilo simulación
-                hiloSimulacion hilo = new hiloSimulacion();
-                Thread thread = new Thread(new ThreadStart(hilo.run));
-                runner_eventLog.WriteEntry("[" + thread.ManagedThreadId + "] RunnerThread creado");
-
-
-                try
-                {
-                    // Registro de nuevo hilo de simulación
-                    EstadoHilo infoHilo = new EstadoHilo
-                    {
-                        idSimulacion = Guid.Parse(mensaje),
-                        pid = thread.ManagedThreadId,
-                        idThread = Guid.NewGuid()
-                    };
-                    // Inserción en BD
-
-                    db.EstadoHilo.InsertOnSubmit(infoHilo);
-                    runner_eventLog.WriteEntry("Preparadas ROW para log en BD");
                 
-                    try
-                    { 
-                        db.SubmitChanges();
-                        runner_eventLog.WriteEntry("[SEARCH]"+db.EstadoHilo.Where(r => r.idSimulacion == infoHilo.idSimulacion).Single().pid);
-                    }
-                    catch (Exception e)
-                    {
-                        runner_eventLog.WriteEntry("ERROR en BD: " + e);
-                    }
-                }
-                catch (Exception e)
-                {
-                    runner_eventLog.WriteEntry("[ERROR AL INSERTAR] "+e);
-                }
-
-                // Ejecución del hilo de simulación
-                try
-                {
-                    runner_eventLog.WriteEntry("[" + thread.ManagedThreadId + "] RunnerThread iniciado.");
-                    thread.Start();
-                }
-                catch (ThreadStateException e)
-                {
-                    runner_eventLog.WriteEntry("ERROR Thread: " + e);
-                }
-
-
-                // Esperando finalización del hilo
-                runner_eventLog.WriteEntry("[" + thread.ManagedThreadId + "] Esperando a que finalice.");
-                thread.Join();
-                runner_eventLog.WriteEntry("[" + thread.ManagedThreadId + "] Finalizado.");
-
+            
+                
         }
 
         private void timerUpdateSimulations_Tick(object sender, EventArgs e)
