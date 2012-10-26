@@ -28,10 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.runner_eventLog = new System.Diagnostics.EventLog();
+            this.timerUpdateSimulations = new System.Windows.Forms.Timer(this.components);
+            this.backgroundWorkerListener = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.runner_eventLog)).BeginInit();
             // 
-            // Service1
+            // timerUpdateSimulations
+            // 
+            this.timerUpdateSimulations.Interval = 2000;
+            this.timerUpdateSimulations.Tick += new System.EventHandler(this.timerUpdateSimulations_Tick);
+            // 
+            // backgroundWorkerListener
+            // 
+            this.backgroundWorkerListener.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerListener_DoWork);
+            // 
+            // runnerService
             // 
             this.ServiceName = "Service1";
             ((System.ComponentModel.ISupportInitialize)(this.runner_eventLog)).EndInit();
@@ -41,5 +53,7 @@
         #endregion
 
         private System.Diagnostics.EventLog runner_eventLog;
+        private System.Windows.Forms.Timer timerUpdateSimulations;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerListener;
     }
 }
