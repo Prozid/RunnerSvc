@@ -727,7 +727,7 @@ namespace runnerSvc
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEstadoSimulacion", DbType="UniqueIdentifier NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEstadoSimulacion", DbType="UniqueIdentifier NOT NULL", UpdateCheck=UpdateCheck.Never)]
 		public System.Guid idEstadoSimulacion
 		{
 			get
@@ -1288,7 +1288,7 @@ namespace runnerSvc
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEstadoSimulacion", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEstadoSimulacion", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true, UpdateCheck=UpdateCheck.Never)]
 		public System.Guid idEstadoSimulacion
 		{
 			get
