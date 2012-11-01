@@ -10,14 +10,15 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Xml.Linq;
+using System.Xml;
 
 namespace runnerSvc
 {
     public partial class runnerService : ServiceBase
     {
-        private static int puertoIn = 1989;
-        private static int puertoOut = 1990;
-        private static int MAXUSER = 5;
+        private static int puertoIn = 1990; // Puerto en el que escucha el demonio Linux.
+        private static int puertoOut = 5959;// Puerto en el que escucha el servicio Windows.
+        private static int MAXUSER = 5;     // Número de simulaciones running que puede tener un usuario como máximo.
         private runnerDBDataContext db;     // Conexión con DB del servicio.
         private webappDBDataContext webDB;  // Conexión con DB de la webApp.
         private Socket cliente;             // Socket generado cuando un cliente se conecta para enviarnos resultados.
@@ -75,8 +76,8 @@ namespace runnerSvc
                 initServerSocket();
 
 
-                // Lanzamos el backgroundworker y el timer
-                backgroundWorkerListener.RunWorkerAsync();
+                // Lanzamos el backgroundworker
+                //backgroundWorkerListener.RunWorkerAsync();
                 
                   
             }
@@ -179,7 +180,7 @@ namespace runnerSvc
 
         private void timerUpdateSimulations_Elapsed(object state)
         {
-            runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] New tick at "+DateTime.Now);
+            //runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] New tick at "+DateTime.Now);
 
             EstadoSimulacion runState = webDB.EstadoSimulacion.Where(s => s.nombre.Equals("Running")).Single();
             EstadoSimulacion toRunState = webDB.EstadoSimulacion.Where(s => s.nombre.Equals("ToRun")).Single();
@@ -201,7 +202,7 @@ namespace runnerSvc
 
             // Consultamos las simulaciones que se encuentran en el estado ToRun.            
             List<Simulacion> simToRun = webDB.Simulacion.Where(s => s.EstadoSimulacion.Equals(toRunState)).ToList<Simulacion>();
-            runner_eventLog.WriteEntry("[SIMULATIONS QUEUE] " + simToRun.Count());
+            //runner_eventLog.WriteEntry("[SIMULATIONS QUEUE] " + simToRun.Count());
             foreach (Simulacion s in simToRun)
             {
                 // Descartamos aquellas que superen el máximo de simulaciones por usuario MAXUSER.
@@ -213,16 +214,27 @@ namespace runnerSvc
                 {
                     // Establecemos dichas simulaciones a Run, es decir, las lanzamos.           
                     s.EstadoSimulacion = runState;
-                    runSimulation(s.idSimulacion);
+                    try
+                    {
+                        webDB.SubmitChanges();
+                        runSimulation(s.idSimulacion);
+                    }
+                    catch (Exception e)
+                    {
+                        runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] Update error: " + e.ToString());
+                    }
+                    
                 }
             }
-            webDB.SubmitChanges();
+            
+            simByUser = null;
         }
         
         private void runSimulation(Guid idSimulacion)
         {
             runner_eventLog.WriteEntry("[RUN SIMULATION] "+idSimulacion);
 
+            // Obtenemos los datos de la simulación así como el archivo de datos del proyecto
             Simulacion simulacion = webDB.Simulacion.Where(s => s.idSimulacion.Equals(idSimulacion)).Single();
             Archivo archivoDatos = webDB.Archivo
                 .Where(a => 
@@ -235,7 +247,9 @@ namespace runnerSvc
                 )
                 .Single();
 
-            
+            // Creamos un documento XML con los datos a enviar
+            runner_eventLog.WriteEntry("[RUN SIMULATION] Building XML...");
+            String valor_nulo = "";
             XDocument datosXML = new XDocument(
                 new XDeclaration("1.0", "utf-8", "yes"),
                 new XComment("Simulación"),
@@ -251,9 +265,69 @@ namespace runnerSvc
                     new XElement("parametrosClasificacion",simulacion.parametrosClasificacion),
                     new XElement("parametrosSeleccion",simulacion.parametrosSeleccion),
                     new XElement("usuario",simulacion.usuario)
-                ),
-                new XElement("Datos",archivoDatos.datos)
+                )
+                //new XElement("Datos",archivoDatos.datos)
             );
+
+            //Guardamos una copia para testeo
+            runner_eventLog.WriteEntry("[RUN SIMULATION] Saving XML");
+            datosXML.Save("C:\\svc_created_xml.xml");
+
+
+            // Preparamos todo lo necesario para la conexión
+            runner_eventLog.WriteEntry("[RUN SIMULATION] Preparing data to send");
+            Byte[] sBytes = Encoding.ASCII.GetBytes(datosXML.ToString());
+            Byte[] rBytes = new Byte[1024];
+            int raw;
+
+            IPEndPoint ipep = new IPEndPoint(
+               IPAddress.Parse("127.0.0.1"),
+               puertoOut
+            );
+            
+            Socket conexion = new Socket(
+                AddressFamily.InterNetwork,
+                SocketType.Stream,
+                ProtocolType.Tcp
+            );
+
+            try
+            {
+                // Conectamos con el servicio
+                runner_eventLog.WriteEntry("[SEND SIMULATION] Try to connect...");
+                conexion.Connect(ipep);
+                runner_eventLog.WriteEntry("[SEND SIMULATION] Connected");
+
+
+                // Enviamos datos            
+                runner_eventLog.WriteEntry("[SEND SIMULATION] Starting to send...");
+                conexion.Send(sBytes);
+
+                // Esperamos confirmación
+                runner_eventLog.WriteEntry("[SEND SIMULATION] Waiting answer...");
+                raw = conexion.Receive(rBytes);
+
+                // Cerrando conexión.
+                runner_eventLog.WriteEntry("[SEND SIMULATION] Complete");
+                conexion.Close();
+
+                // Procesamos resultados
+                String respuestaString = System.Text.Encoding.ASCII.GetString(rBytes, 0, raw);
+                runner_eventLog.WriteEntry("[SEND SIMULATION] Parsing answer to XML...");
+                XDocument rXML = XDocument.Parse(respuestaString);
+                rXML.Save("C:\\rXML.xml");
+
+
+                // Finalizamos simulación
+                runner_eventLog.WriteEntry("[END SIMULATION] Establecemos finalizada la simulación");
+                simulacion.EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.nombre.Equals("Finished")).Single();
+                webDB.SubmitChanges();
+                
+            }
+            catch (Exception error)
+            {
+                runner_eventLog.WriteEntry("[SEND SIMULATION] No se ha podido conectar con el cluster: " + error);
+            }
                     
 
         }
