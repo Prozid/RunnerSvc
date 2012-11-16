@@ -29,32 +29,18 @@
         private void InitializeComponent()
         {
             this.runner_eventLog = new System.Diagnostics.EventLog();
-            this.backgroundWorkerListener = new System.ComponentModel.BackgroundWorker();
-            
-
             ((System.ComponentModel.ISupportInitialize)(this.runner_eventLog)).BeginInit();
-            // 
-            // backgroundWorkerListener
-            // 
-            this.backgroundWorkerListener.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerListener_DoWork);
-            this.backgroundWorkerListener.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerListener_RunWorkerCompleted);
             // 
             // runnerService
             // 
             this.ServiceName = "Service1";
             ((System.ComponentModel.ISupportInitialize)(this.runner_eventLog)).EndInit();
 
-            //
-            // updateSimsTimer
-            // 
-            
-
         }
 
         #endregion
 
         private System.Diagnostics.EventLog runner_eventLog;
-        private System.ComponentModel.BackgroundWorker backgroundWorkerListener;
         private System.Threading.Timer timerUpdateSimulations;
     }
 }

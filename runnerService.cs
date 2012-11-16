@@ -11,18 +11,19 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Xml.Linq;
 using System.Xml;
+using System.Security.Cryptography;
 
 namespace runnerSvc
 {
     public partial class runnerService : ServiceBase
     {
-        private static int puertoIn = 1990; // Puerto en el que escucha el demonio Linux.
-        private static int puertoOut = 5959;// Puerto en el que escucha el servicio Windows.
+        private static int puertoIn = 1990; // Puerto en el que escucha el servicio Windows.
+        private static int puertoOut = 5959;// Puerto en el que escucha el demonio Linux.
         private static int MAXUSER = 5;     // Número de simulaciones running que puede tener un usuario como máximo.
         private runnerDBDataContext db;     // Conexión con DB del servicio.
         private webappDBDataContext webDB;  // Conexión con DB de la webApp.
         private Socket cliente;             // Socket generado cuando un cliente se conecta para enviarnos resultados.
-        private Socket server;              // Socket que trabajará con el backgroundWorker para recibir los resultados de las simulaciones.
+        private Thread tListener;           // Thread para el serverSocket
 
         public runnerService()
         {
@@ -46,6 +47,10 @@ namespace runnerSvc
 
 
             runner_eventLog.WriteEntry("Initializing...");
+            
+            // Inicializamos el serverSocket donde recibir los resultados de las simulaciones
+            tListener = new Thread(new ThreadStart(serverSocketListener));
+            tListener.Start();
 
             // Comprobamos simulaciones Run y las establecemos en ToRun
             try
@@ -70,15 +75,7 @@ namespace runnerSvc
                     null,
                     1000,
                     1000
-                    );
-
-                //Iniciamos el socket del backgroundWorker
-                initServerSocket();
-
-
-                // Lanzamos el backgroundworker
-                //backgroundWorkerListener.RunWorkerAsync();
-                
+                    );               
                   
             }
             catch (Exception e)
@@ -95,14 +92,22 @@ namespace runnerSvc
             timerUpdateSimulations.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
             timerUpdateSimulations.Dispose();
             timerUpdateSimulations = null;
+
+
             
             runner_eventLog.WriteEntry("Stopping...");
         }
 
-        // Inicializacion del serverSocket
-        protected void initServerSocket()
+        private void serverSocketListener()
         {
-            
+            // ZONA DECLARACIÓN DE VARIABLES
+            Socket conexion;
+            Socket server;
+            int conexionesServidos;
+
+            // INICIALIZACIÓN
+
+            conexionesServidos = 0;
             IPEndPoint ipep = new IPEndPoint(IPAddress.Any, puertoIn);
             server = new Socket(
                 AddressFamily.InterNetwork,
@@ -111,71 +116,66 @@ namespace runnerSvc
 
             server.Bind(ipep);
             server.Listen(10);
-        }
+            runner_eventLog.WriteEntry("[SERVER SOCKET] Initialized.");
 
-        private void backgroundWorkerListener_DoWork(object sender, DoWorkEventArgs eArgs)
-        {
-
-            Guid idCarpeta = Guid.Parse("6066d0f2-ebd4-4f43-a557-45016c89ace0");
-            String idUsuario = "dani";
             while (true)
             {
-                runner_eventLog.WriteEntry("[BACKGROUNDWORKER] Waiting connections in " + puertoIn);
-
-
-                // Esperamos que el demonio Linux contacte con nosotros
-                cliente = server.Accept();
-                runner_eventLog.WriteEntry("[BACKGROUNDWORKER] New connection");
-
-
-                // Recibir datos de simulación
-                byte[] rBytes = new byte[1024];
-                byte[] sBytes;
-                int raw;
-                string datos;
-
-                raw = cliente.Receive(rBytes);
-                datos = System.Text.Encoding.ASCII.GetString(rBytes, 0, raw);
-                runner_eventLog.WriteEntry("[BACKGROUNDWORKER][DATA]" + datos);
-
-                // Confirmar al demonio la recepción de los datos
-                sBytes = Encoding.ASCII.GetBytes(datos);
-                cliente.Send(sBytes);
-
-
-                // Procesamos los resultados
-                Archivo newArchivo = new Archivo
-                {
-                    idArchivo = Guid.NewGuid(),
-                    idCarpeta = idCarpeta,
-                    usuario = idUsuario,
-                    publico = true,
-                    nombre = "archivo_" + new Random(10).ToString(),
-                    content_type = "text/plain",
-                    datos = Encoding.ASCII.GetBytes(datos),
-                    fechaCreacion = DateTime.Now,
-                    descripcion = null,
-                    baseDatos = false
-                };
                 try
                 {
-                    webDB.Archivo.InsertOnSubmit(newArchivo);
+                    // Esperamos que el servicio Windows contacte con nosotros
+                    conexion = server.Accept();
+                    conexionesServidos += 1;
+                    runner_eventLog.WriteEntry("[SERVER SOCKET] New connection.");
+
+                    // Preparamos lo necesario para la recepción de datos
+                    byte[] rBytes = new byte[1024];
+                    byte[] csrBytes = new byte[1024];
+                    byte[] sBytes = new byte[1024];
+                    int raw, csRaw;
+                    string datos;
+
+                    // Recibimos los datos
+                    raw = conexion.Receive(rBytes);
+
+                    // Recibimos checksum
+                    //csRaw = conexion.Receive(csrBytes);
+
+                    // Confirmar al servicio la recepción de los datos mediante checkSum md5
+                    MD5 checksum = new MD5CryptoServiceProvider();
+                    sBytes = checksum.ComputeHash(rBytes);
+                    conexion.Send(sBytes);
+
+                    //runner_eventLog.WriteEntry("[SERVER SOCKET] Checksum check: " + checksum.ComputeHash(rBytes).Equals(checksum.ComputeHash(csrBytes)).ToString());
+                    //runner_eventLog.WriteEntry("[SERVER SOCKET] Checksum received: " + BitConverter.ToString(checksum.ComputeHash(rBytes)));
+                    //runner_eventLog.WriteEntry("[SERVER SOCKET] Checksum computed: " + BitConverter.ToString(checksum.ComputeHash(csrBytes)));
+                    //runner_eventLog.WriteEntry("[SERVER SOCKET] Answer sended.");
+
+                    // Procesamos datos
+                    datos = System.Text.Encoding.ASCII.GetString(rBytes, 0, raw);
+                    runner_eventLog.WriteEntry("[SERVER SOCKET] XML received.");
+
+                    // Parseamos el XML y lo guardamos
+                    XDocument datosSimulacion = XDocument.Parse(datos);
+                    datosSimulacion.Save(conexionesServidos.ToString() + "_demonio_received_xml.xml");
+                    
+                    // Procesamos datos
+                    XElement simulacion = datosSimulacion.Element("Simulacion");
+                    Guid idSimulacion = Guid.Parse(simulacion.Attribute("idSimulacion").Value);
+
+                    // Finalizamos simulación
+                    runner_eventLog.WriteEntry("[END SIMULATION] Establecemos finalizada la simulación");
+                    webDB.Simulacion.Single(s => s.idSimulacion.Equals(idSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.nombre.Equals("Finished")).Single();
                     webDB.SubmitChanges();
-                    runner_eventLog.WriteEntry("[BACKGROUNDWORKER][DATA PROCESSED] Ok");
+                    
+
+
                 }
                 catch (Exception e)
                 {
-                    runner_eventLog.WriteEntry("[BACKGROUNDWORKER][DATA PROCESSED] Error: " + e);
+                    runner_eventLog.WriteEntry(e.ToString());
                 }
             }
 
-            
-                
-        }
-
-        private void backgroundWorkerListener_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            runner_eventLog.WriteEntry("[BACKGROUNDWORKER] Finished");
         }
 
         private void timerUpdateSimulations_Elapsed(object state)
@@ -252,7 +252,7 @@ namespace runnerSvc
             String valor_nulo = "";
             XDocument datosXML = new XDocument(
                 new XDeclaration("1.0", "utf-8", "yes"),
-                new XComment("Simulación"),
+                new XComment("Simulacion"),
                 new XElement("Simulacion",
                     new XAttribute("idSimulacion", simulacion.idSimulacion.ToString()),
                     new XElement("idProyecto", simulacion.idProyecto.ToString()),
@@ -276,9 +276,17 @@ namespace runnerSvc
 
             // Preparamos todo lo necesario para la conexión
             runner_eventLog.WriteEntry("[RUN SIMULATION] Preparing data to send");
-            Byte[] sBytes = Encoding.ASCII.GetBytes(datosXML.ToString());
+            Byte[] sBytes = new Byte[1024];
             Byte[] rBytes = new Byte[1024];
+            Byte[] csBytes = new Byte[1024];
             int raw;
+
+            sBytes = Encoding.ASCII.GetBytes(datosXML.ToString());
+
+            // Checksum para confirmación de envío correcto
+            MD5 checksum = new MD5CryptoServiceProvider();  
+            csBytes = checksum.ComputeHash(sBytes);
+
 
             IPEndPoint ipep = new IPEndPoint(
                IPAddress.Parse("127.0.0.1"),
@@ -303,25 +311,31 @@ namespace runnerSvc
                 runner_eventLog.WriteEntry("[SEND SIMULATION] Starting to send...");
                 conexion.Send(sBytes);
 
+                // Enviamos checksum
+                //runner_eventLog.WriteEntry("[SEND SIMULATION] Sended XML. Sending checksum...");
+                //conexion.Send(csBytes);
+
                 // Esperamos confirmación
                 runner_eventLog.WriteEntry("[SEND SIMULATION] Waiting answer...");
                 raw = conexion.Receive(rBytes);
+
+                // Confirmamos que el envío es correcto
+                MD5 rChecksum = new MD5CryptoServiceProvider();
+                bool cBool = checksum.ComputeHash(sBytes).Equals(rChecksum.ComputeHash(rBytes));
+                //runner_eventLog.WriteEntry("[SEND SIMULATION] Checksum XML: "+BitConverter.ToString(checksum.ComputeHash(sBytes)));
+                //runner_eventLog.WriteEntry("[SEND SIMULATION] Checksum computed: " +BitConverter.ToString(csBytes));
+                //runner_eventLog.WriteEntry("[SEND SIMULATION] Checksum received: " + BitConverter.ToString(checksum.ComputeHash(rBytes)));
+
 
                 // Cerrando conexión.
                 runner_eventLog.WriteEntry("[SEND SIMULATION] Complete");
                 conexion.Close();
 
-                // Procesamos resultados
-                String respuestaString = System.Text.Encoding.ASCII.GetString(rBytes, 0, raw);
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Parsing answer to XML...");
-                XDocument rXML = XDocument.Parse(respuestaString);
-                rXML.Save("C:\\rXML.xml");
-
-
-                // Finalizamos simulación
+                /* Finalizamos simulación
                 runner_eventLog.WriteEntry("[END SIMULATION] Establecemos finalizada la simulación");
                 simulacion.EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.nombre.Equals("Finished")).Single();
                 webDB.SubmitChanges();
+                 */
                 
             }
             catch (Exception error)
