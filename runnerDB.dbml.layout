@@ -2,10 +2,10 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="runnerDB">
   <DataContextMoniker Name="/runnerDBDataContext" />
   <nestedChildShapes>
-    <classShape Id="eb944ffa-bf28-414b-a84c-e0298ea7ee3e" absoluteBounds="1.625, 2.375, 2, 1.3862939453125">
+    <classShape Id="30a9ea94-7193-4cea-a605-53d049b25ed0" absoluteBounds="6.125, 1.5, 2, 1.3862939453125">
       <DataClassMoniker Name="/runnerDBDataContext/EstadoHilo" />
       <nestedChildShapes>
-        <elementListCompartment Id="082a5b73-6ec7-4a85-8a39-19f2e11a22bf" absoluteBounds="1.6400000000000001, 2.835, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="11d5ebd5-7322-44b7-888b-734d42340a01" absoluteBounds="6.14, 1.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>
