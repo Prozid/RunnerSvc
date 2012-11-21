@@ -131,7 +131,7 @@ namespace runnerSvc
                     byte[] rBytes = new byte[1024];
                     byte[] csrBytes = new byte[1024];
                     byte[] sBytes = new byte[1024];
-                    int raw, csRaw;
+                    int raw;
                     string datos;
 
                     // Recibimos los datos
@@ -203,27 +203,31 @@ namespace runnerSvc
             // Consultamos las simulaciones que se encuentran en el estado ToRun.            
             List<Simulacion> simToRun = webDB.Simulacion.Where(s => s.EstadoSimulacion.Equals(toRunState)).ToList<Simulacion>();
             //runner_eventLog.WriteEntry("[SIMULATIONS QUEUE] " + simToRun.Count());
-            foreach (Simulacion s in simToRun)
+
+            lock (this)
             {
-                // Descartamos aquellas que superen el máximo de simulaciones por usuario MAXUSER.
-                if (simByUser.ContainsKey(s.usuario) && simByUser[s.usuario] > MAXUSER)
+                foreach (Simulacion s in simToRun)
                 {
-                    runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] " + s.usuario + ": Too simulations. Denegate");
-                }
-                else
-                {
-                    // Establecemos dichas simulaciones a Run, es decir, las lanzamos.           
-                    s.EstadoSimulacion = runState;
-                    try
+                    // Descartamos aquellas que superen el máximo de simulaciones por usuario MAXUSER.
+                    if (simByUser.ContainsKey(s.usuario) && simByUser[s.usuario] > MAXUSER)
                     {
-                        webDB.SubmitChanges();
-                        runSimulation(s.idSimulacion);
+                        runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] " + s.usuario + ": Too simulations. Denegate");
                     }
-                    catch (Exception e)
+                    else
                     {
-                        runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] Update error: " + e.ToString());
+                        // Establecemos dichas simulaciones a Run, es decir, las lanzamos.           
+                        s.EstadoSimulacion = runState;
+                        try
+                        {
+                            webDB.SubmitChanges();
+                            runSimulation(s.idSimulacion);
+                        }
+                        catch (Exception e)
+                        {
+                            runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] Update error: " + e.ToString());
+                        }
+
                     }
-                    
                 }
             }
             
@@ -289,7 +293,7 @@ namespace runnerSvc
 
 
             IPEndPoint ipep = new IPEndPoint(
-               IPAddress.Parse("127.0.0.1"),
+               IPAddress.Parse("192.168.1.7"),
                puertoOut
             );
             
@@ -298,6 +302,9 @@ namespace runnerSvc
                 SocketType.Stream,
                 ProtocolType.Tcp
             );
+
+            conexion.SendTimeout = 5000;
+            conexion.ReceiveTimeout = 5000;
 
             try
             {
@@ -330,17 +337,14 @@ namespace runnerSvc
                 // Cerrando conexión.
                 runner_eventLog.WriteEntry("[SEND SIMULATION] Complete");
                 conexion.Close();
-
-                /* Finalizamos simulación
-                runner_eventLog.WriteEntry("[END SIMULATION] Establecemos finalizada la simulación");
-                simulacion.EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.nombre.Equals("Finished")).Single();
-                webDB.SubmitChanges();
-                 */
-                
+            }
+            catch (System.TimeoutException error)
+            {
+                runner_eventLog.WriteEntry("[SEND SIMULATION] Timeout finished: " + error);
             }
             catch (Exception error)
             {
-                runner_eventLog.WriteEntry("[SEND SIMULATION] No se ha podido conectar con el cluster: " + error);
+                runner_eventLog.WriteEntry("[SEND SIMULATION] Error desconocido: " + error);
             }
                     
 
