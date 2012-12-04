@@ -19,6 +19,7 @@ namespace runnerSvc
     {
         private static int puertoIn = 1990; // Puerto en el que escucha el servicio Windows.
         private static int puertoOut = 5959;// Puerto en el que escucha el demonio Linux.
+        private static String ipDaemon = "192.168.1.6"; // Ip del demonio
         private static int MAXUSER = 5;     // Número de simulaciones running que puede tener un usuario como máximo.
         private runnerDBDataContext db;     // Conexión con DB del servicio.
         private webappDBDataContext webDB;  // Conexión con DB de la webApp.
@@ -200,12 +201,12 @@ namespace runnerSvc
                 }
             }
 
+            lock (this)
+            {
             // Consultamos las simulaciones que se encuentran en el estado ToRun.            
             List<Simulacion> simToRun = webDB.Simulacion.Where(s => s.EstadoSimulacion.Equals(toRunState)).ToList<Simulacion>();
             //runner_eventLog.WriteEntry("[SIMULATIONS QUEUE] " + simToRun.Count());
 
-            lock (this)
-            {
                 foreach (Simulacion s in simToRun)
                 {
                     // Descartamos aquellas que superen el máximo de simulaciones por usuario MAXUSER.
@@ -293,7 +294,7 @@ namespace runnerSvc
 
 
             IPEndPoint ipep = new IPEndPoint(
-               IPAddress.Parse("192.168.1.7"),
+               IPAddress.Parse(ipDaemon),
                puertoOut
             );
             
@@ -345,8 +346,7 @@ namespace runnerSvc
             catch (Exception error)
             {
                 runner_eventLog.WriteEntry("[SEND SIMULATION] Error desconocido: " + error);
-            }
-                    
+            }                  
 
         }
     }
