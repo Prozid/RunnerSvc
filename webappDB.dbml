@@ -25,7 +25,7 @@
       <Column Name="fechaCreacion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="idMetodoSeleccion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Column Name="idMetodoClasificacion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="idEstadoSimulacion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="idEstadoSimulacion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" UpdateCheck="WhenChanged" />
       <Column Name="parametrosSeleccion" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
       <Column Name="parametrosClasificacion" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
       <Column Name="usuario" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />

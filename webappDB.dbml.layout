@@ -50,7 +50,7 @@
         <elementListCompartment Id="da10d6a4-6ed7-4ea8-9d24-82925407d922" absoluteBounds="6.265, 1.585, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.625 : 17.875); (2.625 : 16.1074039713542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.625 : 17.875); (2.625 : 16.1074039713542)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/webappDBDataContext/Carpeta/Carpeta_Archivo" />
       <nodes>
         <classShapeMoniker Id="413e64fd-c0a2-4332-81a4-354c66f938a4" />
@@ -64,42 +64,42 @@
         <classShapeMoniker Id="413e64fd-c0a2-4332-81a4-354c66f938a4" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 2.41429768880208); (3.5 : 2.41429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 2.41429768880208); (3.5 : 2.41429768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/webappDBDataContext/EstadoSimulacion/EstadoSimulacion_Simulacion" />
       <nodes>
         <classShapeMoniker Id="7dd1ea99-03ef-4958-9a2d-6eae126dad71" />
         <classShapeMoniker Id="6fe8750d-274b-43c8-97d0-0e40844d8191" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 5.53929768880208); (3.88541416666667 : 5.53929768880208 : JumpStart); (4.05208083333333 : 5.53929768880208 : JumpEnd); (4.5 : 5.53929768880208); (4.5 : 3.92470540364583)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 5.53929768880208); (3.88541416666667 : 5.53929768880208 : JumpStart); (4.05208083333333 : 5.53929768880208 : JumpEnd); (4.5 : 5.53929768880208); (4.5 : 3.92470540364583)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/webappDBDataContext/MetodoClasificacion/MetodoClasificacion_Simulacion" />
       <nodes>
         <classShapeMoniker Id="4a771f10-a3b6-42fa-ab9e-6ebfb393f7a2" />
         <classShapeMoniker Id="6fe8750d-274b-43c8-97d0-0e40844d8191" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 7.91429768880208); (3.9687475 : 7.91429768880208); (3.9687475 : 3.92470540364583)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 7.91429768880208); (3.9687475 : 7.91429768880208); (3.9687475 : 3.92470540364583)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/webappDBDataContext/MetodoSeleccion/MetodoSeleccion_Simulacion" />
       <nodes>
         <classShapeMoniker Id="6ee33858-ce64-48c9-a233-c151583d14b9" />
         <classShapeMoniker Id="6fe8750d-274b-43c8-97d0-0e40844d8191" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 10.7315991210937); (5.0312525 : 10.7315991210937); (5.0312525 : 3.92470540364583)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 10.7315991210937); (5.0312525 : 10.7315991210937); (5.0312525 : 3.92470540364583)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/webappDBDataContext/Proyecto/Proyecto_Simulacion" />
       <nodes>
         <classShapeMoniker Id="3170f88a-222b-4742-8710-80d88432e223" />
         <classShapeMoniker Id="6fe8750d-274b-43c8-97d0-0e40844d8191" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.125 : 13.375); (2.125 : 11.7131982421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.125 : 13.375); (2.125 : 11.7131982421875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/webappDBDataContext/Archivo/Archivo_Proyecto" />
       <nodes>
         <classShapeMoniker Id="0d3b3acd-6552-4106-89e7-c289fca38fd8" />
         <classShapeMoniker Id="3170f88a-222b-4742-8710-80d88432e223" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 2.49120198567708); (6.25 : 2.49120198567708)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.5 : 2.49120198567708); (6.25 : 2.49120198567708)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/webappDBDataContext/Simulacion/Simulacion_Resultados" />
       <nodes>
         <classShapeMoniker Id="6fe8750d-274b-43c8-97d0-0e40844d8191" />

@@ -726,7 +726,7 @@ namespace runnerSvc
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEstadoSimulacion", DbType="UniqueIdentifier NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEstadoSimulacion", DbType="UniqueIdentifier NOT NULL", UpdateCheck=UpdateCheck.WhenChanged)]
 		public System.Guid idEstadoSimulacion
 		{
 			get
