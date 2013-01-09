@@ -17,14 +17,10 @@ namespace runnerSvc
 {
     public partial class runnerService : ServiceBase
     {
-        private static int puertoIn = 1990; // Puerto en el que escucha el servicio Windows.
-        private static int puertoOut = 5959;// Puerto en el que escucha el demonio Linux.
-        private static String ipDaemon = "192.168.1.6"; // Ip del demonio
-        private static int MAXUSER = 5;     // Número de simulaciones running que puede tener un usuario como máximo.
+        private RunnerServiceConfiguration sConfig; // Configuración del servicio.
         private runnerDBDataContext db;     // Conexión con DB del servicio.
         private webappDBDataContext webDB;  // Conexión con DB de la webApp.
-        private Socket cliente;             // Socket generado cuando un cliente se conecta para enviarnos resultados.
-        private Thread tListener;           // Thread para el serverSocket
+        private Thread tListener;           // Thread para el serverSocket.
 
         public runnerService()
         {
@@ -37,7 +33,9 @@ namespace runnerSvc
             
             // Configuramos el registro de eventos del servicio
             runner_eventLog.Source = "runnerSource";
-            runner_eventLog.Log = "runnerLog";            
+            runner_eventLog.Log = "runnerLog";
+
+            sConfig = RunnerServiceConfiguration.Deserialize();
         }
 
         protected override void OnStart(string[] args)
@@ -109,7 +107,7 @@ namespace runnerSvc
             // INICIALIZACIÓN
 
             conexionesServidos = 0;
-            IPEndPoint ipep = new IPEndPoint(IPAddress.Any, puertoIn);
+            IPEndPoint ipep = new IPEndPoint(IPAddress.Any, sConfig.PortSvc);
             server = new Socket(
                 AddressFamily.InterNetwork,
                 SocketType.Stream,
@@ -201,36 +199,34 @@ namespace runnerSvc
                 }
             }
 
-            lock (this)
-            {
             // Consultamos las simulaciones que se encuentran en el estado ToRun.            
             List<Simulacion> simToRun = webDB.Simulacion.Where(s => s.EstadoSimulacion.Equals(toRunState)).ToList<Simulacion>();
             //runner_eventLog.WriteEntry("[SIMULATIONS QUEUE] " + simToRun.Count());
 
-                foreach (Simulacion s in simToRun)
+            foreach (Simulacion s in simToRun)
+            {
+                // Descartamos aquellas que superen el máximo de simulaciones por usuario MAXUSER.
+                if (simByUser.ContainsKey(s.usuario) && simByUser[s.usuario] > sConfig.MaxUsers)
                 {
-                    // Descartamos aquellas que superen el máximo de simulaciones por usuario MAXUSER.
-                    if (simByUser.ContainsKey(s.usuario) && simByUser[s.usuario] > MAXUSER)
+                    runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] " + s.usuario + ": Too simulations. Denegate");
+                }
+                else
+                {
+                    // Establecemos dichas simulaciones a Run, es decir, las lanzamos.           
+                    s.EstadoSimulacion = runState;
+                    try
                     {
-                        runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] " + s.usuario + ": Too simulations. Denegate");
+                        webDB.SubmitChanges();
+                        runSimulation(s.idSimulacion);
                     }
-                    else
+                    catch (Exception e)
                     {
-                        // Establecemos dichas simulaciones a Run, es decir, las lanzamos.           
-                        s.EstadoSimulacion = runState;
-                        try
-                        {
-                            webDB.SubmitChanges();
-                            runSimulation(s.idSimulacion);
-                        }
-                        catch (Exception e)
-                        {
-                            runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] Update error: " + e.ToString());
-                        }
+                        runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] Update error: " + e.ToString());
+                    }
 
-                    }
                 }
             }
+
             
             simByUser = null;
         }
@@ -294,8 +290,8 @@ namespace runnerSvc
 
 
             IPEndPoint ipep = new IPEndPoint(
-               IPAddress.Parse(ipDaemon),
-               puertoOut
+               IPAddress.Parse(sConfig.IpDaemon),
+               sConfig.PortDaemon
             );
             
             Socket conexion = new Socket(
