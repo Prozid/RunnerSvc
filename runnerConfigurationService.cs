@@ -35,7 +35,7 @@ namespace runnerSvc
 		{
 			int pSvc = 1990;
 			int pDmn = 5959;
-			String ipSvc = "192.168.1.6";
+			String ipSvc = "127.0.0.1"; // IP máquina virtual: 192.168.1.6
 			String cs = "Server=localhost;Database=runnerDaemon;User ID=root;Password=dani;Pooling=false"; //String de conexión a la BD
             int maxUsers = 5;
             RunnerServiceConfiguration configDefault = new RunnerServiceConfiguration(cs, pSvc, pDmn, ipSvc,maxUsers);
