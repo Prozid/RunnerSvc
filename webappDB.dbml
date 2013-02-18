@@ -2,18 +2,18 @@
   <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=webappDB;Integrated Security=True" SettingsObjectName="runnerSvc.Properties.Settings" SettingsPropertyName="webappDBConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Archivo" Member="Archivo">
     <Type Name="Archivo">
-      <Column Name="idArchivo" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="idCarpeta" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="usuario" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="publico" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="nombre" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="[content/type]" Member="content_type" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="datos" Type="System.Data.Linq.Binary" DbType="Image NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="fechaCreacion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="descripcion" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
-      <Column Name="baseDatos" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Archivo_Proyecto" Member="Proyecto" ThisKey="idArchivo" OtherKey="idArchivo" Type="Proyecto" />
-      <Association Name="Carpeta_Archivo" Member="Carpeta" ThisKey="idCarpeta" OtherKey="idCarpeta" Type="Carpeta" IsForeignKey="true" />
+      <Column Name="IdArchivo" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdCarpeta" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Usuario" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Publico" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="NombreArchivo" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ContentType" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaCreacion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="BaseDatos" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Datos" Type="System.Data.Linq.Binary" DbType="Binary(50)" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Archivo_Proyecto" Member="Proyecto" ThisKey="IdArchivo" OtherKey="idArchivo" Type="Proyecto" />
+      <Association Name="Carpeta_Archivo" Member="Carpeta" ThisKey="IdCarpeta" OtherKey="IdCarpeta" Type="Carpeta" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Simulacion" Member="Simulacion">
@@ -25,54 +25,64 @@
       <Column Name="fechaCreacion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="idMetodoSeleccion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Column Name="idMetodoClasificacion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="idEstadoSimulacion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" UpdateCheck="WhenChanged" />
+      <Column Name="idEstadoSimulacion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Column Name="parametrosSeleccion" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
       <Column Name="parametrosClasificacion" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
       <Column Name="usuario" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Association Name="Simulacion_Resultados" Member="Resultados" ThisKey="idSimulacion" OtherKey="idResultado" Type="Resultados" Cardinality="One" />
+      <Association Name="Simulacion_Log" Member="Log" ThisKey="idSimulacion" OtherKey="IdSimulacion" Type="Log" />
+      <Association Name="Simulacion_Resultados" Member="Resultados" ThisKey="idSimulacion" OtherKey="IdResultado" Type="Resultados" Cardinality="One" />
       <Association Name="EstadoSimulacion_Simulacion" Member="EstadoSimulacion" ThisKey="idEstadoSimulacion" OtherKey="idEstadoSimulacion" Type="EstadoSimulacion" IsForeignKey="true" />
-      <Association Name="MetodoClasificacion_Simulacion" Member="MetodoClasificacion" ThisKey="idMetodoClasificacion" OtherKey="idMetodoClasificacion" Type="MetodoClasificacion" IsForeignKey="true" />
-      <Association Name="MetodoSeleccion_Simulacion" Member="MetodoSeleccion" ThisKey="idMetodoSeleccion" OtherKey="idMetodoSeleccion" Type="MetodoSeleccion" IsForeignKey="true" />
+      <Association Name="MetodoClasificacion_Simulacion" Member="MetodoClasificacion" ThisKey="idMetodoClasificacion" OtherKey="IdMetodoClasificacion" Type="MetodoClasificacion" IsForeignKey="true" />
+      <Association Name="MetodoSeleccion_Simulacion" Member="MetodoSeleccion" ThisKey="idMetodoSeleccion" OtherKey="IdMetodoSeleccion" Type="MetodoSeleccion" IsForeignKey="true" />
       <Association Name="Proyecto_Simulacion" Member="Proyecto" ThisKey="idProyecto" OtherKey="idProyecto" Type="Proyecto" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Carpeta" Member="Carpeta">
     <Type Name="Carpeta">
-      <Column Name="idCarpeta" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="nombre" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="idPadre" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="usuario" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="[fechaCreac¡on]" Member="fechaCreac_on" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Carpeta_Archivo" Member="Archivo" ThisKey="idCarpeta" OtherKey="idCarpeta" Type="Archivo" />
-      <Association Name="Carpeta_Carpeta" Member="Carpeta2" ThisKey="idCarpeta" OtherKey="idPadre" Type="Carpeta" />
-      <Association Name="Carpeta_Carpeta" Member="Carpeta1" ThisKey="idPadre" OtherKey="idCarpeta" Type="Carpeta" IsForeignKey="true" />
+      <Column Name="IdCarpeta" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="IdCarpetaPadre" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="Usuario" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="[FechaCreac¡on]" Member="FechaCreac_on" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Carpeta_Archivo" Member="Archivo" ThisKey="IdCarpeta" OtherKey="IdCarpeta" Type="Archivo" />
+      <Association Name="Carpeta_Carpeta" Member="Carpeta2" ThisKey="IdCarpeta" OtherKey="IdCarpetaPadre" Type="Carpeta" />
+      <Association Name="Carpeta_Carpeta" Member="Carpeta1" ThisKey="IdCarpetaPadre" OtherKey="IdCarpeta" Type="Carpeta" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.EstadoSimulacion" Member="EstadoSimulacion">
     <Type Name="EstadoSimulacion">
       <Column Name="idEstadoSimulacion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="nombre" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="descripcion" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
-      <Column Name="nombreCorto" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Sescripcion" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="NombreCorto" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
       <Association Name="EstadoSimulacion_Simulacion" Member="Simulacion" ThisKey="idEstadoSimulacion" OtherKey="idEstadoSimulacion" Type="Simulacion" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[Log]" Member="Log">
+    <Type Name="Log">
+      <Column Name="IdLog" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdSimulacion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="FechaLog" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Texto" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Simulacion_Log" Member="Simulacion" ThisKey="IdSimulacion" OtherKey="idSimulacion" Type="Simulacion" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.MetodoClasificacion" Member="MetodoClasificacion">
     <Type Name="MetodoClasificacion">
-      <Column Name="idMetodoClasificacion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="nombre" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="descripcion" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
-      <Column Name="parametrosDefecto" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
-      <Association Name="MetodoClasificacion_Simulacion" Member="Simulacion" ThisKey="idMetodoClasificacion" OtherKey="idMetodoClasificacion" Type="Simulacion" />
+      <Column Name="IdMetodoClasificacion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="ParametrosDefecto" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Association Name="MetodoClasificacion_Simulacion" Member="Simulacion" ThisKey="IdMetodoClasificacion" OtherKey="idMetodoClasificacion" Type="Simulacion" />
     </Type>
   </Table>
   <Table Name="dbo.MetodoSeleccion" Member="MetodoSeleccion">
     <Type Name="MetodoSeleccion">
-      <Column Name="idMetodoSeleccion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="nombre" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="descripcion" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
-      <Column Name="parametrosDefecto" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
-      <Association Name="MetodoSeleccion_Simulacion" Member="Simulacion" ThisKey="idMetodoSeleccion" OtherKey="idMetodoSeleccion" Type="Simulacion" />
+      <Column Name="IdMetodoSeleccion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="ParametrosDefecto" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Association Name="MetodoSeleccion_Simulacion" Member="Simulacion" ThisKey="IdMetodoSeleccion" OtherKey="idMetodoSeleccion" Type="Simulacion" />
     </Type>
   </Table>
   <Table Name="dbo.Proyecto" Member="Proyecto">
@@ -84,22 +94,29 @@
       <Column Name="fechaCreacion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="idArchivo" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Association Name="Proyecto_Simulacion" Member="Simulacion" ThisKey="idProyecto" OtherKey="idProyecto" Type="Simulacion" />
-      <Association Name="Archivo_Proyecto" Member="Archivo" ThisKey="idArchivo" OtherKey="idArchivo" Type="Archivo" IsForeignKey="true" />
+      <Association Name="Archivo_Proyecto" Member="Archivo" ThisKey="idArchivo" OtherKey="IdArchivo" Type="Archivo" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Resultados" Member="Resultados">
     <Type Name="Resultados">
-      <Column Name="idResultado" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="nGenes" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="genes" Type="System.Data.Linq.Binary" DbType="Image NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="media" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
-      <Column Name="acierto" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
-      <Column Name="desviacionEstandard" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
-      <Column Name="mediana" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
-      <Column Name="fechaLanzamiento" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="fechaFinalizacion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="duracion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Association Name="Simulacion_Resultados" Member="Simulacion" ThisKey="idResultado" OtherKey="idSimulacion" Type="Simulacion" IsForeignKey="true" />
+      <Column Name="IdResultado" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nummgenes" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Nombregenes" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Idgenes" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Accuracy_media" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Accuracy_std" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Precision_media" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Precision_std" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Recall_medio" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Recall_std" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="AVC_media" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="AVC_std" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="FechaLanzamiento" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FechaFinalizacion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Duracion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Accuracyxgenes" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Mediana" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="Simulacion_Resultados" Member="Simulacion" ThisKey="IdResultado" OtherKey="idSimulacion" Type="Simulacion" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
