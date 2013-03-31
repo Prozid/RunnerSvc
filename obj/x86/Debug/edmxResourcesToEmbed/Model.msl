@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="webappDBModelStoreContainer" CdmEntityContainer="webappDBEntities">
+    <EntitySetMapping Name="Archivo">
+      <EntityTypeMapping TypeName="webappDBModel.Archivo">
+        <MappingFragment StoreEntitySet="Archivo">
+          <ScalarProperty Name="IdArchivo" ColumnName="IdArchivo" />
+          <ScalarProperty Name="IdCarpeta" ColumnName="IdCarpeta" />
+          <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+          <ScalarProperty Name="Publico" ColumnName="Publico" />
+          <ScalarProperty Name="NombreArchivo" ColumnName="NombreArchivo" />
+          <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+          <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="BaseDatos" ColumnName="BaseDatos" />
+          <ScalarProperty Name="Datos" ColumnName="Datos" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Carpeta">
+      <EntityTypeMapping TypeName="webappDBModel.Carpeta">
+        <MappingFragment StoreEntitySet="Carpeta">
+          <ScalarProperty Name="IdCarpeta" ColumnName="IdCarpeta" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="IdCarpetaPadre" ColumnName="IdCarpetaPadre" />
+          <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+          <ScalarProperty Name="FechaCreac_on" ColumnName="FechaCreac¡on" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EstadoSimulacion">
+      <EntityTypeMapping TypeName="webappDBModel.EstadoSimulacion">
+        <MappingFragment StoreEntitySet="EstadoSimulacion">
+          <ScalarProperty Name="IdEstadoSimulacion" ColumnName="IdEstadoSimulacion" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="NombreCorto" ColumnName="NombreCorto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Log">
+      <EntityTypeMapping TypeName="webappDBModel.Log">
+        <MappingFragment StoreEntitySet="Log">
+          <ScalarProperty Name="IdLog" ColumnName="IdLog" />
+          <ScalarProperty Name="FechaLog" ColumnName="FechaLog" />
+          <ScalarProperty Name="Texto" ColumnName="Texto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MetodoClasificacion">
+      <EntityTypeMapping TypeName="webappDBModel.MetodoClasificacion">
+        <MappingFragment StoreEntitySet="MetodoClasificacion">
+          <ScalarProperty Name="IdMetodoClasificacion" ColumnName="IdMetodoClasificacion" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="ParametrosXDefecto" ColumnName="ParametrosXDefecto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MetodoSeleccion">
+      <EntityTypeMapping TypeName="webappDBModel.MetodoSeleccion">
+        <MappingFragment StoreEntitySet="MetodoSeleccion">
+          <ScalarProperty Name="IdMetodoSeleccion" ColumnName="IdMetodoSeleccion" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="ParametrosXDefecto" ColumnName="ParametrosXDefecto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Proyecto">
+      <EntityTypeMapping TypeName="webappDBModel.Proyecto">
+        <MappingFragment StoreEntitySet="Proyecto">
+          <ScalarProperty Name="IdProyecto" ColumnName="IdProyecto" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="FechaLanzUltSimulacion" ColumnName="FechaLanzUltSimulacion" />
+          <ScalarProperty Name="FechaCreacionProyecto" ColumnName="FechaCreacionProyecto" />
+          <ScalarProperty Name="IdCarpeta" ColumnName="IdCarpeta" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Resultado">
+      <EntityTypeMapping TypeName="webappDBModel.Resultado">
+        <MappingFragment StoreEntitySet="Resultado">
+          <ScalarProperty Name="IdResultado" ColumnName="IdResultado" />
+          <ScalarProperty Name="NumGenes" ColumnName="NumGenes" />
+          <ScalarProperty Name="NombreGenes" ColumnName="NombreGenes" />
+          <ScalarProperty Name="IdGenes" ColumnName="IdGenes" />
+          <ScalarProperty Name="Accuracy_Media" ColumnName="Accuracy_Media" />
+          <ScalarProperty Name="Accuracy_Std" ColumnName="Accuracy_Std" />
+          <ScalarProperty Name="Precision_Media" ColumnName="Precision_Media" />
+          <ScalarProperty Name="Precision_Std" ColumnName="Precision_Std" />
+          <ScalarProperty Name="Recall_Media" ColumnName="Recall_Media" />
+          <ScalarProperty Name="Recall_Std" ColumnName="Recall_Std" />
+          <ScalarProperty Name="AVC_Media" ColumnName="AVC_Media" />
+          <ScalarProperty Name="AVC_Std" ColumnName="AVC_Std" />
+          <ScalarProperty Name="FechaLanzamiento" ColumnName="FechaLanzamiento" />
+          <ScalarProperty Name="FechaFinalizacion" ColumnName="FechaFinalizacion" />
+          <ScalarProperty Name="Duracion" ColumnName="Duracion" />
+          <ScalarProperty Name="AccuracyXGenes" ColumnName="AccuracyXGenes" />
+          <ScalarProperty Name="Mediana" ColumnName="Mediana" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Simulacion">
+      <EntityTypeMapping TypeName="webappDBModel.Simulacion">
+        <MappingFragment StoreEntitySet="Simulacion">
+          <ScalarProperty Name="IdSimulacion" ColumnName="IdSimulacion" />
+          <ScalarProperty Name="IdProyecto" ColumnName="IdProyecto" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="FechaCreacionSimulacion" ColumnName="FechaCreacionSimulacion" />
+          <ScalarProperty Name="IdMetodoSeleccion" ColumnName="IdMetodoSeleccion" />
+          <ScalarProperty Name="IdMetodoClasificacion" ColumnName="IdMetodoClasificacion" />
+          <ScalarProperty Name="IdEstadoSimulacion" ColumnName="IdEstadoSimulacion" />
+          <ScalarProperty Name="ParametrosSeleccion" ColumnName="ParametrosSeleccion" />
+          <ScalarProperty Name="ParametrosClasificacion" ColumnName="ParametrosClasificacion" />
+          <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+          <ScalarProperty Name="IdLog" ColumnName="IdLog" />
+          <ScalarProperty Name="IdArchivo" ColumnName="IdArchivo" />
+          <ScalarProperty Name="IdCarpeta" ColumnName="IdCarpeta" />
+          <ScalarProperty Name="IdResultado" ColumnName="IdResultado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="webappDBModel.sysdiagrams">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,772 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="webappDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="webappDBModelStoreContainer">
+          <EntitySet Name="Archivo" EntityType="webappDBModel.Store.Archivo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Carpeta" EntityType="webappDBModel.Store.Carpeta" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EstadoSimulacion" EntityType="webappDBModel.Store.EstadoSimulacion" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Log" EntityType="webappDBModel.Store.Log" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MetodoClasificacion" EntityType="webappDBModel.Store.MetodoClasificacion" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MetodoSeleccion" EntityType="webappDBModel.Store.MetodoSeleccion" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Proyecto" EntityType="webappDBModel.Store.Proyecto" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Resultado" EntityType="webappDBModel.Store.Resultado" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Simulacion" EntityType="webappDBModel.Store.Simulacion" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="sysdiagrams" EntityType="webappDBModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Archivo_Carpeta" Association="webappDBModel.Store.FK_Archivo_Carpeta">
+            <End Role="Carpeta" EntitySet="Carpeta" />
+            <End Role="Archivo" EntitySet="Archivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carpeta_Padre" Association="webappDBModel.Store.FK_Carpeta_Padre">
+            <End Role="Carpeta" EntitySet="Carpeta" />
+            <End Role="Carpeta1" EntitySet="Carpeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proyecto_Carpeta" Association="webappDBModel.Store.FK_Proyecto_Carpeta">
+            <End Role="Carpeta" EntitySet="Carpeta" />
+            <End Role="Proyecto" EntitySet="Proyecto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Resultados_Simulacion" Association="webappDBModel.Store.FK_Resultados_Simulacion">
+            <End Role="Simulacion" EntitySet="Simulacion" />
+            <End Role="Resultado" EntitySet="Resultado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Simulacion_EstadoSimulacion" Association="webappDBModel.Store.FK_Simulacion_EstadoSimulacion">
+            <End Role="EstadoSimulacion" EntitySet="EstadoSimulacion" />
+            <End Role="Simulacion" EntitySet="Simulacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Simulacion_Log" Association="webappDBModel.Store.FK_Simulacion_Log">
+            <End Role="Log" EntitySet="Log" />
+            <End Role="Simulacion" EntitySet="Simulacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Simulacion_MetodoClasificacion" Association="webappDBModel.Store.FK_Simulacion_MetodoClasificacion">
+            <End Role="MetodoClasificacion" EntitySet="MetodoClasificacion" />
+            <End Role="Simulacion" EntitySet="Simulacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Simulacion_MetodoSeleccion" Association="webappDBModel.Store.FK_Simulacion_MetodoSeleccion">
+            <End Role="MetodoSeleccion" EntitySet="MetodoSeleccion" />
+            <End Role="Simulacion" EntitySet="Simulacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Simulacion_Proyecto" Association="webappDBModel.Store.FK_Simulacion_Proyecto">
+            <End Role="Proyecto" EntitySet="Proyecto" />
+            <End Role="Simulacion" EntitySet="Simulacion" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Archivo">
+          <Key>
+            <PropertyRef Name="IdArchivo" />
+          </Key>
+          <Property Name="IdArchivo" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdCarpeta" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Usuario" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Publico" Type="bit" Nullable="false" />
+          <Property Name="NombreArchivo" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ContentType" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="256" />
+          <Property Name="BaseDatos" Type="bit" Nullable="false" />
+          <Property Name="Datos" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Carpeta">
+          <Key>
+            <PropertyRef Name="IdCarpeta" />
+          </Key>
+          <Property Name="IdCarpeta" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="IdCarpetaPadre" Type="uniqueidentifier" />
+          <Property Name="Usuario" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="FechaCreac¡on" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EstadoSimulacion">
+          <Key>
+            <PropertyRef Name="IdEstadoSimulacion" />
+          </Key>
+          <Property Name="IdEstadoSimulacion" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="256" />
+          <Property Name="NombreCorto" Type="varchar" Nullable="false" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="IdLog" />
+          </Key>
+          <Property Name="IdLog" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FechaLog" Type="datetime" Nullable="false" />
+          <Property Name="Texto" Type="varchar" Nullable="false" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="MetodoClasificacion">
+          <Key>
+            <PropertyRef Name="IdMetodoClasificacion" />
+          </Key>
+          <Property Name="IdMetodoClasificacion" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="256" />
+          <Property Name="ParametrosXDefecto" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MetodoSeleccion">
+          <Key>
+            <PropertyRef Name="IdMetodoSeleccion" />
+          </Key>
+          <Property Name="IdMetodoSeleccion" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="256" />
+          <Property Name="ParametrosXDefecto" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Proyecto">
+          <Key>
+            <PropertyRef Name="IdProyecto" />
+          </Key>
+          <Property Name="IdProyecto" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" Nullable="false" MaxLength="150" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="256" />
+          <Property Name="FechaLanzUltSimulacion" Type="datetime" />
+          <Property Name="FechaCreacionProyecto" Type="datetime" />
+          <Property Name="IdCarpeta" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Resultado">
+          <Key>
+            <PropertyRef Name="IdResultado" />
+          </Key>
+          <Property Name="IdResultado" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="NumGenes" Type="int" Nullable="false" />
+          <Property Name="NombreGenes" Type="text" Nullable="false" />
+          <Property Name="IdGenes" Type="text" Nullable="false" />
+          <Property Name="Accuracy_Media" Type="float" Nullable="false" />
+          <Property Name="Accuracy_Std" Type="float" Nullable="false" />
+          <Property Name="Precision_Media" Type="float" Nullable="false" />
+          <Property Name="Precision_Std" Type="float" Nullable="false" />
+          <Property Name="Recall_Media" Type="float" Nullable="false" />
+          <Property Name="Recall_Std" Type="float" Nullable="false" />
+          <Property Name="AVC_Media" Type="float" Nullable="false" />
+          <Property Name="AVC_Std" Type="float" Nullable="false" />
+          <Property Name="FechaLanzamiento" Type="datetime" />
+          <Property Name="FechaFinalizacion" Type="datetime" />
+          <Property Name="Duracion" Type="datetime" />
+          <Property Name="AccuracyXGenes" Type="text" Nullable="false" />
+          <Property Name="Mediana" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Simulacion">
+          <Key>
+            <PropertyRef Name="IdSimulacion" />
+          </Key>
+          <Property Name="IdSimulacion" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdProyecto" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" Nullable="false" MaxLength="150" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="256" />
+          <Property Name="FechaCreacionSimulacion" Type="datetime" Nullable="false" />
+          <Property Name="IdMetodoSeleccion" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdMetodoClasificacion" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdEstadoSimulacion" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ParametrosSeleccion" Type="text" Nullable="false" />
+          <Property Name="ParametrosClasificacion" Type="text" Nullable="false" />
+          <Property Name="Usuario" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="IdLog" Type="uniqueidentifier" />
+          <Property Name="IdArchivo" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdCarpeta" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdResultado" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Archivo_Carpeta">
+          <End Role="Carpeta" Type="webappDBModel.Store.Carpeta" Multiplicity="1" />
+          <End Role="Archivo" Type="webappDBModel.Store.Archivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carpeta">
+              <PropertyRef Name="IdCarpeta" />
+            </Principal>
+            <Dependent Role="Archivo">
+              <PropertyRef Name="IdCarpeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carpeta_Padre">
+          <End Role="Carpeta" Type="webappDBModel.Store.Carpeta" Multiplicity="0..1" />
+          <End Role="Carpeta1" Type="webappDBModel.Store.Carpeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carpeta">
+              <PropertyRef Name="IdCarpeta" />
+            </Principal>
+            <Dependent Role="Carpeta1">
+              <PropertyRef Name="IdCarpetaPadre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proyecto_Carpeta">
+          <End Role="Carpeta" Type="webappDBModel.Store.Carpeta" Multiplicity="1" />
+          <End Role="Proyecto" Type="webappDBModel.Store.Proyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carpeta">
+              <PropertyRef Name="IdCarpeta" />
+            </Principal>
+            <Dependent Role="Proyecto">
+              <PropertyRef Name="IdCarpeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Resultados_Simulacion">
+          <End Role="Simulacion" Type="webappDBModel.Store.Simulacion" Multiplicity="1" />
+          <End Role="Resultado" Type="webappDBModel.Store.Resultado" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Simulacion">
+              <PropertyRef Name="IdSimulacion" />
+            </Principal>
+            <Dependent Role="Resultado">
+              <PropertyRef Name="IdResultado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Simulacion_EstadoSimulacion">
+          <End Role="EstadoSimulacion" Type="webappDBModel.Store.EstadoSimulacion" Multiplicity="1" />
+          <End Role="Simulacion" Type="webappDBModel.Store.Simulacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoSimulacion">
+              <PropertyRef Name="IdEstadoSimulacion" />
+            </Principal>
+            <Dependent Role="Simulacion">
+              <PropertyRef Name="IdEstadoSimulacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Simulacion_Log">
+          <End Role="Log" Type="webappDBModel.Store.Log" Multiplicity="0..1" />
+          <End Role="Simulacion" Type="webappDBModel.Store.Simulacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Log">
+              <PropertyRef Name="IdLog" />
+            </Principal>
+            <Dependent Role="Simulacion">
+              <PropertyRef Name="IdLog" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Simulacion_MetodoClasificacion">
+          <End Role="MetodoClasificacion" Type="webappDBModel.Store.MetodoClasificacion" Multiplicity="1" />
+          <End Role="Simulacion" Type="webappDBModel.Store.Simulacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MetodoClasificacion">
+              <PropertyRef Name="IdMetodoClasificacion" />
+            </Principal>
+            <Dependent Role="Simulacion">
+              <PropertyRef Name="IdMetodoClasificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Simulacion_MetodoSeleccion">
+          <End Role="MetodoSeleccion" Type="webappDBModel.Store.MetodoSeleccion" Multiplicity="1" />
+          <End Role="Simulacion" Type="webappDBModel.Store.Simulacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MetodoSeleccion">
+              <PropertyRef Name="IdMetodoSeleccion" />
+            </Principal>
+            <Dependent Role="Simulacion">
+              <PropertyRef Name="IdMetodoSeleccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Simulacion_Proyecto">
+          <End Role="Proyecto" Type="webappDBModel.Store.Proyecto" Multiplicity="1" />
+          <End Role="Simulacion" Type="webappDBModel.Store.Simulacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proyecto">
+              <PropertyRef Name="IdProyecto" />
+            </Principal>
+            <Dependent Role="Simulacion">
+              <PropertyRef Name="IdProyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="webappDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="webappDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Archivo" EntityType="webappDBModel.Archivo" />
+          <EntitySet Name="Carpeta" EntityType="webappDBModel.Carpeta" />
+          <EntitySet Name="EstadoSimulacion" EntityType="webappDBModel.EstadoSimulacion" />
+          <EntitySet Name="Log" EntityType="webappDBModel.Log" />
+          <EntitySet Name="MetodoClasificacion" EntityType="webappDBModel.MetodoClasificacion" />
+          <EntitySet Name="MetodoSeleccion" EntityType="webappDBModel.MetodoSeleccion" />
+          <EntitySet Name="Proyecto" EntityType="webappDBModel.Proyecto" />
+          <EntitySet Name="Resultado" EntityType="webappDBModel.Resultado" />
+          <EntitySet Name="Simulacion" EntityType="webappDBModel.Simulacion" />
+          <EntitySet Name="sysdiagrams" EntityType="webappDBModel.sysdiagrams" />
+          <AssociationSet Name="FK_Archivo_Carpeta" Association="webappDBModel.FK_Archivo_Carpeta">
+            <End Role="Carpeta" EntitySet="Carpeta" />
+            <End Role="Archivo" EntitySet="Archivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carpeta_Padre" Association="webappDBModel.FK_Carpeta_Padre">
+            <End Role="Carpeta" EntitySet="Carpeta" />
+            <End Role="Carpeta1" EntitySet="Carpeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proyecto_Carpeta" Association="webappDBModel.FK_Proyecto_Carpeta">
+            <End Role="Carpeta" EntitySet="Carpeta" />
+            <End Role="Proyecto" EntitySet="Proyecto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Simulacion_EstadoSimulacion" Association="webappDBModel.FK_Simulacion_EstadoSimulacion">
+            <End Role="EstadoSimulacion" EntitySet="EstadoSimulacion" />
+            <End Role="Simulacion" EntitySet="Simulacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Simulacion_Log" Association="webappDBModel.FK_Simulacion_Log">
+            <End Role="Log" EntitySet="Log" />
+            <End Role="Simulacion" EntitySet="Simulacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Simulacion_MetodoClasificacion" Association="webappDBModel.FK_Simulacion_MetodoClasificacion">
+            <End Role="MetodoClasificacion" EntitySet="MetodoClasificacion" />
+            <End Role="Simulacion" EntitySet="Simulacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Simulacion_MetodoSeleccion" Association="webappDBModel.FK_Simulacion_MetodoSeleccion">
+            <End Role="MetodoSeleccion" EntitySet="MetodoSeleccion" />
+            <End Role="Simulacion" EntitySet="Simulacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Simulacion_Proyecto" Association="webappDBModel.FK_Simulacion_Proyecto">
+            <End Role="Proyecto" EntitySet="Proyecto" />
+            <End Role="Simulacion" EntitySet="Simulacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Resultados_Simulacion" Association="webappDBModel.FK_Resultados_Simulacion">
+            <End Role="Simulacion" EntitySet="Simulacion" />
+            <End Role="Resultado" EntitySet="Resultado" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Archivo">
+          <Key>
+            <PropertyRef Name="IdArchivo" />
+          </Key>
+          <Property Name="IdArchivo" Type="Guid" Nullable="false" />
+          <Property Name="IdCarpeta" Type="Guid" Nullable="false" />
+          <Property Name="Usuario" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Publico" Type="Boolean" Nullable="false" />
+          <Property Name="NombreArchivo" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ContentType" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="256" Unicode="false" FixedLength="false" />
+          <Property Name="BaseDatos" Type="Boolean" Nullable="false" />
+          <Property Name="Datos" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Carpeta" Relationship="webappDBModel.FK_Archivo_Carpeta" FromRole="Archivo" ToRole="Carpeta" />
+        </EntityType>
+        <EntityType Name="Carpeta">
+          <Key>
+            <PropertyRef Name="IdCarpeta" />
+          </Key>
+          <Property Name="IdCarpeta" Type="Guid" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IdCarpetaPadre" Type="Guid" />
+          <Property Name="Usuario" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="FechaCreac_on" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Archivo" Relationship="webappDBModel.FK_Archivo_Carpeta" FromRole="Carpeta" ToRole="Archivo" />
+          <NavigationProperty Name="Carpeta1" Relationship="webappDBModel.FK_Carpeta_Padre" FromRole="Carpeta" ToRole="Carpeta1" />
+          <NavigationProperty Name="Carpeta2" Relationship="webappDBModel.FK_Carpeta_Padre" FromRole="Carpeta1" ToRole="Carpeta" />
+          <NavigationProperty Name="Proyecto" Relationship="webappDBModel.FK_Proyecto_Carpeta" FromRole="Carpeta" ToRole="Proyecto" />
+        </EntityType>
+        <EntityType Name="EstadoSimulacion">
+          <Key>
+            <PropertyRef Name="IdEstadoSimulacion" />
+          </Key>
+          <Property Name="IdEstadoSimulacion" Type="Guid" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="256" Unicode="false" FixedLength="false" />
+          <Property Name="NombreCorto" Type="String" Nullable="false" MaxLength="5" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Simulacion" Relationship="webappDBModel.FK_Simulacion_EstadoSimulacion" FromRole="EstadoSimulacion" ToRole="Simulacion" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="IdLog" />
+          </Key>
+          <Property Name="IdLog" Type="Guid" Nullable="false" />
+          <Property Name="FechaLog" Type="DateTime" Nullable="false" />
+          <Property Name="Texto" Type="String" Nullable="false" MaxLength="256" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Simulacion" Relationship="webappDBModel.FK_Simulacion_Log" FromRole="Log" ToRole="Simulacion" />
+        </EntityType>
+        <EntityType Name="MetodoClasificacion">
+          <Key>
+            <PropertyRef Name="IdMetodoClasificacion" />
+          </Key>
+          <Property Name="IdMetodoClasificacion" Type="Guid" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="256" Unicode="false" FixedLength="false" />
+          <Property Name="ParametrosXDefecto" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Simulacion" Relationship="webappDBModel.FK_Simulacion_MetodoClasificacion" FromRole="MetodoClasificacion" ToRole="Simulacion" />
+        </EntityType>
+        <EntityType Name="MetodoSeleccion">
+          <Key>
+            <PropertyRef Name="IdMetodoSeleccion" />
+          </Key>
+          <Property Name="IdMetodoSeleccion" Type="Guid" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="256" Unicode="false" FixedLength="false" />
+          <Property Name="ParametrosXDefecto" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Simulacion" Relationship="webappDBModel.FK_Simulacion_MetodoSeleccion" FromRole="MetodoSeleccion" ToRole="Simulacion" />
+        </EntityType>
+        <EntityType Name="Proyecto">
+          <Key>
+            <PropertyRef Name="IdProyecto" />
+          </Key>
+          <Property Name="IdProyecto" Type="Guid" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="256" Unicode="false" FixedLength="false" />
+          <Property Name="FechaLanzUltSimulacion" Type="DateTime" />
+          <Property Name="FechaCreacionProyecto" Type="DateTime" />
+          <Property Name="IdCarpeta" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Carpeta" Relationship="webappDBModel.FK_Proyecto_Carpeta" FromRole="Proyecto" ToRole="Carpeta" />
+          <NavigationProperty Name="Simulacion" Relationship="webappDBModel.FK_Simulacion_Proyecto" FromRole="Proyecto" ToRole="Simulacion" />
+        </EntityType>
+        <EntityType Name="Resultado">
+          <Key>
+            <PropertyRef Name="IdResultado" />
+          </Key>
+          <Property Name="IdResultado" Type="Guid" Nullable="false" />
+          <Property Name="NumGenes" Type="Int32" Nullable="false" />
+          <Property Name="NombreGenes" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="IdGenes" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Accuracy_Media" Type="Double" Nullable="false" />
+          <Property Name="Accuracy_Std" Type="Double" Nullable="false" />
+          <Property Name="Precision_Media" Type="Double" Nullable="false" />
+          <Property Name="Precision_Std" Type="Double" Nullable="false" />
+          <Property Name="Recall_Media" Type="Double" Nullable="false" />
+          <Property Name="Recall_Std" Type="Double" Nullable="false" />
+          <Property Name="AVC_Media" Type="Double" Nullable="false" />
+          <Property Name="AVC_Std" Type="Double" Nullable="false" />
+          <Property Name="FechaLanzamiento" Type="DateTime" />
+          <Property Name="FechaFinalizacion" Type="DateTime" />
+          <Property Name="Duracion" Type="DateTime" />
+          <Property Name="AccuracyXGenes" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Mediana" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Simulacion" Relationship="webappDBModel.FK_Resultados_Simulacion" FromRole="Resultado" ToRole="Simulacion" />
+        </EntityType>
+        <EntityType Name="Simulacion">
+          <Key>
+            <PropertyRef Name="IdSimulacion" />
+          </Key>
+          <Property Name="IdSimulacion" Type="Guid" Nullable="false" />
+          <Property Name="IdProyecto" Type="Guid" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="256" Unicode="false" FixedLength="false" />
+          <Property Name="FechaCreacionSimulacion" Type="DateTime" Nullable="false" />
+          <Property Name="IdMetodoSeleccion" Type="Guid" Nullable="false" />
+          <Property Name="IdMetodoClasificacion" Type="Guid" Nullable="false" />
+          <Property Name="IdEstadoSimulacion" Type="Guid" Nullable="false" />
+          <Property Name="ParametrosSeleccion" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="ParametrosClasificacion" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Usuario" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IdLog" Type="Guid" />
+          <Property Name="IdArchivo" Type="Guid" Nullable="false" />
+          <Property Name="IdCarpeta" Type="Guid" Nullable="false" />
+          <Property Name="IdResultado" Type="Guid" />
+          <NavigationProperty Name="EstadoSimulacion" Relationship="webappDBModel.FK_Simulacion_EstadoSimulacion" FromRole="Simulacion" ToRole="EstadoSimulacion" />
+          <NavigationProperty Name="Log" Relationship="webappDBModel.FK_Simulacion_Log" FromRole="Simulacion" ToRole="Log" />
+          <NavigationProperty Name="MetodoClasificacion" Relationship="webappDBModel.FK_Simulacion_MetodoClasificacion" FromRole="Simulacion" ToRole="MetodoClasificacion" />
+          <NavigationProperty Name="MetodoSeleccion" Relationship="webappDBModel.FK_Simulacion_MetodoSeleccion" FromRole="Simulacion" ToRole="MetodoSeleccion" />
+          <NavigationProperty Name="Proyecto" Relationship="webappDBModel.FK_Simulacion_Proyecto" FromRole="Simulacion" ToRole="Proyecto" />
+          <NavigationProperty Name="Resultado" Relationship="webappDBModel.FK_Resultados_Simulacion" FromRole="Simulacion" ToRole="Resultado" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Archivo_Carpeta">
+          <End Role="Carpeta" Type="webappDBModel.Carpeta" Multiplicity="1" />
+          <End Role="Archivo" Type="webappDBModel.Archivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carpeta">
+              <PropertyRef Name="IdCarpeta" />
+            </Principal>
+            <Dependent Role="Archivo">
+              <PropertyRef Name="IdCarpeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carpeta_Padre">
+          <End Role="Carpeta" Type="webappDBModel.Carpeta" Multiplicity="0..1" />
+          <End Role="Carpeta1" Type="webappDBModel.Carpeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carpeta">
+              <PropertyRef Name="IdCarpeta" />
+            </Principal>
+            <Dependent Role="Carpeta1">
+              <PropertyRef Name="IdCarpetaPadre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proyecto_Carpeta">
+          <End Role="Carpeta" Type="webappDBModel.Carpeta" Multiplicity="1" />
+          <End Role="Proyecto" Type="webappDBModel.Proyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carpeta">
+              <PropertyRef Name="IdCarpeta" />
+            </Principal>
+            <Dependent Role="Proyecto">
+              <PropertyRef Name="IdCarpeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Simulacion_EstadoSimulacion">
+          <End Role="EstadoSimulacion" Type="webappDBModel.EstadoSimulacion" Multiplicity="1" />
+          <End Role="Simulacion" Type="webappDBModel.Simulacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoSimulacion">
+              <PropertyRef Name="IdEstadoSimulacion" />
+            </Principal>
+            <Dependent Role="Simulacion">
+              <PropertyRef Name="IdEstadoSimulacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Simulacion_Log">
+          <End Role="Log" Type="webappDBModel.Log" Multiplicity="0..1" />
+          <End Role="Simulacion" Type="webappDBModel.Simulacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Log">
+              <PropertyRef Name="IdLog" />
+            </Principal>
+            <Dependent Role="Simulacion">
+              <PropertyRef Name="IdLog" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Simulacion_MetodoClasificacion">
+          <End Role="MetodoClasificacion" Type="webappDBModel.MetodoClasificacion" Multiplicity="1" />
+          <End Role="Simulacion" Type="webappDBModel.Simulacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MetodoClasificacion">
+              <PropertyRef Name="IdMetodoClasificacion" />
+            </Principal>
+            <Dependent Role="Simulacion">
+              <PropertyRef Name="IdMetodoClasificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Simulacion_MetodoSeleccion">
+          <End Role="MetodoSeleccion" Type="webappDBModel.MetodoSeleccion" Multiplicity="1" />
+          <End Role="Simulacion" Type="webappDBModel.Simulacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MetodoSeleccion">
+              <PropertyRef Name="IdMetodoSeleccion" />
+            </Principal>
+            <Dependent Role="Simulacion">
+              <PropertyRef Name="IdMetodoSeleccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Simulacion_Proyecto">
+          <End Role="Proyecto" Type="webappDBModel.Proyecto" Multiplicity="1" />
+          <End Role="Simulacion" Type="webappDBModel.Simulacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proyecto">
+              <PropertyRef Name="IdProyecto" />
+            </Principal>
+            <Dependent Role="Simulacion">
+              <PropertyRef Name="IdProyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Resultados_Simulacion">
+          <End Role="Simulacion" Type="webappDBModel.Simulacion" Multiplicity="1" />
+          <End Role="Resultado" Type="webappDBModel.Resultado" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Simulacion">
+              <PropertyRef Name="IdSimulacion" />
+            </Principal>
+            <Dependent Role="Resultado">
+              <PropertyRef Name="IdResultado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="webappDBModelStoreContainer" CdmEntityContainer="webappDBEntities">
+          <EntitySetMapping Name="Archivo"><EntityTypeMapping TypeName="webappDBModel.Archivo"><MappingFragment StoreEntitySet="Archivo">
+            <ScalarProperty Name="IdArchivo" ColumnName="IdArchivo" />
+            <ScalarProperty Name="IdCarpeta" ColumnName="IdCarpeta" />
+            <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+            <ScalarProperty Name="Publico" ColumnName="Publico" />
+            <ScalarProperty Name="NombreArchivo" ColumnName="NombreArchivo" />
+            <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+            <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+            <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+            <ScalarProperty Name="BaseDatos" ColumnName="BaseDatos" />
+            <ScalarProperty Name="Datos" ColumnName="Datos" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Carpeta"><EntityTypeMapping TypeName="webappDBModel.Carpeta"><MappingFragment StoreEntitySet="Carpeta">
+            <ScalarProperty Name="IdCarpeta" ColumnName="IdCarpeta" />
+            <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+            <ScalarProperty Name="IdCarpetaPadre" ColumnName="IdCarpetaPadre" />
+            <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+            <ScalarProperty Name="FechaCreac_on" ColumnName="FechaCreac¡on" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="EstadoSimulacion"><EntityTypeMapping TypeName="webappDBModel.EstadoSimulacion"><MappingFragment StoreEntitySet="EstadoSimulacion">
+            <ScalarProperty Name="IdEstadoSimulacion" ColumnName="IdEstadoSimulacion" />
+            <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+            <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+            <ScalarProperty Name="NombreCorto" ColumnName="NombreCorto" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Log"><EntityTypeMapping TypeName="webappDBModel.Log"><MappingFragment StoreEntitySet="Log">
+            <ScalarProperty Name="IdLog" ColumnName="IdLog" />
+            <ScalarProperty Name="FechaLog" ColumnName="FechaLog" />
+            <ScalarProperty Name="Texto" ColumnName="Texto" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="MetodoClasificacion"><EntityTypeMapping TypeName="webappDBModel.MetodoClasificacion"><MappingFragment StoreEntitySet="MetodoClasificacion">
+            <ScalarProperty Name="IdMetodoClasificacion" ColumnName="IdMetodoClasificacion" />
+            <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+            <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+            <ScalarProperty Name="ParametrosXDefecto" ColumnName="ParametrosXDefecto" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="MetodoSeleccion"><EntityTypeMapping TypeName="webappDBModel.MetodoSeleccion"><MappingFragment StoreEntitySet="MetodoSeleccion">
+            <ScalarProperty Name="IdMetodoSeleccion" ColumnName="IdMetodoSeleccion" />
+            <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+            <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+            <ScalarProperty Name="ParametrosXDefecto" ColumnName="ParametrosXDefecto" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Proyecto"><EntityTypeMapping TypeName="webappDBModel.Proyecto"><MappingFragment StoreEntitySet="Proyecto">
+            <ScalarProperty Name="IdProyecto" ColumnName="IdProyecto" />
+            <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+            <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+            <ScalarProperty Name="FechaLanzUltSimulacion" ColumnName="FechaLanzUltSimulacion" />
+            <ScalarProperty Name="FechaCreacionProyecto" ColumnName="FechaCreacionProyecto" />
+            <ScalarProperty Name="IdCarpeta" ColumnName="IdCarpeta" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Resultado"><EntityTypeMapping TypeName="webappDBModel.Resultado"><MappingFragment StoreEntitySet="Resultado">
+            <ScalarProperty Name="IdResultado" ColumnName="IdResultado" />
+            <ScalarProperty Name="NumGenes" ColumnName="NumGenes" />
+            <ScalarProperty Name="NombreGenes" ColumnName="NombreGenes" />
+            <ScalarProperty Name="IdGenes" ColumnName="IdGenes" />
+            <ScalarProperty Name="Accuracy_Media" ColumnName="Accuracy_Media" />
+            <ScalarProperty Name="Accuracy_Std" ColumnName="Accuracy_Std" />
+            <ScalarProperty Name="Precision_Media" ColumnName="Precision_Media" />
+            <ScalarProperty Name="Precision_Std" ColumnName="Precision_Std" />
+            <ScalarProperty Name="Recall_Media" ColumnName="Recall_Media" />
+            <ScalarProperty Name="Recall_Std" ColumnName="Recall_Std" />
+            <ScalarProperty Name="AVC_Media" ColumnName="AVC_Media" />
+            <ScalarProperty Name="AVC_Std" ColumnName="AVC_Std" />
+            <ScalarProperty Name="FechaLanzamiento" ColumnName="FechaLanzamiento" />
+            <ScalarProperty Name="FechaFinalizacion" ColumnName="FechaFinalizacion" />
+            <ScalarProperty Name="Duracion" ColumnName="Duracion" />
+            <ScalarProperty Name="AccuracyXGenes" ColumnName="AccuracyXGenes" />
+            <ScalarProperty Name="Mediana" ColumnName="Mediana" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Simulacion"><EntityTypeMapping TypeName="webappDBModel.Simulacion"><MappingFragment StoreEntitySet="Simulacion">
+            <ScalarProperty Name="IdSimulacion" ColumnName="IdSimulacion" />
+            <ScalarProperty Name="IdProyecto" ColumnName="IdProyecto" />
+            <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+            <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+            <ScalarProperty Name="FechaCreacionSimulacion" ColumnName="FechaCreacionSimulacion" />
+            <ScalarProperty Name="IdMetodoSeleccion" ColumnName="IdMetodoSeleccion" />
+            <ScalarProperty Name="IdMetodoClasificacion" ColumnName="IdMetodoClasificacion" />
+            <ScalarProperty Name="IdEstadoSimulacion" ColumnName="IdEstadoSimulacion" />
+            <ScalarProperty Name="ParametrosSeleccion" ColumnName="ParametrosSeleccion" />
+            <ScalarProperty Name="ParametrosClasificacion" ColumnName="ParametrosClasificacion" />
+            <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+            <ScalarProperty Name="IdLog" ColumnName="IdLog" />
+            <ScalarProperty Name="IdArchivo" ColumnName="IdArchivo" />
+            <ScalarProperty Name="IdCarpeta" ColumnName="IdCarpeta" />
+            <ScalarProperty Name="IdResultado" ColumnName="IdResultado" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams"><EntityTypeMapping TypeName="webappDBModel.sysdiagrams"><MappingFragment StoreEntitySet="sysdiagrams">
+            <ScalarProperty Name="name" ColumnName="name" />
+            <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+            <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+            <ScalarProperty Name="version" ColumnName="version" />
+            <ScalarProperty Name="definition" ColumnName="definition" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model">
+        <EntityTypeShape EntityType="webappDBModel.Archivo" Width="1.5" PointX="3.75" PointY="18" Height="3.1340950520833317" IsExpanded="true" />
+        <EntityTypeShape EntityType="webappDBModel.Carpeta" Width="1.5" PointX="1.5" PointY="18.125" Height="2.749492187499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="webappDBModel.EstadoSimulacion" Width="1.5" PointX="0.75" PointY="2.625" Height="1.9802864583333339" IsExpanded="true" />
+        <EntityTypeShape EntityType="webappDBModel.Log" Width="1.5" PointX="0.75" PointY="6.125" Height="1.7879850260416657" IsExpanded="true" />
+        <EntityTypeShape EntityType="webappDBModel.MetodoClasificacion" Width="1.5" PointX="0.75" PointY="8.625" Height="1.9802864583333317" IsExpanded="true" />
+        <EntityTypeShape EntityType="webappDBModel.MetodoSeleccion" Width="1.5" PointX="0.75" PointY="11.375" Height="1.9802864583333317" IsExpanded="true" />
+        <EntityTypeShape EntityType="webappDBModel.Proyecto" Width="1.5" PointX="0.75" PointY="14.25" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="webappDBModel.Resultado" Width="1.5" PointX="5.25" PointY="1.375" Height="4.4802050781250031" IsExpanded="true" />
+        <EntityTypeShape EntityType="webappDBModel.Simulacion" Width="1.5" PointX="3" PointY="1.125" Height="5.0571093750000031" IsExpanded="true" />
+        <EntityTypeShape EntityType="webappDBModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="6.75" Height="1.9802864583333317" IsExpanded="true" />
+        <AssociationConnector Association="webappDBModel.FK_Archivo_Carpeta" ManuallyRouted="false">
+          <ConnectorPoint PointX="3" PointY="19.499746093749998" />
+          <ConnectorPoint PointX="3.75" PointY="19.499746093749998" />
+        </AssociationConnector>
+        <AssociationConnector Association="webappDBModel.FK_Carpeta_Padre" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.0319230769230767" PointY="20.874492187499996" />
+          <ConnectorPoint PointX="2.0319230769230767" PointY="21.124492187499996" />
+          <ConnectorPoint PointX="2.4784615384615383" PointY="21.124492187499996" />
+          <ConnectorPoint PointX="2.4784615384615383" PointY="20.874492187499996" />
+        </AssociationConnector>
+        <AssociationConnector Association="webappDBModel.FK_Proyecto_Carpeta" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.875" PointY="18.125" />
+          <ConnectorPoint PointX="1.875" PointY="16.807190755208332" />
+        </AssociationConnector>
+        <AssociationConnector Association="webappDBModel.FK_Simulacion_EstadoSimulacion" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="3.6151432291666667" />
+          <ConnectorPoint PointX="3" PointY="3.6151432291666667" />
+        </AssociationConnector>
+        <AssociationConnector Association="webappDBModel.FK_Simulacion_Log" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="7.047547700520834" />
+          <ConnectorPoint PointX="3.0572879166666667" PointY="7.0475477005208331" />
+          <ConnectorPoint PointX="3.2239545833333336" PointY="7.047547700520834" />
+          <ConnectorPoint PointX="3.2604141666666666" PointY="7.0475477005208331" />
+          <ConnectorPoint PointX="3.4270808333333336" PointY="7.047547700520834" />
+          <ConnectorPoint PointX="3.75" PointY="7.047547700520834" />
+          <ConnectorPoint PointX="3.75" PointY="6.1821093750000031" />
+        </AssociationConnector>
+        <AssociationConnector Association="webappDBModel.FK_Simulacion_MetodoClasificacion" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="9.6151432291666659" />
+          <ConnectorPoint PointX="3.0572879166666667" PointY="9.6151432291666659" />
+          <ConnectorPoint PointX="3.2239545833333336" PointY="9.6151432291666659" />
+          <ConnectorPoint PointX="3.3437475" PointY="9.6151432291666659" />
+          <ConnectorPoint PointX="3.3437475" PointY="6.1821093750000031" />
+        </AssociationConnector>
+        <AssociationConnector Association="webappDBModel.FK_Simulacion_MetodoSeleccion" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="12.365143229166666" />
+          <ConnectorPoint PointX="3.0572879166666667" PointY="12.365143229166666" />
+          <ConnectorPoint PointX="3.2239545833333336" PointY="12.365143229166666" />
+          <ConnectorPoint PointX="4.1562525" PointY="12.365143229166666" />
+          <ConnectorPoint PointX="4.1562525" PointY="6.1821093750000031" />
+        </AssociationConnector>
+        <AssociationConnector Association="webappDBModel.FK_Simulacion_Proyecto" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="15.528595377604166" />
+          <ConnectorPoint PointX="3.14062125" PointY="15.528595377604166" />
+          <ConnectorPoint PointX="3.14062125" PointY="6.1821093750000031" />
+        </AssociationConnector>
+        <AssociationConnector Association="webappDBModel.FK_Resultados_Simulacion" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="3.6151025390625016" />
+          <ConnectorPoint PointX="5.25" PointY="3.6151025390625016" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

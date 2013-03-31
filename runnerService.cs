@@ -18,8 +18,7 @@ namespace runnerSvc
     public partial class runnerService : ServiceBase
     {
         private RunnerServiceConfiguration sConfig; // Configuración del servicio.
-        private runnerDBDataContext db;     // Conexión con DB del servicio.
-        private webappDBDataContext webDB;  // Conexión con DB de la webApp.
+        private webappDBEntities webDB;  // Conexión con DB de la webApp.
         private Thread tListener;           // Thread para el serverSocket.
 
         public runnerService()
@@ -41,8 +40,7 @@ namespace runnerSvc
         protected override void OnStart(string[] args)
         {
             // Inicializamos las DB
-            db = new runnerDBDataContext();
-            webDB = new webappDBDataContext();
+            webDB = new webappDBEntities();
 
 
             runner_eventLog.WriteEntry("Initializing...");
@@ -60,9 +58,9 @@ namespace runnerSvc
 
                 foreach (Simulacion s in simRunning)
                 {
-                    s.idEstadoSimulacion = ToRunState.idEstadoSimulacion;
+                    s.IdEstadoSimulacion = ToRunState.IdEstadoSimulacion;
                 }
-                webDB.SubmitChanges();
+                webDB.SaveChanges();
 
                 runner_eventLog.WriteEntry("[CHECK SIM] " + simRunning.Count);
 
@@ -81,8 +79,7 @@ namespace runnerSvc
             {
                 runner_eventLog.WriteEntry("[CHECK SIM] Error: "+e);
                 this.Stop();
-            }
-                     
+            }                   
 
         }
 
@@ -163,8 +160,8 @@ namespace runnerSvc
 
                     // Finalizamos simulación
                     runner_eventLog.WriteEntry("[END SIMULATION] Establecemos finalizada la simulación");
-                    webDB.Simulacion.Single(s => s.idSimulacion.Equals(idSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Finished")).Single();
-                    webDB.SubmitChanges();
+                    webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Terminate")).Single();
+                    webDB.SaveChanges();
                     
 
 
@@ -181,12 +178,12 @@ namespace runnerSvc
         {
             //runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] New tick at "+DateTime.Now);
 
-            EstadoSimulacion runState = webDB.EstadoSimulacion.Where(s => s.Nombre.Equals("Running")).Single();
+            EstadoSimulacion runState = webDB.EstadoSimulacion.Where(s => s.Nombre.Equals("Run")).Single();
             EstadoSimulacion toRunState = webDB.EstadoSimulacion.Where(s => s.Nombre.Equals("ToRun")).Single();
             
             // Consultamos las simulaciones ejecutándose por usuario.
             Dictionary<String, int> simByUser = new Dictionary<String, int>();
-            List<String> usersSimRunning = webDB.Simulacion.Where(sr => sr.EstadoSimulacion == runState).Select(sr => sr.usuario).ToList();
+            List<String> usersSimRunning = webDB.Simulacion.Where(sr => sr.EstadoSimulacion == runState).Select(sr => sr.Usuario).ToList();
             foreach (String u in usersSimRunning)
             {
                 if (!simByUser.ContainsKey(u))
@@ -206,9 +203,9 @@ namespace runnerSvc
             foreach (Simulacion s in simToRun)
             {
                 // Descartamos aquellas que superen el máximo de simulaciones por usuario MAXUSER.
-                if (simByUser.ContainsKey(s.usuario) && simByUser[s.usuario] > sConfig.MaxUsers)
+                if (simByUser.ContainsKey(s.Usuario) && simByUser[s.Usuario] > sConfig.MaxUsers)
                 {
-                    runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] " + s.usuario + ": Too simulations. Denegate");
+                    runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] " + s.Usuario + ": Too simulations. Denegate");
                 }
                 else
                 {
@@ -216,8 +213,8 @@ namespace runnerSvc
                     s.EstadoSimulacion = runState;
                     try
                     {
-                        webDB.SubmitChanges();
-                        runSimulation(s.idSimulacion);
+                        webDB.SaveChanges();
+                        runSimulation(s.IdSimulacion);
                     }
                     catch (Exception e)
                     {
@@ -236,16 +233,10 @@ namespace runnerSvc
             runner_eventLog.WriteEntry("[RUN SIMULATION] "+idSimulacion);
 
             // Obtenemos los datos de la simulación así como el archivo de datos del proyecto
-            Simulacion simulacion = webDB.Simulacion.Where(s => s.idSimulacion.Equals(idSimulacion)).Single();
+            Simulacion simulacion = webDB.Simulacion.Where(s => s.IdSimulacion.Equals(idSimulacion)).Single();
             Archivo archivoDatos = webDB.Archivo
                 .Where(a => 
-                    a.IdArchivo.Equals(
-                        webDB.Proyecto
-                            .Where(p => p.idProyecto.Equals(simulacion.idProyecto))
-                            .Single()
-                            .idArchivo
-                    )
-                )
+                    a.IdArchivo.Equals(simulacion.IdArchivo))            
                 .Single();
 
             // Creamos un documento XML con los datos a enviar
@@ -255,17 +246,17 @@ namespace runnerSvc
                 new XDeclaration("1.0", "utf-8","yes"),
                 new XComment("Simulacion"),
                 new XElement("Simulacion",
-                    new XElement("idSimulacion", simulacion.idSimulacion.ToString()),
-                    new XElement("idProyecto", simulacion.idProyecto.ToString()),
-                    new XElement("nombre", simulacion.nombre),
-                    new XElement("descripcion",simulacion.descripcion),
-                    new XElement("fechaCreacion",simulacion.fechaCreacion.ToString()),
-                    new XElement("idEstadoSimulacion", simulacion.idEstadoSimulacion.ToString()),
-                    new XElement("idMetodoClasificacion", simulacion.idMetodoClasificacion.ToString()),
-                    new XElement("idMetodoSeleccion",simulacion.idMetodoSeleccion.ToString()),
-                    new XElement("parametrosClasificacion",simulacion.parametrosClasificacion),
-                    new XElement("parametrosSeleccion",simulacion.parametrosSeleccion),
-                    new XElement("usuario",simulacion.usuario)
+                    new XElement("IdSimulacion", simulacion.IdSimulacion.ToString()),
+                    new XElement("IdProyecto", simulacion.IdProyecto.ToString()),
+                    new XElement("Nombre", simulacion.Nombre),
+                    new XElement("Descripcion",simulacion.Descripcion),
+                    new XElement("FechaCreacionSimulacion",simulacion.FechaCreacionSimulacion.ToString()),
+                    new XElement("IdEstadoSimulacion", simulacion.IdEstadoSimulacion.ToString()),
+                    new XElement("IdMetodoClasificacion", simulacion.IdMetodoClasificacion.ToString()),
+                    new XElement("IdMetodoSeleccion",simulacion.IdMetodoSeleccion.ToString()),
+                    new XElement("ParametrosClasificacion",simulacion.ParametrosClasificacion),
+                    new XElement("ParametrosSeleccion",simulacion.ParametrosSeleccion),
+                    new XElement("Usuario",simulacion.Usuario)
                 )
                 //new XElement("Datos",archivoDatos.datos)
             );

@@ -869,3 +869,16 @@ Los parámetros afectados son:
    logtoconsole = 
    logfile = C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\bin\Debug\runnerSvc.InstallLog
    assemblypath = C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\bin\Debug\runnerSvc.exe
+Instalando ensamblado 'D:\Proyecto\runnerSvc\bin\Debug\runnerSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = D:\Proyecto\runnerSvc\bin\Debug\runnerSvc.InstallLog
+   assemblypath = D:\Proyecto\runnerSvc\bin\Debug\runnerSvc.exe
+Instalando el servicio runnerService...
+El servicio runnerService se ha instalado correctamente.
+Creando el origen de EventLog runnerService en el registro Application...
+Confirmando ensamblado 'D:\Proyecto\runnerSvc\bin\Debug\runnerSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = D:\Proyecto\runnerSvc\bin\Debug\runnerSvc.InstallLog
+   assemblypath = D:\Proyecto\runnerSvc\bin\Debug\runnerSvc.exe
