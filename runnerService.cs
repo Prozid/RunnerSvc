@@ -52,16 +52,17 @@ namespace runnerSvc
             // Comprobamos simulaciones Run y las establecemos en ToRun
             try
             {
-                EstadoSimulacion RunState = webDB.EstadoSimulacion.Where(s => s.Nombre.Equals("Running")).Single();
+                EstadoSimulacion RunState = webDB.EstadoSimulacion.Where(s => s.Nombre.Equals("Run")).Single();
                 EstadoSimulacion ToRunState = webDB.EstadoSimulacion.Where(s => s.Nombre.Equals("ToRun")).Single();
-                List<Simulacion> simRunning = webDB.Simulacion.Where(s => s.EstadoSimulacion.Equals(RunState)).ToList<Simulacion>();
+                List<Simulacion> simRunning = webDB.Simulacion.Where(s => s.IdEstadoSimulacion.Equals(RunState.IdEstadoSimulacion)).ToList<Simulacion>();
+                //List<Simulacion> simRunning = webDB.Simulacion.Where(s => s.EstadoSimulacion.Equals(RunState)).ToList<Simulacion>();
 
                 foreach (Simulacion s in simRunning)
                 {
                     s.IdEstadoSimulacion = ToRunState.IdEstadoSimulacion;
                 }
                 webDB.SaveChanges();
-
+                
                 runner_eventLog.WriteEntry("[CHECK SIM] " + simRunning.Count);
 
                 
@@ -177,13 +178,13 @@ namespace runnerSvc
         private void timerUpdateSimulations_Elapsed(object state)
         {
             //runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] New tick at "+DateTime.Now);
-
+            
             EstadoSimulacion runState = webDB.EstadoSimulacion.Where(s => s.Nombre.Equals("Run")).Single();
             EstadoSimulacion toRunState = webDB.EstadoSimulacion.Where(s => s.Nombre.Equals("ToRun")).Single();
-            
+
             // Consultamos las simulaciones ejecutándose por usuario.
             Dictionary<String, int> simByUser = new Dictionary<String, int>();
-            List<String> usersSimRunning = webDB.Simulacion.Where(sr => sr.EstadoSimulacion == runState).Select(sr => sr.Usuario).ToList();
+            List<String> usersSimRunning = webDB.Simulacion.Where(sr => sr.IdEstadoSimulacion.Equals(runState.IdEstadoSimulacion)).Select(sr => sr.Usuario).ToList();
             foreach (String u in usersSimRunning)
             {
                 if (!simByUser.ContainsKey(u))
@@ -197,7 +198,7 @@ namespace runnerSvc
             }
 
             // Consultamos las simulaciones que se encuentran en el estado ToRun.            
-            List<Simulacion> simToRun = webDB.Simulacion.Where(s => s.EstadoSimulacion.Equals(toRunState)).ToList<Simulacion>();
+            List<Simulacion> simToRun = webDB.Simulacion.Where(s => s.IdEstadoSimulacion.Equals(toRunState.IdEstadoSimulacion)).ToList<Simulacion>();
             //runner_eventLog.WriteEntry("[SIMULATIONS QUEUE] " + simToRun.Count());
 
             foreach (Simulacion s in simToRun)
@@ -214,6 +215,7 @@ namespace runnerSvc
                     try
                     {
                         webDB.SaveChanges();
+                        runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] Launching simulation");
                         runSimulation(s.IdSimulacion);
                     }
                     catch (Exception e)
@@ -224,7 +226,7 @@ namespace runnerSvc
                 }
             }
 
-            
+
             simByUser = null;
         }
         
@@ -242,6 +244,8 @@ namespace runnerSvc
             // Creamos un documento XML con los datos a enviar
             runner_eventLog.WriteEntry("[RUN SIMULATION] Building XML...");
             String valor_nulo = "";
+            
+            
             XDocument datosXML = new XDocument(
                 new XDeclaration("1.0", "utf-8","yes"),
                 new XComment("Simulacion"),
@@ -250,16 +254,19 @@ namespace runnerSvc
                     new XElement("IdProyecto", simulacion.IdProyecto.ToString()),
                     new XElement("Nombre", simulacion.Nombre),
                     new XElement("Descripcion",simulacion.Descripcion),
-                    new XElement("FechaCreacionSimulacion",simulacion.FechaCreacionSimulacion.ToString()),
+                    new XElement("FechaCreacionSimulacion",simulacion.FechaCreacionSimulacion.ToString("yy-mm-dd hh:mm:ss")),
                     new XElement("IdEstadoSimulacion", simulacion.IdEstadoSimulacion.ToString()),
                     new XElement("IdMetodoClasificacion", simulacion.IdMetodoClasificacion.ToString()),
                     new XElement("IdMetodoSeleccion",simulacion.IdMetodoSeleccion.ToString()),
-                    new XElement("ParametrosClasificacion",simulacion.ParametrosClasificacion),
-                    new XElement("ParametrosSeleccion",simulacion.ParametrosSeleccion),
+                    new XElement("ParametrosClasificacion",Simulacion.ParseClasificationParameters(simulacion.ParametrosClasificacion)),
+                    new XElement("ParametrosSeleccion",Simulacion.ParseSelectionParameters(simulacion.ParametrosSeleccion)),
                     new XElement("Usuario",simulacion.Usuario)
                 )
                 //new XElement("Datos",archivoDatos.datos)
             );
+            
+            runner_eventLog.WriteEntry("[RUN SIMULATION] Generating XML");
+            //XDocument datosXML = simulacion.ToXML();
 
             //Guardamos una copia para testeo
             runner_eventLog.WriteEntry("[RUN SIMULATION] Saving XML");
@@ -332,7 +339,7 @@ namespace runnerSvc
             }
             catch (SocketException se)
             {
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Cannot connect to remote host: " + se.InnerException.Message);
+                runner_eventLog.WriteEntry("[SEND SIMULATION] Cannot connect to remote host: " + se.Message);
             }
             catch (Exception error)
             {
