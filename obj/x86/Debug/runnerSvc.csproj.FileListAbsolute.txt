@@ -5,7 +5,6 @@ C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\bin\Debu
 C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\bin\Debug\runnerSvc.pdb
 C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.exe
 C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.pdb
-C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.csprojResolveAssemblyReference.cache
 C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.csproj.GenerateResource.Cache
 D:\Proyecto\runnerSvc\bin\Debug\runnerSvc.exe.config
 D:\Proyecto\runnerSvc\obj\x86\Debug\runnerSvc.exe
