@@ -23,7 +23,7 @@
       <End Role="Carpeta" EntitySet="Carpeta" />
       <End Role="Proyecto" EntitySet="Proyecto" />
     </AssociationSet>
-    <AssociationSet Name="FK_Resultados_Simulacion" Association="webappDBModel.Store.FK_Resultados_Simulacion">
+    <AssociationSet Name="FK_Resultado_Simulacion" Association="webappDBModel.Store.FK_Resultado_Simulacion">
       <End Role="Simulacion" EntitySet="Simulacion" />
       <End Role="Resultado" EntitySet="Resultado" />
     </AssociationSet>
@@ -124,21 +124,23 @@
       <PropertyRef Name="IdResultado" />
     </Key>
     <Property Name="IdResultado" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="NombreGenesSolucion" Type="text" Nullable="false" />
-    <Property Name="IdGenesSolucion" Type="text" />
     <Property Name="NumGenes" Type="int" Nullable="false" />
+    <Property Name="NombreGenes" Type="text" Nullable="false" />
+    <Property Name="IdGenes" Type="text" Nullable="false" />
     <Property Name="Accuracy_Media" Type="float" Nullable="false" />
     <Property Name="Accuracy_Std" Type="float" Nullable="false" />
-    <Property Name="Sensitivity_medio" Type="float" Nullable="false" />
-    <Property Name="Sensitivity_std" Type="float" Nullable="false" />
-    <Property Name="Specificity_medio" Type="float" Nullable="false" />
-    <Property Name="Specificity_std" Type="float" Nullable="false" />
+    <Property Name="Sensitivity_Media" Type="float" Nullable="false" />
+    <Property Name="Sensitivity_Std" Type="float" Nullable="false" />
+    <Property Name="Specificity_Media" Type="float" Nullable="false" />
+    <Property Name="Specificity_Std" Type="float" Nullable="false" />
     <Property Name="FechaLanzamiento" Type="datetime" />
     <Property Name="FechaFinalizacion" Type="datetime" />
     <Property Name="Duracion" Type="datetime" />
-    <Property Name="NombreGenes" Type="text" Nullable="false" />
-    <Property Name="IdGenes" Type="text" Nullable="false" />
     <Property Name="AccuracyXGenes" Type="text" Nullable="false" />
+    <Property Name="Mediana" Type="float" />
+    <Property Name="IdSimulacion" Type="uniqueidentifier" />
+    <Property Name="NombreGenesSolucion" Type="text" Nullable="false" />
+    <Property Name="IdGenesSolucion" Type="text" />
   </EntityType>
   <EntityType Name="Simulacion">
     <Key>
@@ -158,7 +160,6 @@
     <Property Name="IdLog" Type="uniqueidentifier" />
     <Property Name="IdArchivo" Type="uniqueidentifier" Nullable="false" />
     <Property Name="IdCarpeta" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="IdResultado" Type="uniqueidentifier" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
@@ -206,15 +207,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Resultados_Simulacion">
-    <End Role="Simulacion" Type="webappDBModel.Store.Simulacion" Multiplicity="1" />
-    <End Role="Resultado" Type="webappDBModel.Store.Resultado" Multiplicity="0..1" />
+  <Association Name="FK_Resultado_Simulacion">
+    <End Role="Simulacion" Type="webappDBModel.Store.Simulacion" Multiplicity="0..1" />
+    <End Role="Resultado" Type="webappDBModel.Store.Resultado" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Simulacion">
         <PropertyRef Name="IdSimulacion" />
       </Principal>
       <Dependent Role="Resultado">
-        <PropertyRef Name="IdResultado" />
+        <PropertyRef Name="IdSimulacion" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

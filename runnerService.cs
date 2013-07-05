@@ -50,7 +50,6 @@ namespace runnerSvc
             
             // Inicializamos el Listener donde recibiremos los resultados de las simulaciones
             resultsListener = new ResultsListener(webDB,sConfig,runner_eventLog);
-            //resultsListener.StartListening();
 
             // Inicializamos el serverSocket donde recibir los resultados de las simulaciones
             tListener = new Thread(new ThreadStart(resultsListener.StartListening));
@@ -74,7 +73,6 @@ namespace runnerSvc
 
                 
                 // Configuramos el timer
-
                 timerUpdateSimulations = new System.Threading.Timer(
                     new System.Threading.TimerCallback(timerUpdateSimulations_Elapsed),
                     null,
@@ -209,6 +207,15 @@ namespace runnerSvc
                 runner_eventLog.WriteEntry("[SEND SIMULATION] Connected. Starting to send" + bytesXML.Length + " bytes");
                 clientSock.Send(bytesXML);
                 
+                // Esperamos confirmación
+                // TODO Recibir confirmación
+                byte[] rBytes = new byte[1024];
+                int raw = clientSock.Receive(rBytes);
+
+                // Mostramos confirmación
+                // TODO Decidir que vamos a hacer cuando veamos que no ha llegado bien
+                runner_eventLog.WriteEntry("[SEND SIMULATION]Confirmation: Sended: " + bytesXML.Length + " Received: "+Encoding.ASCII.GetString(rBytes));
+
                 // Cerramos la conexión
                 clientSock.Close();
                 runner_eventLog.WriteEntry("[SEND SIMULATION] Sended.");
@@ -221,10 +228,6 @@ namespace runnerSvc
                                                             .Single()
                                                             .IdEstadoSimulacion;
                 webDB.SaveChanges();
-
-
-                /// FIN NUEVA FORMA DE ENVIAR
-
             }
             catch (System.TimeoutException error)
             {

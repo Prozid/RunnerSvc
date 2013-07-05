@@ -113,41 +113,35 @@ namespace runnerSvc
                     // client. Display it on the console.
                     runner_eventLog.WriteEntry("[RESULTS LISTENER] Read " + content.Length+ " bytes from socket. \n");
 
-                    // Enviamos bytes recibidos como respuesta
-                    Send(state.workSocket, content.Length.ToString());
-
+                    
                     // Eliminamos el <EOF>
                     content = content.Replace("<EOF>", "");
 
                     try
                     {
-                        // Debug: Vemos el XML recibido
-                        runner_eventLog.WriteEntry("[RESULTS LISTENER]:\n" + content.ToString());
                         
                         // Parseamos el XML
                         XDocument resultadosXML = XDocument.Parse(content);
 
-                        // Extraemos la ID de la simulación y la quitamos del XML para que podamos Deserializarlo
-                        Guid idSimulacion = Guid.Parse(resultadosXML.Root.Element("idSimulacion").Value);
-                        resultadosXML.Root.Element("idSimulacion").Remove();
+                        // Enviamos longitud XML recibido como respuesta
+                        Send(state.workSocket, resultadosXML.ToString().Length.ToString());
+
 
                         // Convertimos a clase Resultado
-                        Resultado resultado = Resultado.Deserialize(resultadosXML.ToString());
+                        Resultado resultado = Resultado.LoadFromXML(resultadosXML);
 
-                        // Guardamos en base de datos cada uno de los campos de los Resultados
+                        // Guardamos en base de datos los resultados
                         webDB.Resultado.Add(resultado);
 
-                        // Guardamos en la simulación el ID del resultado
-                        webDB.Simulacion.Where(s => s.IdSimulacion.Equals(idSimulacion)).Single().IdResultado = resultado.IdResultado;
 
                         // Establecemos como finalizada la simulación
                         runner_eventLog.WriteEntry("[RESULTS LISTENER] Establecemos finalizada la simulación");
-                        //webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Terminate")).Single();
+                        webDB.Simulacion.Single(s => s.IdSimulacion.Equals(resultado.IdSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Terminate")).Single();
                         webDB.SaveChanges();
                     }
                     catch (Exception e)
                     {
-                        runner_eventLog.WriteEntry("[RESULTS LISTENER] ERROR: " + e.Message);
+                        runner_eventLog.WriteEntry("[RESULTS LISTENER] ERROR: " + e.ToString());
                     }
                 } 
                 else 
