@@ -11,9 +11,9 @@ namespace runnerSvc
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Xml.Linq;
 using System.Xml;
+using System.Xml.Linq;
+using System.IO;
     
     public partial class Simulacion
     {
@@ -39,7 +39,6 @@ using System.Xml;
         public virtual MetodoSeleccion MetodoSeleccion { get; set; }
         public virtual Proyecto Proyecto { get; set; }
         public virtual Resultado Resultado { get; set; }
-
 
         public static void Serialize(string file, Simulacion sim)
         {

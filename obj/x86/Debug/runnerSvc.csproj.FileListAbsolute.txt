@@ -1,11 +1,3 @@
-C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\bin\Debug\runnerSvc.exe.config
-C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.ProjectInstaller.resources
-C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.runnerService.resources
-C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\bin\Debug\runnerSvc.exe
-C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\bin\Debug\runnerSvc.pdb
-C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.exe
-C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.pdb
-C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.csproj.GenerateResource.Cache
 D:\Proyecto\runnerSvc\bin\Debug\runnerSvc.exe.config
 D:\Proyecto\runnerSvc\obj\x86\Debug\runnerSvc.exe
 D:\Proyecto\runnerSvc\obj\x86\Debug\runnerSvc.pdb
@@ -16,3 +8,12 @@ D:\Proyecto\runnerSvc\obj\x86\Debug\runnerSvc.ProjectInstaller.resources
 D:\Proyecto\runnerSvc\obj\x86\Debug\runnerSvc.runnerService.resources
 D:\Proyecto\runnerSvc\obj\x86\Debug\GenerateResource.read.1.tlog
 D:\Proyecto\runnerSvc\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.ProjectInstaller.resources
+C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.runnerService.resources
+C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.csproj.GenerateResource.Cache
+C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\bin\Debug\runnerSvc.exe.config
+C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.csprojResolveAssemblyReference.cache
+C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\bin\Debug\runnerSvc.exe
+C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\bin\Debug\runnerSvc.pdb
+C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.exe
+C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.pdb

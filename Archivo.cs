@@ -23,7 +23,7 @@ namespace runnerSvc
         public System.DateTime FechaCreacion { get; set; }
         public string Descripcion { get; set; }
         public bool BaseDatos { get; set; }
-        public byte[] Datos { get; set; }
+        public string Datos { get; set; }
     
         public virtual Carpeta Carpeta { get; set; }
     }

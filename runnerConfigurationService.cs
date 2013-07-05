@@ -7,7 +7,7 @@ using System.IO;
 namespace runnerSvc
 {
     [Serializable]
-    class RunnerServiceConfiguration
+    public class RunnerServiceConfiguration
     {
         private String _ConnectionString;
 		private int _PortSvc;   // Puerto en el que escucha el servicio Windows

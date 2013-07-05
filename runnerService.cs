@@ -13,13 +13,16 @@ using System.Xml.Linq;
 using System.Xml;
 using System.Security.Cryptography;
 
+
 namespace runnerSvc
 {
     public partial class runnerService : ServiceBase
     {
+
         private RunnerServiceConfiguration sConfig; // Configuración del servicio.
         private webappDBEntities webDB;  // Conexión con DB de la webApp.
-        private Thread tListener;           // Thread para el serverSocket.
+        private Thread tListener;           // Thread para el listener.
+        private ResultsListener resultsListener; // Objeto que recibirá los resultados de las simulaciones
 
         public runnerService()
         {
@@ -45,8 +48,12 @@ namespace runnerSvc
 
             runner_eventLog.WriteEntry("Initializing...");
             
+            // Inicializamos el Listener donde recibiremos los resultados de las simulaciones
+            resultsListener = new ResultsListener(webDB,sConfig,runner_eventLog);
+            //resultsListener.StartListening();
+
             // Inicializamos el serverSocket donde recibir los resultados de las simulaciones
-            tListener = new Thread(new ThreadStart(serverSocketListener));
+            tListener = new Thread(new ThreadStart(resultsListener.StartListening));
             tListener.Start();
 
             // Comprobamos simulaciones Run y las establecemos en ToRun
@@ -93,86 +100,6 @@ namespace runnerSvc
 
             
             runner_eventLog.WriteEntry("Stopping...");
-        }
-
-        private void serverSocketListener()
-        {
-            // ZONA DECLARACIÓN DE VARIABLES
-            Socket conexion;
-            Socket server;
-            int conexionesServidos;
-
-            // INICIALIZACIÓN
-
-            conexionesServidos = 0;
-            IPEndPoint ipep = new IPEndPoint(IPAddress.Any, sConfig.PortSvc);
-            server = new Socket(
-                AddressFamily.InterNetwork,
-                SocketType.Stream,
-                ProtocolType.Tcp);
-
-            server.Bind(ipep);
-            server.Listen(10);
-            runner_eventLog.WriteEntry("[SERVER SOCKET] Initialized.");
-
-            while (true)
-            {
-                try
-                {
-                    // Esperamos que el servicio Windows contacte con nosotros
-                    conexion = server.Accept();
-                    conexionesServidos += 1;
-                    runner_eventLog.WriteEntry("[SERVER SOCKET] New connection.");
-
-                    // Preparamos lo necesario para la recepción de datos
-                    byte[] rBytes = new byte[1024];
-                    byte[] csrBytes = new byte[1024];
-                    byte[] sBytes = new byte[1024];
-                    int raw;
-                    string datos;
-
-                    // Recibimos los datos
-                    raw = conexion.Receive(rBytes);
-
-                    // Recibimos checksum
-                    //csRaw = conexion.Receive(csrBytes);
-
-                    // Confirmar al servicio la recepción de los datos mediante checkSum md5
-                    MD5 checksum = new MD5CryptoServiceProvider();
-                    sBytes = checksum.ComputeHash(rBytes);
-                    conexion.Send(sBytes);
-
-                    //runner_eventLog.WriteEntry("[SERVER SOCKET] Checksum check: " + checksum.ComputeHash(rBytes).Equals(checksum.ComputeHash(csrBytes)).ToString());
-                    //runner_eventLog.WriteEntry("[SERVER SOCKET] Checksum received: " + BitConverter.ToString(checksum.ComputeHash(rBytes)));
-                    //runner_eventLog.WriteEntry("[SERVER SOCKET] Checksum computed: " + BitConverter.ToString(checksum.ComputeHash(csrBytes)));
-                    //runner_eventLog.WriteEntry("[SERVER SOCKET] Answer sended.");
-
-                    // Procesamos datos
-                    datos = System.Text.Encoding.ASCII.GetString(rBytes, 0, raw);
-                    runner_eventLog.WriteEntry("[SERVER SOCKET] XML received.");
-
-                    // Parseamos el XML y lo guardamos
-                    XDocument datosSimulacion = XDocument.Parse(datos);
-                    datosSimulacion.Save(conexionesServidos.ToString() + "_demonio_received_xml.xml");
-                    
-                    // Procesamos datos
-                    XElement simulacion = datosSimulacion.Element("Simulacion");
-                    Guid idSimulacion = Guid.Parse(simulacion.Attribute("idSimulacion").Value);
-
-                    // Finalizamos simulación
-                    runner_eventLog.WriteEntry("[END SIMULATION] Establecemos finalizada la simulación");
-                    webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Terminate")).Single();
-                    webDB.SaveChanges();
-                    
-
-
-                }
-                catch (Exception e)
-                {
-                    runner_eventLog.WriteEntry(e.ToString());
-                }
-            }
-
         }
 
         private void timerUpdateSimulations_Elapsed(object state)
@@ -243,9 +170,7 @@ namespace runnerSvc
 
             // Creamos un documento XML con los datos a enviar
             runner_eventLog.WriteEntry("[RUN SIMULATION] Building XML...");
-            String valor_nulo = "";
-            
-            
+
             XDocument datosXML = new XDocument(
                 new XDeclaration("1.0", "utf-8","yes"),
                 new XComment("Simulacion"),
@@ -254,84 +179,52 @@ namespace runnerSvc
                     new XElement("IdProyecto", simulacion.IdProyecto.ToString()),
                     new XElement("Nombre", simulacion.Nombre),
                     new XElement("Descripcion",simulacion.Descripcion),
-                    new XElement("FechaCreacionSimulacion",simulacion.FechaCreacionSimulacion.ToString("yy-mm-dd hh:mm:ss")),
+                    new XElement("FechaCreacionSimulacion",simulacion.FechaCreacionSimulacion.ToString("yyyy-mm-ddThh:mm:ss")),
                     new XElement("IdEstadoSimulacion", simulacion.IdEstadoSimulacion.ToString()),
                     new XElement("IdMetodoClasificacion", simulacion.IdMetodoClasificacion.ToString()),
                     new XElement("IdMetodoSeleccion",simulacion.IdMetodoSeleccion.ToString()),
                     new XElement("ParametrosClasificacion",Simulacion.ParseClasificationParameters(simulacion.ParametrosClasificacion)),
                     new XElement("ParametrosSeleccion",Simulacion.ParseSelectionParameters(simulacion.ParametrosSeleccion)),
-                    new XElement("Usuario",simulacion.Usuario)
+                    new XElement("Usuario",simulacion.Usuario),
+                    new XElement("Datos", archivoDatos.Datos)
                 )
-                //new XElement("Datos",archivoDatos.datos)
+                
             );
+
+            // Convertimos a bytes el XML, para ello antes inclumos "<EOF>" como final del archivo
+            byte[] bytesXML = Encoding.ASCII.GetBytes(datosXML.ToString()+"<EOF>");            
             
-            runner_eventLog.WriteEntry("[RUN SIMULATION] Generating XML");
-            //XDocument datosXML = simulacion.ToXML();
 
-            //Guardamos una copia para testeo
-            runner_eventLog.WriteEntry("[RUN SIMULATION] Saving XML");
-            datosXML.Save("C:\\svc_created_xml.xml");
-
-
-            // Preparamos todo lo necesario para la conexión
-            runner_eventLog.WriteEntry("[RUN SIMULATION] Preparing data to send");
-            Byte[] sBytes = new Byte[1024];
-            Byte[] rBytes = new Byte[1024];
-            Byte[] csBytes = new Byte[1024];
-            int raw;
-
-            sBytes = Encoding.ASCII.GetBytes(datosXML.ToString());
-
-            // Checksum para confirmación de envío correcto
-            MD5 checksum = new MD5CryptoServiceProvider();  
-            csBytes = checksum.ComputeHash(sBytes);
-
-
-            IPEndPoint ipep = new IPEndPoint(
-               IPAddress.Parse(sConfig.IpDaemon),
-               sConfig.PortDaemon
-            );
-            
-            Socket conexion = new Socket(
-                AddressFamily.InterNetwork,
-                SocketType.Stream,
-                ProtocolType.Tcp
-            );
-
-            conexion.SendTimeout = 5000;
-            conexion.ReceiveTimeout = 5000;
+            /// NUEVA FORMA DE ENVIAR http://msdn.microsoft.com/es-es/library/bew39x2a(v=vs.80).aspx
+            Socket clientSock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             try
             {
-                // Conectamos con el servicio
+                
+                // Configuramos la conexión
                 runner_eventLog.WriteEntry("[SEND SIMULATION] Try to connect...");
-                conexion.Connect(ipep);
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Connected");
+                clientSock.Connect(sConfig.IpDaemon, sConfig.PortDaemon); 
+                
+                // Enviamos los datos
+                runner_eventLog.WriteEntry("[SEND SIMULATION] Connected. Starting to send" + bytesXML.Length + " bytes");
+                clientSock.Send(bytesXML);
+                
+                // Cerramos la conexión
+                clientSock.Close();
+                runner_eventLog.WriteEntry("[SEND SIMULATION] Sended.");
+
+                // Establecemos a Running la simulación
+                webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
+                    .Single()
+                    .IdEstadoSimulacion = webDB.EstadoSimulacion
+                                                            .Where(es => es.Nombre.Equals("Run"))
+                                                            .Single()
+                                                            .IdEstadoSimulacion;
+                webDB.SaveChanges();
 
 
-                // Enviamos datos            
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Starting to send...");
-                conexion.Send(sBytes);
+                /// FIN NUEVA FORMA DE ENVIAR
 
-                // Enviamos checksum
-                //runner_eventLog.WriteEntry("[SEND SIMULATION] Sended XML. Sending checksum...");
-                //conexion.Send(csBytes);
-
-                // Esperamos confirmación
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Waiting answer...");
-                raw = conexion.Receive(rBytes);
-
-                // Confirmamos que el envío es correcto
-                MD5 rChecksum = new MD5CryptoServiceProvider();
-                bool cBool = checksum.ComputeHash(sBytes).Equals(rChecksum.ComputeHash(rBytes));
-                //runner_eventLog.WriteEntry("[SEND SIMULATION] Checksum XML: "+BitConverter.ToString(checksum.ComputeHash(sBytes)));
-                //runner_eventLog.WriteEntry("[SEND SIMULATION] Checksum computed: " +BitConverter.ToString(csBytes));
-                //runner_eventLog.WriteEntry("[SEND SIMULATION] Checksum received: " + BitConverter.ToString(checksum.ComputeHash(rBytes)));
-
-
-                // Cerrando conexión.
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Complete");
-                conexion.Close();
             }
             catch (System.TimeoutException error)
             {

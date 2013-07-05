@@ -124,22 +124,21 @@
       <PropertyRef Name="IdResultado" />
     </Key>
     <Property Name="IdResultado" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="NombreGenesSolucion" Type="text" Nullable="false" />
+    <Property Name="IdGenesSolucion" Type="text" />
     <Property Name="NumGenes" Type="int" Nullable="false" />
-    <Property Name="NombreGenes" Type="text" Nullable="false" />
-    <Property Name="IdGenes" Type="text" Nullable="false" />
     <Property Name="Accuracy_Media" Type="float" Nullable="false" />
     <Property Name="Accuracy_Std" Type="float" Nullable="false" />
-    <Property Name="Precision_Media" Type="float" Nullable="false" />
-    <Property Name="Precision_Std" Type="float" Nullable="false" />
-    <Property Name="Recall_Media" Type="float" Nullable="false" />
-    <Property Name="Recall_Std" Type="float" Nullable="false" />
-    <Property Name="AVC_Media" Type="float" Nullable="false" />
-    <Property Name="AVC_Std" Type="float" Nullable="false" />
+    <Property Name="Sensitivity_medio" Type="float" Nullable="false" />
+    <Property Name="Sensitivity_std" Type="float" Nullable="false" />
+    <Property Name="Specificity_medio" Type="float" Nullable="false" />
+    <Property Name="Specificity_std" Type="float" Nullable="false" />
     <Property Name="FechaLanzamiento" Type="datetime" />
     <Property Name="FechaFinalizacion" Type="datetime" />
     <Property Name="Duracion" Type="datetime" />
+    <Property Name="NombreGenes" Type="text" Nullable="false" />
+    <Property Name="IdGenes" Type="text" Nullable="false" />
     <Property Name="AccuracyXGenes" Type="text" Nullable="false" />
-    <Property Name="Mediana" Type="float" Nullable="false" />
   </EntityType>
   <EntityType Name="Simulacion">
     <Key>

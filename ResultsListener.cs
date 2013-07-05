@@ -1,0 +1,190 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Net.Sockets;
+using System.Threading;
+using System.Net;
+using System.Xml.Linq;
+using System.Diagnostics;
+
+namespace runnerSvc
+{
+    public class ResultsListener
+    {
+        // State object for reading client data asynchronously
+        private class StateObject
+        {
+            // Client socket.
+            public Socket workSocket = null;
+            // Siz e of receive buffer
+            public const int BufferSize = 1024;
+            // Receive buffer.
+            public byte[] buffer = new byte[BufferSize];
+            // Received data string
+            public StringBuilder sb = new StringBuilder();
+        }
+
+        public static ManualResetEvent allDone = new ManualResetEvent(false); // TODO Evento para 
+        private RunnerServiceConfiguration sConfig;
+        private webappDBEntities webDB;
+        private EventLog runner_eventLog; // TODO Igual es interesante no tener aqui el EventLog, me parece una guarrada
+        
+
+        public ResultsListener(webappDBEntities webDB, RunnerServiceConfiguration configuration, EventLog runnerLog) {
+            this.sConfig = configuration;
+            this.webDB = webDB;
+            this.runner_eventLog = runnerLog;
+        }
+
+        public void StartListening() {
+            // Data buffer for incoming data.
+            byte[] bytes = new Byte[1024];
+
+            // Establish the local endpoint for the socket.
+            IPEndPoint ipep = new IPEndPoint(IPAddress.Any, sConfig.PortSvc);
+
+            // Create a TCP/IP socket.
+            Socket listener = new Socket(AddressFamily.InterNetwork,
+                SocketType.Stream, ProtocolType.Tcp );
+
+            // Bind the socket to the local endpoint and listen for incoming connections.
+            try {
+                listener.Bind(ipep);
+                listener.Listen(100);
+
+                while (true) {
+                    // Set the event to nonsignaled state.
+                    allDone.Reset();
+
+                    // Start an asynchronous socket to listen for connections.
+                    runner_eventLog.WriteEntry("[Results Listener] Waiting for a connection in port "+sConfig.PortSvc);
+                    listener.BeginAccept( 
+                        new AsyncCallback(AcceptCallback),
+                        listener );
+
+                    // Wait until a connection is made before continuing.
+                    allDone.WaitOne();
+                }
+
+            } catch (Exception e) {
+                runner_eventLog.WriteEntry(e.ToString());
+            }
+        
+        }
+
+        public void AcceptCallback(IAsyncResult ar) {
+            // Signal the main thread to continue.
+            allDone.Set();
+
+            // Get the socket that handles the client request.
+            Socket listener = (Socket) ar.AsyncState;
+            Socket handler = listener.EndAccept(ar);
+
+            // Create the state object.
+            StateObject state = new StateObject();
+            state.workSocket = handler;
+            handler.BeginReceive( state.buffer, 0, StateObject.BufferSize, 0,
+                new AsyncCallback(ReadCallback), state);
+        }
+
+        public void ReadCallback(IAsyncResult ar) {
+            String content = String.Empty;
+        
+            // Retrieve the state object and the handler socket
+            // from the asynchronous state object.
+            StateObject state = (StateObject) ar.AsyncState;
+            Socket handler = state.workSocket;
+
+            // Read data from the client socket. 
+            int bytesRead = handler.EndReceive(ar);
+
+            if (bytesRead > 0) {
+                // There  might be more data, so store the data received so far.
+                state.sb.Append(Encoding.ASCII.GetString(
+                    state.buffer,0,bytesRead));
+
+                // Check for end-of-file tag. If it is not there, read 
+                // more data.
+                content = state.sb.ToString();
+                if (content.IndexOf("<EOF>") > -1) 
+                {
+                    // All the data has been read from the 
+                    // client. Display it on the console.
+                    runner_eventLog.WriteEntry("[RESULTS LISTENER] Read " + content.Length+ " bytes from socket. \n");
+
+                    // Enviamos bytes recibidos como respuesta
+                    Send(state.workSocket, content.Length.ToString());
+
+                    // Eliminamos el <EOF>
+                    content = content.Replace("<EOF>", "");
+
+                    try
+                    {
+                        // Debug: Vemos el XML recibido
+                        runner_eventLog.WriteEntry("[RESULTS LISTENER]:\n" + content.ToString());
+                        
+                        // Parseamos el XML
+                        XDocument resultadosXML = XDocument.Parse(content);
+
+                        // Extraemos la ID de la simulación y la quitamos del XML para que podamos Deserializarlo
+                        Guid idSimulacion = Guid.Parse(resultadosXML.Root.Element("idSimulacion").Value);
+                        resultadosXML.Root.Element("idSimulacion").Remove();
+
+                        // Convertimos a clase Resultado
+                        Resultado resultado = Resultado.Deserialize(resultadosXML.ToString());
+
+                        // Guardamos en base de datos cada uno de los campos de los Resultados
+                        webDB.Resultado.Add(resultado);
+
+                        // Guardamos en la simulación el ID del resultado
+                        webDB.Simulacion.Where(s => s.IdSimulacion.Equals(idSimulacion)).Single().IdResultado = resultado.IdResultado;
+
+                        // Establecemos como finalizada la simulación
+                        runner_eventLog.WriteEntry("[RESULTS LISTENER] Establecemos finalizada la simulación");
+                        //webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Terminate")).Single();
+                        webDB.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        runner_eventLog.WriteEntry("[RESULTS LISTENER] ERROR: " + e.Message);
+                    }
+                } 
+                else 
+                {
+                    // Not all data received. Get more.
+                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                    new AsyncCallback(ReadCallback), state);
+                }
+            }
+        }
+    
+        private void Send(Socket handler, String data) {
+            // Convert the string data to byte data using ASCII encoding.
+            byte[] byteData = Encoding.ASCII.GetBytes(data);
+
+            // Begin sending the data to the remote device.
+            handler.BeginSend(byteData, 0, byteData.Length, 0,
+                new AsyncCallback(SendCallback), handler);
+        }
+
+        private void SendCallback(IAsyncResult ar) {
+            try {
+                // Retrieve the socket from the state object.
+                Socket handler = (Socket) ar.AsyncState;
+
+                // Complete sending the data to the remote device.
+                int bytesSent = handler.EndSend(ar);
+                runner_eventLog.WriteEntry("Sent "+ bytesSent +" bytes to daemon.");
+
+                handler.Shutdown(SocketShutdown.Both);
+                handler.Close();
+
+            } catch (Exception e) {
+                runner_eventLog.WriteEntry(e.ToString());
+            }
+        }
+
+
+    }
+}

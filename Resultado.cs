@@ -11,6 +11,9 @@ namespace runnerSvc
 {
     using System;
     using System.Collections.Generic;
+    using System.Xml.Linq;
+    using System.Xml;
+    using System.IO;
     
     public partial class Resultado
     {
@@ -20,18 +23,63 @@ namespace runnerSvc
         public string IdGenes { get; set; }
         public double Accuracy_Media { get; set; }
         public double Accuracy_Std { get; set; }
-        public double Precision_Media { get; set; }
-        public double Precision_Std { get; set; }
-        public double Recall_Media { get; set; }
-        public double Recall_Std { get; set; }
-        public double AVC_Media { get; set; }
-        public double AVC_Std { get; set; }
         public Nullable<System.DateTime> FechaLanzamiento { get; set; }
         public Nullable<System.DateTime> FechaFinalizacion { get; set; }
         public Nullable<System.DateTime> Duracion { get; set; }
         public string AccuracyXGenes { get; set; }
         public double Mediana { get; set; }
+        public string NombreGenesSolucion { get; set; }
+        public string IdGenesSolucion { get; set; }
+        public double Sensitivity_medio { get; set; }
+        public double Sensitivity_std { get; set; }
+        public double Specificity_medio { get; set; }
+        public double Specificity_std { get; set; }
     
         public virtual Simulacion Simulacion { get; set; }
+
+        public static void Serialize(string file, Resultado resultado)
+        {
+            System.Xml.Serialization.XmlSerializer xs
+                = new System.Xml.Serialization.XmlSerializer(resultado.GetType());
+
+            StreamWriter writer = File.CreateText(file);
+            xs.Serialize(writer, resultado);
+            writer.Flush();
+            writer.Close();
+        }
+
+        public static Resultado Deserialize(string file)
+        {
+            Resultado resultado;
+            try
+            {
+                System.Xml.Serialization.XmlSerializer xs
+                = new System.Xml.Serialization.XmlSerializer(typeof(Resultado));
+                StreamReader reader = File.OpenText(file);
+                resultado = (Resultado)xs.Deserialize(reader);
+                reader.Close();
+            }
+            catch
+            {
+                resultado = null;
+            }
+            return resultado;
+        }
+
+        public XDocument ToXML()
+        {
+            System.Xml.Serialization.XmlSerializer xs
+                = new System.Xml.Serialization.XmlSerializer(this.GetType());
+
+            XDocument xml = new XDocument();
+
+            XmlWriter writer = xml.CreateWriter();
+
+            xs.Serialize(writer, this);
+            writer.Flush();
+            writer.Close();
+
+            return xml;
+        }
     }
 }

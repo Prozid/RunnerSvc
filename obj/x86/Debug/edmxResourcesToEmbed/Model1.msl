@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="webappDBModelStoreContainer" CdmEntityContainer="Entities">
-    <EntitySetMapping Name="Archivoes">
+  <EntityContainerMapping StorageEntityContainer="webappDBModelStoreContainer" CdmEntityContainer="webappDBEntities">
+    <EntitySetMapping Name="Archivo">
       <EntityTypeMapping TypeName="webappDBModel.Archivo">
         <MappingFragment StoreEntitySet="Archivo">
           <ScalarProperty Name="IdArchivo" ColumnName="IdArchivo" />
@@ -17,7 +17,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Carpetas">
+    <EntitySetMapping Name="Carpeta">
       <EntityTypeMapping TypeName="webappDBModel.Carpeta">
         <MappingFragment StoreEntitySet="Carpeta">
           <ScalarProperty Name="IdCarpeta" ColumnName="IdCarpeta" />
@@ -28,7 +28,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="EstadoSimulacions">
+    <EntitySetMapping Name="EstadoSimulacion">
       <EntityTypeMapping TypeName="webappDBModel.EstadoSimulacion">
         <MappingFragment StoreEntitySet="EstadoSimulacion">
           <ScalarProperty Name="IdEstadoSimulacion" ColumnName="IdEstadoSimulacion" />
@@ -38,7 +38,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Logs">
+    <EntitySetMapping Name="Log">
       <EntityTypeMapping TypeName="webappDBModel.Log">
         <MappingFragment StoreEntitySet="Log">
           <ScalarProperty Name="IdLog" ColumnName="IdLog" />
@@ -47,7 +47,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="MetodoClasificacions">
+    <EntitySetMapping Name="MetodoClasificacion">
       <EntityTypeMapping TypeName="webappDBModel.MetodoClasificacion">
         <MappingFragment StoreEntitySet="MetodoClasificacion">
           <ScalarProperty Name="IdMetodoClasificacion" ColumnName="IdMetodoClasificacion" />
@@ -57,7 +57,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="MetodoSeleccions">
+    <EntitySetMapping Name="MetodoSeleccion">
       <EntityTypeMapping TypeName="webappDBModel.MetodoSeleccion">
         <MappingFragment StoreEntitySet="MetodoSeleccion">
           <ScalarProperty Name="IdMetodoSeleccion" ColumnName="IdMetodoSeleccion" />
@@ -67,7 +67,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Proyectoes">
+    <EntitySetMapping Name="Proyecto">
       <EntityTypeMapping TypeName="webappDBModel.Proyecto">
         <MappingFragment StoreEntitySet="Proyecto">
           <ScalarProperty Name="IdProyecto" ColumnName="IdProyecto" />
@@ -79,30 +79,29 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Resultadoes">
+    <EntitySetMapping Name="Resultado">
       <EntityTypeMapping TypeName="webappDBModel.Resultado">
         <MappingFragment StoreEntitySet="Resultado">
+          <ScalarProperty Name="Specificity_std" ColumnName="Specificity_std" />
+          <ScalarProperty Name="Specificity_medio" ColumnName="Specificity_medio" />
+          <ScalarProperty Name="Sensitivity_std" ColumnName="Sensitivity_std" />
+          <ScalarProperty Name="Sensitivity_medio" ColumnName="Sensitivity_medio" />
+          <ScalarProperty Name="IdGenesSolucion" ColumnName="IdGenesSolucion" />
+          <ScalarProperty Name="NombreGenesSolucion" ColumnName="NombreGenesSolucion" />
           <ScalarProperty Name="IdResultado" ColumnName="IdResultado" />
           <ScalarProperty Name="NumGenes" ColumnName="NumGenes" />
           <ScalarProperty Name="NombreGenes" ColumnName="NombreGenes" />
           <ScalarProperty Name="IdGenes" ColumnName="IdGenes" />
           <ScalarProperty Name="Accuracy_Media" ColumnName="Accuracy_Media" />
           <ScalarProperty Name="Accuracy_Std" ColumnName="Accuracy_Std" />
-          <ScalarProperty Name="Precision_Media" ColumnName="Precision_Media" />
-          <ScalarProperty Name="Precision_Std" ColumnName="Precision_Std" />
-          <ScalarProperty Name="Recall_Media" ColumnName="Recall_Media" />
-          <ScalarProperty Name="Recall_Std" ColumnName="Recall_Std" />
-          <ScalarProperty Name="AVC_Media" ColumnName="AVC_Media" />
-          <ScalarProperty Name="AVC_Std" ColumnName="AVC_Std" />
           <ScalarProperty Name="FechaLanzamiento" ColumnName="FechaLanzamiento" />
           <ScalarProperty Name="FechaFinalizacion" ColumnName="FechaFinalizacion" />
           <ScalarProperty Name="Duracion" ColumnName="Duracion" />
           <ScalarProperty Name="AccuracyXGenes" ColumnName="AccuracyXGenes" />
-          <ScalarProperty Name="Mediana" ColumnName="Mediana" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Simulacions">
+    <EntitySetMapping Name="Simulacion">
       <EntityTypeMapping TypeName="webappDBModel.Simulacion">
         <MappingFragment StoreEntitySet="Simulacion">
           <ScalarProperty Name="IdSimulacion" ColumnName="IdSimulacion" />
@@ -124,7 +123,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="webappDBModel.sysdiagram">
+      <EntityTypeMapping TypeName="webappDBModel.sysdiagrams">
         <MappingFragment StoreEntitySet="sysdiagrams">
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="principal_id" ColumnName="principal_id" />
