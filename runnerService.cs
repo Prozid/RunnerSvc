@@ -37,7 +37,7 @@ namespace runnerSvc
             runner_eventLog.Source = "runnerSource";
             runner_eventLog.Log = "runnerLog";
 
-            sConfig = RunnerServiceConfiguration.Deserialize();
+            
         }
 
         protected override void OnStart(string[] args)
@@ -45,6 +45,8 @@ namespace runnerSvc
             // Inicializamos las DB
             webDB = new webappDBEntities();
 
+            //Cargamos la configuración
+            sConfig = RunnerServiceConfiguration.Deserialize(); // TODO Asegurar que carga bien la config.xml... Igual sería interesante almacenar el archivo de configuración en la carpeta dónde se instale el Manager
 
             runner_eventLog.WriteEntry("Initializing...");
             
@@ -200,7 +202,7 @@ namespace runnerSvc
             {
                 
                 // Configuramos la conexión
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Try to connect...");
+                runner_eventLog.WriteEntry("[SEND SIMULATION] Try to connect to " + sConfig.IpDaemon + ":" + sConfig.PortDaemon + "...");
                 clientSock.Connect(sConfig.IpDaemon, sConfig.PortDaemon); 
                 
                 // Enviamos los datos
@@ -208,7 +210,6 @@ namespace runnerSvc
                 clientSock.Send(bytesXML);
                 
                 // Esperamos confirmación
-                // TODO Recibir confirmación
                 byte[] rBytes = new byte[1024];
                 int raw = clientSock.Receive(rBytes);
 

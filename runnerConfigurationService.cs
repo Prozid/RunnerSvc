@@ -22,30 +22,30 @@ namespace runnerSvc
 		{
 		}
 
-		public RunnerServiceConfiguration (String connectionString, int portSvc, int portDaemon, String ipSvc, int maxUsers)
+		public RunnerServiceConfiguration (String connectionString, int portSvc, int portDaemon, String ipDaemon, int maxUsers)
 		{
 			_ConnectionString = connectionString;
 			_PortDaemon = portDaemon;
 			_PortSvc = portSvc;
-			_IpDaemon = ipSvc;
+			_IpDaemon = ipDaemon;
             _MaxUsers = maxUsers;
 		}
 
-		private static RunnerServiceConfiguration Defaults()
+		public static RunnerServiceConfiguration Defaults()
 		{
 			int pSvc = 1990;
 			int pDmn = 5959;
-			String ipSvc = "127.0.0.1"; // IP máquina virtual: 192.168.1.6
+			String ipDaemon = "192.168.1.28"; // IP máquina virtual: 192.168.1.28
 			String cs = "Server=localhost;Database=runnerDaemon;User ID=root;Password=dani;Pooling=false"; //String de conexión a la BD
             int maxUsers = 5;
-            RunnerServiceConfiguration configDefault = new RunnerServiceConfiguration(cs, pSvc, pDmn, ipSvc,maxUsers);
+            RunnerServiceConfiguration configDefault = new RunnerServiceConfiguration(cs, pSvc, pDmn, ipDaemon,maxUsers);
             try
             {
                 RunnerServiceConfiguration.Serialize(configDefault);
             }
             catch
             {
-                //Informar
+                // TODO Informar
             }
 
 			return configDefault;
@@ -78,19 +78,18 @@ namespace runnerSvc
 		{
 			String file = DEFAULT_PATH;
             RunnerServiceConfiguration sc;
-			try
-			{
-				System.Xml.Serialization.XmlSerializer xs
+            try
+            {
+                System.Xml.Serialization.XmlSerializer xs
                     = new System.Xml.Serialization.XmlSerializer(typeof(RunnerServiceConfiguration));
-				StreamReader reader = File.OpenText (file);
+                StreamReader reader = File.OpenText(file);
                 sc = (RunnerServiceConfiguration)xs.Deserialize(reader);
-				reader.Close ();
-
-
-			} catch {
+                reader.Close();
+            }
+            catch
+            {
                 sc = RunnerServiceConfiguration.Defaults();
-			}
-
+            }
 			return sc;
 
 		}
@@ -101,7 +100,7 @@ namespace runnerSvc
 			try {
 				System.Xml.Serialization.XmlSerializer xs
                 = new System.Xml.Serialization.XmlSerializer(typeof(RunnerServiceConfiguration));
-				StreamReader reader = File.OpenText (file);
+				StreamReader reader = File.OpenText(file);
                 sc = (RunnerServiceConfiguration)xs.Deserialize(reader);
 				reader.Close ();
 			} catch {
