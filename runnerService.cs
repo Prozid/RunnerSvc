@@ -86,6 +86,7 @@ namespace runnerSvc
             catch (Exception e)
             {
                 runner_eventLog.WriteEntry("[CHECK SIM] Error: "+e);
+                tListener.Abort();
                 this.Stop();
             }                   
 
@@ -104,8 +105,7 @@ namespace runnerSvc
 
         private void timerUpdateSimulations_Elapsed(object state)
         {
-            //runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] New tick at "+DateTime.Now);
-            
+            // Obtenemos los estados posibles de la simulación
             EstadoSimulacion runState = webDB.EstadoSimulacion.Where(s => s.Nombre.Equals("Run")).Single();
             EstadoSimulacion toRunState = webDB.EstadoSimulacion.Where(s => s.Nombre.Equals("ToRun")).Single();
 
@@ -137,8 +137,6 @@ namespace runnerSvc
                 }
                 else
                 {
-                    // Establecemos dichas simulaciones a Run, es decir, las lanzamos.           
-                    s.EstadoSimulacion = runState;
                     try
                     {
                         webDB.SaveChanges();
@@ -164,8 +162,7 @@ namespace runnerSvc
             // Obtenemos los datos de la simulación así como el archivo de datos del proyecto
             Simulacion simulacion = webDB.Simulacion.Where(s => s.IdSimulacion.Equals(idSimulacion)).Single();
             Archivo archivoDatos = webDB.Archivo
-                .Where(a => 
-                    a.IdArchivo.Equals(simulacion.IdArchivo))            
+                .Where(a => a.IdArchivo.Equals(simulacion.IdArchivo))            
                 .Single();
 
             // Creamos un documento XML con los datos a enviar
@@ -214,33 +211,71 @@ namespace runnerSvc
                 int raw = clientSock.Receive(rBytes);
 
                 // Mostramos confirmación
-                // TODO Decidir que vamos a hacer cuando veamos que no ha llegado bien
                 runner_eventLog.WriteEntry("[SEND SIMULATION]Confirmation: Sended: " + bytesXML.Length + " Received: "+Encoding.ASCII.GetString(rBytes));
 
+                
                 // Cerramos la conexión
                 clientSock.Close();
                 runner_eventLog.WriteEntry("[SEND SIMULATION] Sended.");
 
-                // Establecemos a Running la simulación
-                webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
-                    .Single()
-                    .IdEstadoSimulacion = webDB.EstadoSimulacion
-                                                            .Where(es => es.Nombre.Equals("Run"))
-                                                            .Single()
-                                                            .IdEstadoSimulacion;
+                if (bytesXML.Length == rBytes.Length) // TODO Probar que bytesXML.length == rBytes.Length está comparando lo mismo
+                {
+                    // Establecemos a Running la simulación
+                    webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
+                        .Single()
+                        .IdEstadoSimulacion = webDB.EstadoSimulacion
+                                                                .Where(es => es.Nombre.Equals("Run"))
+                                                                .Single()
+                                                                .IdEstadoSimulacion;
+                }
+                else
+                {
+                    runner_eventLog.WriteEntry("[SEND SIMULATION] Send failed.");
+                    // Establecemos a ToRun la simulación para que se vuelva a enviar
+                    webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
+                        .Single()
+                        .IdEstadoSimulacion = webDB.EstadoSimulacion
+                                                                .Where(es => es.Nombre.Equals("ToRun"))
+                                                                .Single()
+                                                                .IdEstadoSimulacion;
+                }
                 webDB.SaveChanges();
             }
             catch (System.TimeoutException error)
             {
                 runner_eventLog.WriteEntry("[SEND SIMULATION] Timeout finished: " + error);
+                // Establecemos a ToRun la simulación para que se vuelva a enviar
+                webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
+                    .Single()
+                    .IdEstadoSimulacion = webDB.EstadoSimulacion
+                                                            .Where(es => es.Nombre.Equals("ToRun"))
+                                                            .Single()
+                                                            .IdEstadoSimulacion;
+                webDB.SaveChanges();
             }
             catch (SocketException se)
             {
                 runner_eventLog.WriteEntry("[SEND SIMULATION] Cannot connect to remote host: " + se.Message);
+                // Establecemos a ToRun la simulación para que se vuelva a enviar
+                webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
+                    .Single()
+                    .IdEstadoSimulacion = webDB.EstadoSimulacion
+                                                            .Where(es => es.Nombre.Equals("ToRun"))
+                                                            .Single()
+                                                            .IdEstadoSimulacion;
+                webDB.SaveChanges();
             }
             catch (Exception error)
             {
                 runner_eventLog.WriteEntry("[SEND SIMULATION] Error desconocido: " + error);
+                // Establecemos a ToRun la simulación para que se vuelva a enviar
+                webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
+                    .Single()
+                    .IdEstadoSimulacion = webDB.EstadoSimulacion
+                                                            .Where(es => es.Nombre.Equals("ToRun"))
+                                                            .Single()
+                                                            .IdEstadoSimulacion;
+                webDB.SaveChanges();
             }    
 
         }

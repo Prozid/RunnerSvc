@@ -35,7 +35,7 @@ namespace runnerSvc
 		{
 			int pSvc = 1990;
 			int pDmn = 5959;
-			String ipDaemon = "192.168.1.28"; // IP máquina virtual: 192.168.1.28
+			String ipDaemon = "192.168.1.4"; // IP máquina virtual: 192.168.1.4 Cluster0
 			String cs = "Server=localhost;Database=runnerDaemon;User ID=root;Password=dani;Pooling=false"; //String de conexión a la BD
             int maxUsers = 5;
             RunnerServiceConfiguration configDefault = new RunnerServiceConfiguration(cs, pSvc, pDmn, ipDaemon,maxUsers);
@@ -45,7 +45,7 @@ namespace runnerSvc
             }
             catch
             {
-                // TODO Informar
+                // TODO Informar de que no se puede guardar el archivo de configuración
             }
 
 			return configDefault;

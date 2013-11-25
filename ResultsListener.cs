@@ -25,7 +25,10 @@ namespace runnerSvc
             public StringBuilder sb = new StringBuilder();
         }
 
-        public static ManualResetEvent allDone = new ManualResetEvent(false); // TODO Evento para 
+        private const String EndOfFileTag = "<EOF>";
+        private const String ResultsFileTag = "<Results>";
+        private const String ErrorFileTag = "<Error>";
+        public static ManualResetEvent allDone = new ManualResetEvent(false);
         private RunnerServiceConfiguration sConfig;
         private webappDBEntities webDB;
         private EventLog runner_eventLog; // TODO Igual es interesante no tener aqui el EventLog, me parece una guarrada
@@ -107,7 +110,7 @@ namespace runnerSvc
                 // Check for end-of-file tag. If it is not there, read 
                 // more data.
                 content = state.sb.ToString();
-                if (content.IndexOf("<EOF>") > -1) 
+                if (content.IndexOf(EndOfFileTag) > -1) 
                 {
                     // All the data has been read from the 
                     // client. Display it on the console.
@@ -115,33 +118,63 @@ namespace runnerSvc
 
                     
                     // Eliminamos el <EOF>
-                    content = content.Replace("<EOF>", "");
+                    content = content.Replace(EndOfFileTag, "");
 
-                    try
+                    // Chequeamos si es Resultados o Error
+                    if(content.StartsWith(ErrorFileTag))
                     {
-                        
+                        // Eliminamos ErrorTag
+                        content.Replace(ErrorFileTag,"");
+
                         // Parseamos el XML
-                        XDocument resultadosXML = XDocument.Parse(content);
+                        XDocument errorXML = XDocument.Parse(content);
 
                         // Enviamos longitud XML recibido como respuesta
-                        Send(state.workSocket, resultadosXML.ToString().Length.ToString());
+                        Send(state.workSocket, errorXML.ToString().Length.ToString());
 
+                        // Guardamos error log en BD
+                        Log l = Log.LoadFromXML(errorXML);
+                        Guid idSimulacion = Log.GetIdSimulationOfLogFromXML(errorXML);
 
-                        // Convertimos a clase Resultado
-                        Resultado resultado = Resultado.LoadFromXML(resultadosXML);
-
-                        // Guardamos en base de datos los resultados
-                        webDB.Resultado.Add(resultado);
-
-
-                        // Establecemos como finalizada la simulación
-                        runner_eventLog.WriteEntry("[RESULTS LISTENER] Establecemos finalizada la simulación");
-                        webDB.Simulacion.Single(s => s.IdSimulacion.Equals(resultado.IdSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Terminate")).Single();
+                        webDB.Log.Add(l);
+                        webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).Log = l;
+                        webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Error")).Single();
                         webDB.SaveChanges();
+
+                        runner_eventLog.WriteEntry("[RESULTS LISTENER] Error file received: " + l.Texto);
+
                     }
-                    catch (Exception e)
+                    else if(content.StartsWith(ResultsFileTag))
                     {
-                        runner_eventLog.WriteEntry("[RESULTS LISTENER] ERROR: " + e.ToString());
+                        try
+                        {
+                            // Eliminamos el ResultsTag
+                            content.Replace(ResultsFileTag,"");
+
+                            // Parseamos el XML
+                            XDocument resultadosXML = XDocument.Parse(content);
+
+                            // Enviamos longitud XML recibido como respuesta
+                            Send(state.workSocket, resultadosXML.ToString().Length.ToString());
+
+                            // Convertimos a clase Resultado
+                            Resultado resultado = Resultado.LoadFromXML(resultadosXML);
+
+                            // Guardamos en base de datos los resultados
+                            webDB.Resultado.Add(resultado);
+
+                            // Establecemos como finalizada la simulación
+                            runner_eventLog.WriteEntry("[RESULTS LISTENER] Establecemos finalizada la simulación");
+                            webDB.Simulacion.Single(s => s.IdSimulacion.Equals(resultado.IdSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Terminate")).Single();
+                            webDB.SaveChanges();
+                        }
+                        catch (Exception e)
+                        {
+                            runner_eventLog.WriteEntry("[RESULTS LISTENER] ERROR: " + e.ToString());
+                        }
+                    }
+                    else{
+                        runner_eventLog.WriteEntry("[RESULTS LISTENER] Unknow tag.");
                     }
                 } 
                 else 

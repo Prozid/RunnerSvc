@@ -100,6 +100,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Modelo\Log.cs" />
     <Compile Include="Modelo\Resultado.cs" />
     <Compile Include="Modelo\Simulacion.cs" />
     <Compile Include="ProjectInstaller.cs">

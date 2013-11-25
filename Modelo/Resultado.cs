@@ -65,7 +65,6 @@ namespace runnerSvc
                 resultado.IdSimulacion = Guid.Parse(xml.Root.Element("IdSimulacion").Value);
                 resultado.FechaLanzamiento = DateTime.Parse(xml.Root.Element("FechaLanzamiento").Value);
                 resultado.FechaFinalizacion = DateTime.Parse(xml.Root.Element("FechaFinalizacion").Value);
-                // TODO Incluir duración
 
             }
             catch (Exception e)
