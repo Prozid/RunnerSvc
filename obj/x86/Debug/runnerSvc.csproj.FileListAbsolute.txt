@@ -17,3 +17,12 @@ C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\
 C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.exe
 C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.pdb
 C:\Users\Dani\Documents\Visual Studio 2010\Projects\runnerSvc\runnerSvc\obj\x86\Debug\runnerSvc.csprojResolveAssemblyReference.cache
+C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.exe.config
+C:\Users\pbio\Documents\GitHub\RunnerSvc\obj\x86\Debug\runnerSvc.exe
+C:\Users\pbio\Documents\GitHub\RunnerSvc\obj\x86\Debug\runnerSvc.pdb
+C:\Users\pbio\Documents\GitHub\RunnerSvc\obj\x86\Debug\runnerSvc.csprojResolveAssemblyReference.cache
+C:\Users\pbio\Documents\GitHub\RunnerSvc\obj\x86\Debug\runnerSvc.ProjectInstaller.resources
+C:\Users\pbio\Documents\GitHub\RunnerSvc\obj\x86\Debug\runnerSvc.runnerService.resources
+C:\Users\pbio\Documents\GitHub\RunnerSvc\obj\x86\Debug\runnerSvc.csproj.GenerateResource.Cache
+C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.exe
+C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.pdb

@@ -7,7 +7,7 @@ using System.IO;
 namespace runnerSvc
 {
     [Serializable]
-    public class RunnerServiceConfiguration
+    public class PBioServiceConfiguration
     {
         private String _ConnectionString;
 		private int _PortSvc;   // Puerto en el que escucha el servicio Windows
@@ -18,11 +18,11 @@ namespace runnerSvc
 		private const String DEFAULT_PATH = "config.xml";
 
 
-		public RunnerServiceConfiguration()
+		public PBioServiceConfiguration()
 		{
 		}
 
-		public RunnerServiceConfiguration (String connectionString, int portSvc, int portDaemon, String ipDaemon, int maxUsers)
+		public PBioServiceConfiguration (String connectionString, int portSvc, int portDaemon, String ipDaemon, int maxUsers)
 		{
 			_ConnectionString = connectionString;
 			_PortDaemon = portDaemon;
@@ -31,17 +31,17 @@ namespace runnerSvc
             _MaxUsers = maxUsers;
 		}
 
-		public static RunnerServiceConfiguration Defaults()
+		public static PBioServiceConfiguration Defaults()
 		{
 			int pSvc = 1990;
 			int pDmn = 5959;
 			String ipDaemon = "192.168.1.4"; // IP máquina virtual: 192.168.1.4 Cluster0
 			String cs = "Server=localhost;Database=runnerDaemon;User ID=root;Password=dani;Pooling=false"; //String de conexión a la BD
             int maxUsers = 5;
-            RunnerServiceConfiguration configDefault = new RunnerServiceConfiguration(cs, pSvc, pDmn, ipDaemon,maxUsers);
+            PBioServiceConfiguration configDefault = new PBioServiceConfiguration(cs, pSvc, pDmn, ipDaemon,maxUsers);
             try
             {
-                RunnerServiceConfiguration.Serialize(configDefault);
+                PBioServiceConfiguration.Serialize(configDefault);
             }
             catch
             {
@@ -51,7 +51,7 @@ namespace runnerSvc
 			return configDefault;
 		}
 
-        public static void Serialize(RunnerServiceConfiguration svcConfig)
+        public static void Serialize(PBioServiceConfiguration svcConfig)
 		{
 			String file = DEFAULT_PATH;
 			System.Xml.Serialization.XmlSerializer xs 
@@ -63,7 +63,7 @@ namespace runnerSvc
 			writer.Close();
 		}
 
-        public static void Serialize(string file, RunnerServiceConfiguration svcConfig)
+        public static void Serialize(string file, PBioServiceConfiguration svcConfig)
 		{
 			System.Xml.Serialization.XmlSerializer xs 
 				= new System.Xml.Serialization.XmlSerializer(svcConfig.GetType());
@@ -74,37 +74,37 @@ namespace runnerSvc
 			writer.Close();
 		}
 
-        public static RunnerServiceConfiguration Deserialize()
+        public static PBioServiceConfiguration Deserialize()
 		{
 			String file = DEFAULT_PATH;
-            RunnerServiceConfiguration sc;
+            PBioServiceConfiguration sc;
             try
             {
                 System.Xml.Serialization.XmlSerializer xs
-                    = new System.Xml.Serialization.XmlSerializer(typeof(RunnerServiceConfiguration));
+                    = new System.Xml.Serialization.XmlSerializer(typeof(PBioServiceConfiguration));
                 StreamReader reader = File.OpenText(file);
-                sc = (RunnerServiceConfiguration)xs.Deserialize(reader);
+                sc = (PBioServiceConfiguration)xs.Deserialize(reader);
                 reader.Close();
             }
             catch
             {
-                sc = RunnerServiceConfiguration.Defaults();
+                sc = PBioServiceConfiguration.Defaults();
             }
 			return sc;
 
 		}
 
-        public static RunnerServiceConfiguration Deserialize(string file)
+        public static PBioServiceConfiguration Deserialize(string file)
 		{
-            RunnerServiceConfiguration sc;
+            PBioServiceConfiguration sc;
 			try {
 				System.Xml.Serialization.XmlSerializer xs
-                = new System.Xml.Serialization.XmlSerializer(typeof(RunnerServiceConfiguration));
+                = new System.Xml.Serialization.XmlSerializer(typeof(PBioServiceConfiguration));
 				StreamReader reader = File.OpenText(file);
-                sc = (RunnerServiceConfiguration)xs.Deserialize(reader);
+                sc = (PBioServiceConfiguration)xs.Deserialize(reader);
 				reader.Close ();
 			} catch {
-                sc = RunnerServiceConfiguration.Defaults();
+                sc = PBioServiceConfiguration.Defaults();
 			}
 			return sc;
 		}

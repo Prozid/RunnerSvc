@@ -19,7 +19,7 @@ namespace runnerSvc
     public partial class runnerService : ServiceBase
     {
 
-        private RunnerServiceConfiguration sConfig; // Configuración del servicio.
+        private PBioServiceConfiguration sConfig; // Configuración del servicio.
         private webappDBEntities webDB;  // Conexión con DB de la webApp.
         private Thread tListener;           // Thread para el listener.
         private ResultsListener resultsListener; // Objeto que recibirá los resultados de las simulaciones
@@ -46,7 +46,7 @@ namespace runnerSvc
             webDB = new webappDBEntities();
 
             //Cargamos la configuración
-            sConfig = RunnerServiceConfiguration.Deserialize(); // TODO Asegurar que carga bien la config.xml... Igual sería interesante almacenar el archivo de configuración en la carpeta dónde se instale el Manager
+            sConfig = PBioServiceConfiguration.Deserialize(); // TODO Asegurar que carga bien la config.xml... Igual sería interesante almacenar el archivo de configuración en la carpeta dónde se instale el Manager
 
             runner_eventLog.WriteEntry("Initializing...");
             

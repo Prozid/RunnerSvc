@@ -29,12 +29,12 @@ namespace runnerSvc
         private const String ResultsFileTag = "<Results>";
         private const String ErrorFileTag = "<Error>";
         public static ManualResetEvent allDone = new ManualResetEvent(false);
-        private RunnerServiceConfiguration sConfig;
+        private PBioServiceConfiguration sConfig;
         private webappDBEntities webDB;
         private EventLog runner_eventLog; // TODO Igual es interesante no tener aqui el EventLog, me parece una guarrada
         
 
-        public ResultsListener(webappDBEntities webDB, RunnerServiceConfiguration configuration, EventLog runnerLog) {
+        public ResultsListener(webappDBEntities webDB, PBioServiceConfiguration configuration, EventLog runnerLog) {
             this.sConfig = configuration;
             this.webDB = webDB;
             this.runner_eventLog = runnerLog;

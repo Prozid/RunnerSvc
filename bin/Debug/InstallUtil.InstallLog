@@ -152,3 +152,39 @@ El archivo está ubicado en C:\Users\Dani\Documents\Visual Studio 2010\Projects\
 La fase de confirmación finalizó correctamente.
 
 La instalación con transacciones ha finalizado.
+
+Ejecutando una instalación de transacción.
+
+Iniciando la fase de instalación dentro de la instalación.
+Consulte el contenido del archivo de registro sobre el progreso del ensamblado C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.exe.
+El archivo está ubicado en C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.InstallLog.
+
+Excepción durante la fase de instalación.
+System.InvalidOperationException: No se pueden obtener los tipos de instalador en el ensamblado C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.exe.
+Se produjo una excepción interna System.Reflection.ReflectionTypeLoadException con el siguiente mensaje de error: No se pueden cargar uno o varios tipos requeridos. Recupere la propiedad LoaderExceptions para obtener más información..
+
+Iniciando la fase de desinstalación.
+Consulte el contenido del archivo de registro sobre el progreso del ensamblado C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.exe.
+El archivo está ubicado en C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.InstallLog.
+Excepción durante la fase de retroceso al estado original del instalador System.Configuration.Install.AssemblyInstaller.
+System.InvalidOperationException: No se pueden obtener los tipos de instalador en el ensamblado C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.exe.
+Se produjo una excepción interna System.Reflection.ReflectionTypeLoadException con el siguiente mensaje de error: No se pueden cargar uno o varios tipos requeridos. Recupere la propiedad LoaderExceptions para obtener más información..
+Excepción durante la fase de instalación de retroceso al estado original. Esta excepción se omitirá y se continuará con el retroceso al estado original. Sin embargo, puede que el equipo no recupere el estado inicial hasta que se haya completado esta fase.
+
+La fase de retroceso al estado original finalizó correctamente.
+
+La instalación con transacciones ha finalizado.
+
+Ejecutando una instalación de transacción.
+
+Iniciando la fase de instalación dentro de la instalación.
+Consulte el contenido del archivo de registro sobre el progreso del ensamblado C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.exe.
+El archivo está ubicado en C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.InstallLog.
+
+La fase de instalación finalizó correctamente y la fase de confirmación está empezando.
+Consulte el contenido del archivo de registro sobre el progreso del ensamblado C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.exe.
+El archivo está ubicado en C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\runnerSvc.InstallLog.
+
+La fase de confirmación finalizó correctamente.
+
+La instalación con transacciones ha finalizado.
