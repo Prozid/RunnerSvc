@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "runnerSvc", "runnerSvc.csproj", "{1FD527B0-26EA-4233-8402-884518AF6ED5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBioSvc", "PBioSvc.csproj", "{1FD527B0-26EA-4233-8402-884518AF6ED5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

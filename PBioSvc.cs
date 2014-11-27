@@ -14,9 +14,9 @@ using System.Xml;
 using System.Security.Cryptography;
 
 
-namespace runnerSvc
+namespace PBioSvc
 {
-    public partial class runnerService : ServiceBase
+    public partial class PBioSvc : ServiceBase
     {
 
         private PBioServiceConfiguration sConfig; // Configuración del servicio.
@@ -24,18 +24,18 @@ namespace runnerSvc
         private Thread tListener;           // Thread para el listener.
         private ResultsListener resultsListener; // Objeto que recibirá los resultados de las simulaciones
 
-        public runnerService()
+        public PBioSvc()
         {
             InitializeComponent();
-            if (!System.Diagnostics.EventLog.SourceExists("runnerSource"))
+            if (!System.Diagnostics.EventLog.SourceExists("PBioSource"))
             {
                 System.Diagnostics.EventLog.CreateEventSource(
-                    "runnerSource", "runnerLog");
+                    "PBioSource", "PBioLog");
             }
             
             // Configuramos el registro de eventos del servicio
-            runner_eventLog.Source = "runnerSource";
-            runner_eventLog.Log = "runnerLog";
+            PBioEventLog.Source = "PBioSource";
+            PBioEventLog.Log = "PBioLog";
 
             
         }
@@ -48,10 +48,10 @@ namespace runnerSvc
             //Cargamos la configuración
             sConfig = PBioServiceConfiguration.Deserialize(); // TODO Asegurar que carga bien la config.xml... Igual sería interesante almacenar el archivo de configuración en la carpeta dónde se instale el Manager
 
-            runner_eventLog.WriteEntry("Initializing...");
+            PBioEventLog.WriteEntry("Initializing...");
             
             // Inicializamos el Listener donde recibiremos los resultados de las simulaciones
-            resultsListener = new ResultsListener(webDB,sConfig,runner_eventLog);
+            resultsListener = new ResultsListener(webDB,sConfig,PBioEventLog);
 
             // Inicializamos el serverSocket donde recibir los resultados de las simulaciones
             tListener = new Thread(new ThreadStart(resultsListener.StartListening));
@@ -71,7 +71,7 @@ namespace runnerSvc
                 }
                 webDB.SaveChanges();
                 
-                runner_eventLog.WriteEntry("[CHECK SIM] " + simRunning.Count);
+                PBioEventLog.WriteEntry("[CHECK SIM] " + simRunning.Count);
 
                 
                 // Configuramos el timer
@@ -85,7 +85,7 @@ namespace runnerSvc
             }
             catch (Exception e)
             {
-                runner_eventLog.WriteEntry("[CHECK SIM] Error: "+e);
+                PBioEventLog.WriteEntry("[CHECK SIM] Error: "+e);
                 tListener.Abort();
                 this.Stop();
             }                   
@@ -100,7 +100,7 @@ namespace runnerSvc
 
 
             
-            runner_eventLog.WriteEntry("Stopping...");
+            PBioEventLog.WriteEntry("Stopping...");
         }
 
         private void timerUpdateSimulations_Elapsed(object state)
@@ -126,26 +126,26 @@ namespace runnerSvc
 
             // Consultamos las simulaciones que se encuentran en el estado ToRun.            
             List<Simulacion> simToRun = webDB.Simulacion.Where(s => s.IdEstadoSimulacion.Equals(toRunState.IdEstadoSimulacion)).ToList<Simulacion>();
-            //runner_eventLog.WriteEntry("[SIMULATIONS QUEUE] " + simToRun.Count());
+            //PBioEventLog.WriteEntry("[SIMULATIONS QUEUE] " + simToRun.Count());
 
             foreach (Simulacion s in simToRun)
             {
                 // Descartamos aquellas que superen el máximo de simulaciones por usuario MAXUSER.
                 if (simByUser.ContainsKey(s.Usuario) && simByUser[s.Usuario] > sConfig.MaxUsers)
                 {
-                    runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] " + s.Usuario + ": Too simulations. Denegate");
+                    PBioEventLog.WriteEntry("[UPDATE SIMULATIONS] " + s.Usuario + ": Too simulations. Denegate");
                 }
                 else
                 {
                     try
                     {
                         webDB.SaveChanges();
-                        runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] Launching simulation");
+                        PBioEventLog.WriteEntry("[UPDATE SIMULATIONS] Launching simulation");
                         runSimulation(s.IdSimulacion);
                     }
                     catch (Exception e)
                     {
-                        runner_eventLog.WriteEntry("[UPDATE SIMULATIONS] Update error: " + e.ToString());
+                        PBioEventLog.WriteEntry("[UPDATE SIMULATIONS] Update error: " + e.ToString());
                     }
 
                 }
@@ -157,7 +157,7 @@ namespace runnerSvc
         
         private void runSimulation(Guid idSimulacion)
         {
-            runner_eventLog.WriteEntry("[RUN SIMULATION] "+idSimulacion);
+            PBioEventLog.WriteEntry("[RUN SIMULATION] "+idSimulacion);
 
             // Obtenemos los datos de la simulación así como el archivo de datos del proyecto
             Simulacion simulacion = webDB.Simulacion.Where(s => s.IdSimulacion.Equals(idSimulacion)).Single();
@@ -166,7 +166,7 @@ namespace runnerSvc
                 .Single();
 
             // Creamos un documento XML con los datos a enviar
-            runner_eventLog.WriteEntry("[RUN SIMULATION] Building XML...");
+            PBioEventLog.WriteEntry("[RUN SIMULATION] Building XML...");
 
             XDocument datosXML = new XDocument(
                 new XDeclaration("1.0", "utf-8","yes"),
@@ -199,11 +199,11 @@ namespace runnerSvc
             {
                 
                 // Configuramos la conexión
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Try to connect to " + sConfig.IpDaemon + ":" + sConfig.PortDaemon + "...");
+                PBioEventLog.WriteEntry("[SEND SIMULATION] Try to connect to " + sConfig.IpDaemon + ":" + sConfig.PortDaemon + "...");
                 clientSock.Connect(sConfig.IpDaemon, sConfig.PortDaemon); 
                 
                 // Enviamos los datos
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Connected. Starting to send" + bytesXML.Length + " bytes");
+                PBioEventLog.WriteEntry("[SEND SIMULATION] Connected. Starting to send" + bytesXML.Length + " bytes");
                 clientSock.Send(bytesXML);
                 
                 // Esperamos confirmación
@@ -211,12 +211,12 @@ namespace runnerSvc
                 int raw = clientSock.Receive(rBytes);
 
                 // Mostramos confirmación
-                runner_eventLog.WriteEntry("[SEND SIMULATION]Confirmation: Sended: " + bytesXML.Length + " Received: "+Encoding.ASCII.GetString(rBytes));
+                PBioEventLog.WriteEntry("[SEND SIMULATION]Confirmation: Sended: " + bytesXML.Length + " Received: "+Encoding.ASCII.GetString(rBytes));
 
                 
                 // Cerramos la conexión
                 clientSock.Close();
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Sended.");
+                PBioEventLog.WriteEntry("[SEND SIMULATION] Sended.");
 
                 if (bytesXML.Length == rBytes.Length) // TODO Probar que bytesXML.length == rBytes.Length está comparando lo mismo
                 {
@@ -230,7 +230,7 @@ namespace runnerSvc
                 }
                 else
                 {
-                    runner_eventLog.WriteEntry("[SEND SIMULATION] Send failed.");
+                    PBioEventLog.WriteEntry("[SEND SIMULATION] Send failed.");
                     // Establecemos a ToRun la simulación para que se vuelva a enviar
                     webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
                         .Single()
@@ -243,7 +243,7 @@ namespace runnerSvc
             }
             catch (System.TimeoutException error)
             {
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Timeout finished: " + error);
+                PBioEventLog.WriteEntry("[SEND SIMULATION] Timeout finished: " + error);
                 // Establecemos a ToRun la simulación para que se vuelva a enviar
                 webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
                     .Single()
@@ -255,7 +255,7 @@ namespace runnerSvc
             }
             catch (SocketException se)
             {
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Cannot connect to remote host: " + se.Message);
+                PBioEventLog.WriteEntry("[SEND SIMULATION] Cannot connect to remote host: " + se.Message);
                 // Establecemos a ToRun la simulación para que se vuelva a enviar
                 webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
                     .Single()
@@ -267,7 +267,7 @@ namespace runnerSvc
             }
             catch (Exception error)
             {
-                runner_eventLog.WriteEntry("[SEND SIMULATION] Error desconocido: " + error);
+                PBioEventLog.WriteEntry("[SEND SIMULATION] Error desconocido: " + error);
                 // Establecemos a ToRun la simulación para que se vuelva a enviar
                 webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
                     .Single()

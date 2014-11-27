@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.IO;
 
-namespace runnerSvc
+namespace PBioSvc
 {
     public partial class Log
     {

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace runnerSvc
+namespace PBioSvc
 {
     using System;
     using System.Collections.Generic;

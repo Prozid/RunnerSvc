@@ -8,7 +8,7 @@ using System.Net;
 using System.Xml.Linq;
 using System.Diagnostics;
 
-namespace runnerSvc
+namespace PBioSvc
 {
     public class ResultsListener
     {

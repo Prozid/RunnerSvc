@@ -1,4 +1,4 @@
-﻿namespace runnerSvc
+﻿namespace PBioSvc
 {
     partial class ProjectInstaller
     {
@@ -39,7 +39,7 @@
             // 
             // serviceInstaller
             // 
-            this.serviceInstaller.ServiceName = "runnerService";
+            this.serviceInstaller.ServiceName = "PBioSvc";
             this.serviceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

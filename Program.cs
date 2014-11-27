@@ -4,7 +4,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 
-namespace runnerSvc
+namespace PBioSvc
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace runnerSvc
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 
 			{ 
-				new runnerService() 
+				new PBioSvc() 
 			};
             ServiceBase.Run(ServicesToRun);
         }

@@ -1,6 +1,6 @@
-﻿namespace runnerSvc
+﻿namespace PBioSvc
 {
-    partial class runnerService
+    partial class PBioSvc
     {
         /// <summary> 
         /// Variable del diseñador requerida.
@@ -28,19 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.runner_eventLog = new System.Diagnostics.EventLog();
-            ((System.ComponentModel.ISupportInitialize)(this.runner_eventLog)).BeginInit();
+            this.PBioEventLog = new System.Diagnostics.EventLog();
+            ((System.ComponentModel.ISupportInitialize)(this.PBioEventLog)).BeginInit();
             // 
-            // runnerService
+            // PBioSvc
             // 
             this.ServiceName = "Service1";
-            ((System.ComponentModel.ISupportInitialize)(this.runner_eventLog)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PBioEventLog)).EndInit();
 
         }
 
         #endregion
 
-        private System.Diagnostics.EventLog runner_eventLog;
+        private System.Diagnostics.EventLog PBioEventLog;
         private System.Threading.Timer timerUpdateSimulations;
     }
 }

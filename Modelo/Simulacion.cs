@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using System.Xml;
 using System.IO;
 
-namespace runnerSvc
+namespace PBioSvc
 {
     public partial class Simulacion
     {
