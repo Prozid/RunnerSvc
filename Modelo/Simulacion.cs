@@ -61,32 +61,35 @@ namespace PBioSvc
              * SELECTION_METHOD=8979932d-e69f-4ac1-8fbe-0e15d8820668;NUM_EXECUTIONS=1;CHOOSE_CRITERIA=1
              * Hay que modificar el Guid por el nombre del método (Posiciones 16-52)
              */
-            String old;
-            Boolean exito = false;
-            String parameters = s.Substring(52);
-            Guid idMetodoSeleccion;
-            String nombreMetodoSeleccion = "";
-            exito = Guid.TryParse(s.Substring(16, 36), out idMetodoSeleccion);
-            if (exito)
+            if (s.Length > 0)
             {
-                using (webappDBEntities db = new webappDBEntities())
+                String old;
+                Boolean exito = false;
+                String parameters = s.Substring(52);
+                Guid idMetodoSeleccion;
+                String nombreMetodoSeleccion = "";
+                exito = Guid.TryParse(s.Substring(16, 36), out idMetodoSeleccion);
+                if (exito)
                 {
-                    MetodoSeleccion ms = db.MetodoSeleccion.Find(idMetodoSeleccion);
-                    nombreMetodoSeleccion = (ms == null) ? "" : ms.Nombre;
+                    using (webappDBEntities db = new webappDBEntities())
+                    {
+                        MetodoSeleccion ms = db.MetodoSeleccion.Find(idMetodoSeleccion);
+                        nombreMetodoSeleccion = (ms == null) ? "" : ms.Nombre;
+                    }
+
+                    old = "SELECTION_METHOD=" + nombreMetodoSeleccion + parameters;
+                }
+                else
+                {
+                    old = null;
                 }
 
-                old = "SELECTION_METHOD=" + nombreMetodoSeleccion + parameters;
-            }
-            else
-            {
-                old = null;
-            }
-
-            if (nombreMetodoSeleccion == "")
-                s = "";
-            else
+                if (nombreMetodoSeleccion == "")
+                    s = "";
+                else
+                    s = old;
                 s = old;
-            s = old;
+            }
             return s;
         }
 
@@ -96,31 +99,34 @@ namespace PBioSvc
              * CLASIFICATION_METHOD=4ad04057-4bd4-4996-aa9a-2b039cc61c2e;NUM_NEIGHBOURS=1;DISTANCE_TYPE=1
              * Hay que modificar el Guid por el nombre del método (Posiciones 16-52)
              */
-            String old;
-            Boolean exito = false;
-            String parameters = s.Substring(57);
-            Guid idMetodoClasificacion;
-            String nombreMetodoClasificacion = "";
-            exito = Guid.TryParse(s.Substring(21, 36), out idMetodoClasificacion);
-            if (exito)
+            if (s.Length > 0)
             {
-                using (webappDBEntities db = new webappDBEntities())
+                String old;
+                Boolean exito = false;
+                String parameters = s.Substring(57);
+                Guid idMetodoClasificacion;
+                String nombreMetodoClasificacion = "";
+                exito = Guid.TryParse(s.Substring(21, 36), out idMetodoClasificacion);
+                if (exito)
                 {
-                    MetodoClasificacion mc = db.MetodoClasificacion.Find(idMetodoClasificacion);
-                    nombreMetodoClasificacion = (mc == null) ? "" : mc.Nombre;
+                    using (webappDBEntities db = new webappDBEntities())
+                    {
+                        MetodoClasificacion mc = db.MetodoClasificacion.Find(idMetodoClasificacion);
+                        nombreMetodoClasificacion = (mc == null) ? "" : mc.Nombre;
+                    }
+
+                    old = "CLASIFICATION_METHOD=" + nombreMetodoClasificacion + parameters;
+                }
+                else
+                {
+                    old = null;
                 }
 
-                old = "CLASIFICATION_METHOD=" + nombreMetodoClasificacion + parameters;
+                if (nombreMetodoClasificacion == "")
+                    s = "";
+                else
+                    s = old;
             }
-            else
-            {
-                old = null;
-            }
-
-            if (nombreMetodoClasificacion == "")
-                s = "";
-            else
-                s = old;
 
             return s;
         }

@@ -26,89 +26,10 @@ namespace PBioSvc.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;AttachDbFilename=|DataDirectory|\\runnerStateDB.mdf;Integ" +
-            "rated Security=True;User Instance=True")]
-        public string runnerStateDBConnectionString {
-            get {
-                return ((string)(this["runnerStateDBConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;AttachDbFilename=|DataDirectory|\\webappDB.mdf;Integrated" +
-            " Security=True;User Instance=True")]
-        public string webappDBConnectionString {
-            get {
-                return ((string)(this["webappDBConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;AttachDbFilename=|DataDirectory|\\runnerThreadDB.mdf;Inte" +
-            "grated Security=True;User Instance=True")]
-        public string runnerThreadDBConnectionString {
-            get {
-                return ((string)(this["runnerThreadDBConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;AttachDbFilename=|DataDirectory|\\runnerDB.mdf;Integrated" +
-            " Security=True;User Instance=True")]
-        public string runnerDBConnectionString {
-            get {
-                return ((string)(this["runnerDBConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=\"C:\\USERS\\DANI\\DOCUMENTS\\VISUAL STUDIO 2" +
-            "010\\PROJECTS\\RUNNERSVC\\RUNNERSVC\\BIN\\DEBUG\\WEBAPPDB.MDF\";Integrated Security=Tru" +
-            "e")]
-        public string C__USERS_DANI_DOCUMENTS_VISUAL_STUDIO_2010_PROJECTS_RUNNERSVC_RUNNERSVC_BIN_DEBUG_WEBAPPDB_MDFConnectionString {
-            get {
-                return ((string)(this["C__USERS_DANI_DOCUMENTS_VISUAL_STUDIO_2010_PROJECTS_RUNNERSVC_RUNNERSVC_BIN_DEBUG" +
-                    "_WEBAPPDB_MDFConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=\"C:\\USERS\\DANI\\DOCUMENTS\\VISUAL STUDIO 2" +
-            "010\\PROJECTS\\RUNNERSVC\\RUNNERSVC\\RUNNERDB.MDF\";Integrated Security=True")]
-        public string C__USERS_DANI_DOCUMENTS_VISUAL_STUDIO_2010_PROJECTS_RUNNERSVC_RUNNERSVC_RUNNERDB_MDFConnectionString {
-            get {
-                return ((string)(this["C__USERS_DANI_DOCUMENTS_VISUAL_STUDIO_2010_PROJECTS_RUNNERSVC_RUNNERSVC_RUNNERDB_" +
-                    "MDFConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=webappDB;Integrated Security=True")]
         public string webappDBConnectionString1 {
             get {
                 return ((string)(this["webappDBConnectionString1"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=runnerDB;Integrated Security=True")]
-        public string runnerDBConnectionString1 {
-            get {
-                return ((string)(this["runnerDBConnectionString1"]));
             }
         }
     }

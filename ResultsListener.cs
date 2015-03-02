@@ -31,13 +31,13 @@ namespace PBioSvc
         public static ManualResetEvent allDone = new ManualResetEvent(false);
         private PBioServiceConfiguration sConfig;
         private webappDBEntities webDB;
-        private EventLog runner_eventLog; // TODO Igual es interesante no tener aqui el EventLog, me parece una guarrada
+        private EventLog PBioEventLog; // TODO Igual es interesante no tener aqui el EventLog, me parece una guarrada
         
 
-        public ResultsListener(webappDBEntities webDB, PBioServiceConfiguration configuration, EventLog runnerLog) {
+        public ResultsListener(webappDBEntities webDB, PBioServiceConfiguration configuration, EventLog PBioLog) {
             this.sConfig = configuration;
             this.webDB = webDB;
-            this.runner_eventLog = runnerLog;
+            this.PBioEventLog = PBioLog;
         }
 
         public void StartListening() {
@@ -61,7 +61,7 @@ namespace PBioSvc
                     allDone.Reset();
 
                     // Start an asynchronous socket to listen for connections.
-                    runner_eventLog.WriteEntry("[Results Listener] Waiting for a connection in port "+sConfig.PortSvc);
+                    PBioEventLog.WriteEntry("[Results Listener] Waiting for a connection in port "+sConfig.PortSvc);
                     listener.BeginAccept( 
                         new AsyncCallback(AcceptCallback),
                         listener );
@@ -71,7 +71,7 @@ namespace PBioSvc
                 }
 
             } catch (Exception e) {
-                runner_eventLog.WriteEntry(e.ToString());
+                PBioEventLog.WriteEntry(e.ToString());
             }
         
         }
@@ -102,86 +102,77 @@ namespace PBioSvc
             // Read data from the client socket. 
             int bytesRead = handler.EndReceive(ar);
 
-            if (bytesRead > 0) {
+            if (bytesRead > 0)
+            {
                 // There  might be more data, so store the data received so far.
                 state.sb.Append(Encoding.ASCII.GetString(
-                    state.buffer,0,bytesRead));
+                    state.buffer, 0, bytesRead));
 
-                // Check for end-of-file tag. If it is not there, read 
-                // more data.
-                content = state.sb.ToString();
-                if (content.IndexOf(EndOfFileTag) > -1) 
+                // Not all data received. Get more.
+                handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                new AsyncCallback(ReadCallback), state);
+            }
+            else
+            {
+                // All the data has been read from the 
+                // client. Display it on the console.
+                PBioEventLog.WriteEntry("[RESULTS LISTENER] Read " + content.Length + " bytes from socket. \n");
+
+                // Chequeamos si es Resultados o Error
+                if (content.StartsWith(ErrorFileTag))
                 {
-                    // All the data has been read from the 
-                    // client. Display it on the console.
-                    runner_eventLog.WriteEntry("[RESULTS LISTENER] Read " + content.Length+ " bytes from socket. \n");
+                    // Eliminamos ErrorTag
+                    content.Replace(ErrorFileTag, "");
 
-                    
-                    // Eliminamos el <EOF>
-                    content = content.Replace(EndOfFileTag, "");
+                    // Parseamos el XML
+                    XDocument errorXML = XDocument.Parse(content);
 
-                    // Chequeamos si es Resultados o Error
-                    if(content.StartsWith(ErrorFileTag))
+                    // Enviamos longitud XML recibido como respuesta
+                    Send(state.workSocket, errorXML.ToString().Length.ToString());
+
+                    // Guardamos error log en BD
+                    Log l = Log.LoadFromXML(errorXML);
+                    Guid idSimulacion = Log.GetIdSimulationOfLogFromXML(errorXML);
+
+                    webDB.Log.Add(l);
+                    webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).Log = l;
+                    webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Error")).Single();
+                    webDB.SaveChanges();
+
+                    PBioEventLog.WriteEntry("[RESULTS LISTENER] Error file received: " + l.Texto);
+                }
+                else if (content.StartsWith(ResultsFileTag))
+                {
+                    try
                     {
-                        // Eliminamos ErrorTag
-                        content.Replace(ErrorFileTag,"");
+                        // Eliminamos el ResultsTag
+                        content.Replace(ResultsFileTag, "");
 
                         // Parseamos el XML
-                        XDocument errorXML = XDocument.Parse(content);
+                        XDocument resultadosXML = XDocument.Parse(content);
 
                         // Enviamos longitud XML recibido como respuesta
-                        Send(state.workSocket, errorXML.ToString().Length.ToString());
+                        Send(state.workSocket, resultadosXML.ToString().Length.ToString());
 
-                        // Guardamos error log en BD
-                        Log l = Log.LoadFromXML(errorXML);
-                        Guid idSimulacion = Log.GetIdSimulationOfLogFromXML(errorXML);
+                        // Convertimos a clase Resultado
+                        Resultado resultado = Resultado.LoadFromXML(resultadosXML);
 
-                        webDB.Log.Add(l);
-                        webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).Log = l;
-                        webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Error")).Single();
+                        // Guardamos en base de datos los resultados
+                        webDB.Resultado.Add(resultado);
+
+                        // Establecemos como finalizada la simulación
+                        PBioEventLog.WriteEntry("[RESULTS LISTENER] Establecemos finalizada la simulación");
+                        webDB.Simulacion.Single(s => s.IdSimulacion.Equals(resultado.IdSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Terminate")).Single();
                         webDB.SaveChanges();
-
-                        runner_eventLog.WriteEntry("[RESULTS LISTENER] Error file received: " + l.Texto);
-
                     }
-                    else if(content.StartsWith(ResultsFileTag))
+                    catch (Exception e)
                     {
-                        try
-                        {
-                            // Eliminamos el ResultsTag
-                            content.Replace(ResultsFileTag,"");
-
-                            // Parseamos el XML
-                            XDocument resultadosXML = XDocument.Parse(content);
-
-                            // Enviamos longitud XML recibido como respuesta
-                            Send(state.workSocket, resultadosXML.ToString().Length.ToString());
-
-                            // Convertimos a clase Resultado
-                            Resultado resultado = Resultado.LoadFromXML(resultadosXML);
-
-                            // Guardamos en base de datos los resultados
-                            webDB.Resultado.Add(resultado);
-
-                            // Establecemos como finalizada la simulación
-                            runner_eventLog.WriteEntry("[RESULTS LISTENER] Establecemos finalizada la simulación");
-                            webDB.Simulacion.Single(s => s.IdSimulacion.Equals(resultado.IdSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Terminate")).Single();
-                            webDB.SaveChanges();
-                        }
-                        catch (Exception e)
-                        {
-                            runner_eventLog.WriteEntry("[RESULTS LISTENER] ERROR: " + e.ToString());
-                        }
+                        PBioEventLog.WriteEntry("[RESULTS LISTENER] ERROR: " + e.ToString());
                     }
-                    else{
-                        runner_eventLog.WriteEntry("[RESULTS LISTENER] Unknow tag.");
-                    }
-                } 
-                else 
+                }
+                else
                 {
-                    // Not all data received. Get more.
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                    new AsyncCallback(ReadCallback), state);
+                    PBioEventLog.WriteEntry("[RESULTS LISTENER] Unknow tag.");
                 }
             }
         }
@@ -202,13 +193,13 @@ namespace PBioSvc
 
                 // Complete sending the data to the remote device.
                 int bytesSent = handler.EndSend(ar);
-                runner_eventLog.WriteEntry("Sent "+ bytesSent +" bytes to daemon.");
+                PBioEventLog.WriteEntry("Sent "+ bytesSent +" bytes to daemon.");
 
                 handler.Shutdown(SocketShutdown.Both);
                 handler.Close();
 
             } catch (Exception e) {
-                runner_eventLog.WriteEntry(e.ToString());
+                PBioEventLog.WriteEntry(e.ToString());
             }
         }
 

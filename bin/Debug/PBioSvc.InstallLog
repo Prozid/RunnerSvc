@@ -1,0 +1,380 @@
+﻿Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+Creando el origen de EventLog PBioSvc en el registro Application...
+Deshaciendo ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Restaurando el registro de eventos al estado anterior para el origen PBioSvc.
+Excepción durante la fase de retroceso al estado original del instalador System.Diagnostics.EventLogInstaller.
+System.Security.SecurityException: No se encontró el origen, pero no se pudo buscar en algunos o todos los registros de eventos. Registros inaccesibles: Security.
+Excepción durante la fase de instalación de retroceso al estado original. Esta excepción se omitirá y se continuará con el retroceso al estado original. Sin embargo, puede que el equipo no recupere el estado inicial hasta que se haya completado esta fase.
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
+Instalando el servicio PBioSvc...
+El servicio PBioSvc se ha instalado correctamente.
+Creando el origen de EventLog PBioSvc en el registro Application...
+Confirmando ensamblado 'C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe'.
+Los parámetros afectados son:
+   logtoconsole = 
+   logfile = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.InstallLog
+   assemblypath = C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe

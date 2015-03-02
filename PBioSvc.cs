@@ -27,35 +27,38 @@ namespace PBioSvc
         public PBioSvc()
         {
             InitializeComponent();
-            if (!System.Diagnostics.EventLog.SourceExists("PBioSource"))
+
+            this.AutoLog = false;
+            if (!System.Diagnostics.EventLog.SourceExists("PBio"))
             {
                 System.Diagnostics.EventLog.CreateEventSource(
-                    "PBioSource", "PBioLog");
+                    "PBio", "PBioLog");
             }
             
             // Configuramos el registro de eventos del servicio
-            PBioEventLog.Source = "PBioSource";
-            PBioEventLog.Log = "PBioLog";
-
-            
+            PBioEventLog.Source = "PBio";
+            PBioEventLog.Log = "PBioLog";            
         }
 
         protected override void OnStart(string[] args)
         {
+            PBioEventLog.WriteEntry("Initializing...");
+
             // Inicializamos las DB
             webDB = new webappDBEntities();
 
             //Cargamos la configuración
-            sConfig = PBioServiceConfiguration.Deserialize(); // TODO Asegurar que carga bien la config.xml... Igual sería interesante almacenar el archivo de configuración en la carpeta dónde se instale el Manager
+            sConfig = new PBioServiceConfiguration(); // TODO Asegurar que carga bien la config.xml... Igual sería interesante almacenar el archivo de configuración en la carpeta dónde se instale el Manager
 
-            PBioEventLog.WriteEntry("Initializing...");
-            
+            PBioEventLog.WriteEntry("Configuration loaded.");
             // Inicializamos el Listener donde recibiremos los resultados de las simulaciones
             resultsListener = new ResultsListener(webDB,sConfig,PBioEventLog);
 
             // Inicializamos el serverSocket donde recibir los resultados de las simulaciones
             tListener = new Thread(new ThreadStart(resultsListener.StartListening));
             tListener.Start();
+
+            PBioEventLog.WriteEntry("[OnStart] Started. Cluster at " + sConfig.IpDaemon+":"+sConfig.PortDaemon);
 
             // Comprobamos simulaciones Run y las establecemos en ToRun
             try
@@ -98,8 +101,6 @@ namespace PBioSvc
             timerUpdateSimulations.Dispose();
             timerUpdateSimulations = null;
 
-
-            
             PBioEventLog.WriteEntry("Stopping...");
         }
 
@@ -165,8 +166,18 @@ namespace PBioSvc
                 .Where(a => a.IdArchivo.Equals(simulacion.IdArchivo))            
                 .Single();
 
+            // Establecemos a Running la simulación
+            simulacion.IdEstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Run")).Single().IdEstadoSimulacion;
+            webDB.SaveChanges();
+
             // Creamos un documento XML con los datos a enviar
-            PBioEventLog.WriteEntry("[RUN SIMULATION] Building XML...");
+            String simulation_log = "";
+            simulation_log += "[RUN SIMULATION] Building XML\n";
+            simulation_log += "Id:" + simulacion.IdSimulacion + " Proyecto:" + simulacion.IdProyecto + "\n";
+            simulation_log += "Nombre:" + simulacion.Nombre + " Creacion:" + simulacion.FechaCreacionSimulacion + "\n";
+            simulation_log += "IdClas:" + simulacion.IdMetodoClasificacion + " Params:" + simulacion.ParametrosClasificacion + "\n";
+            simulation_log += "IdSel:" + simulacion.IdMetodoSeleccion + " Params:" + simulacion.ParametrosSeleccion + "\n";
+            PBioEventLog.WriteEntry(simulation_log);
 
             XDocument datosXML = new XDocument(
                 new XDeclaration("1.0", "utf-8","yes"),
@@ -188,93 +199,50 @@ namespace PBioSvc
                 
             );
 
-            // Convertimos a bytes el XML, para ello antes inclumos "<EOF>" como final del archivo
-            byte[] bytesXML = Encoding.ASCII.GetBytes(datosXML.ToString()+"<EOF>");            
-            
-
-            /// NUEVA FORMA DE ENVIAR http://msdn.microsoft.com/es-es/library/bew39x2a(v=vs.80).aspx
-            Socket clientSock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
             try
             {
-                
-                // Configuramos la conexión
+                // Send data
                 PBioEventLog.WriteEntry("[SEND SIMULATION] Try to connect to " + sConfig.IpDaemon + ":" + sConfig.PortDaemon + "...");
-                clientSock.Connect(sConfig.IpDaemon, sConfig.PortDaemon); 
-                
-                // Enviamos los datos
-                PBioEventLog.WriteEntry("[SEND SIMULATION] Connected. Starting to send" + bytesXML.Length + " bytes");
-                clientSock.Send(bytesXML);
-                
-                // Esperamos confirmación
-                byte[] rBytes = new byte[1024];
-                int raw = clientSock.Receive(rBytes);
+                // Convert the string data to byte data using ASCII encoding.
+                byte[] byteData = Encoding.ASCII.GetBytes(datosXML.ToString());
+                String response_checksum = PBioSocketClient.StartClient(sConfig.IpDaemon, sConfig.PortDaemon, byteData);
 
-                // Mostramos confirmación
-                PBioEventLog.WriteEntry("[SEND SIMULATION]Confirmation: Sended: " + bytesXML.Length + " Received: "+Encoding.ASCII.GetString(rBytes));
-
+                var sha = new SHA256Managed();
+                byte[] byte_checksum = sha.ComputeHash(byteData);
+                String checksum = BitConverter.ToString(byte_checksum).Replace("-", String.Empty);                
                 
-                // Cerramos la conexión
-                clientSock.Close();
-                PBioEventLog.WriteEntry("[SEND SIMULATION] Sended.");
-
-                if (bytesXML.Length == rBytes.Length) // TODO Probar que bytesXML.length == rBytes.Length está comparando lo mismo
+                // Checksum
+                PBioEventLog.WriteEntry("[SEND SIMULATION]Checksum: " + checksum + " Response checksum: " + response_checksum);
+                if (response_checksum != null && response_checksum == checksum)
                 {
-                    // Establecemos a Running la simulación
-                    webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
-                        .Single()
-                        .IdEstadoSimulacion = webDB.EstadoSimulacion
-                                                                .Where(es => es.Nombre.Equals("Run"))
-                                                                .Single()
-                                                                .IdEstadoSimulacion;
-                }
-                else
-                {
+                    // Mostramos confirmación
+                    PBioEventLog.WriteEntry("[SEND SIMULATION]Confirmation: Sended: TODO show checksum, for example.");
+                } else {
                     PBioEventLog.WriteEntry("[SEND SIMULATION] Send failed.");
                     // Establecemos a ToRun la simulación para que se vuelva a enviar
-                    webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
-                        .Single()
-                        .IdEstadoSimulacion = webDB.EstadoSimulacion
-                                                                .Where(es => es.Nombre.Equals("ToRun"))
-                                                                .Single()
-                                                                .IdEstadoSimulacion;
+                    //simulacion.IdEstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("ToRun")).Single().IdEstadoSimulacion;
+                    //webDB.SaveChanges();
                 }
-                webDB.SaveChanges();
             }
             catch (System.TimeoutException error)
             {
                 PBioEventLog.WriteEntry("[SEND SIMULATION] Timeout finished: " + error);
                 // Establecemos a ToRun la simulación para que se vuelva a enviar
-                webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
-                    .Single()
-                    .IdEstadoSimulacion = webDB.EstadoSimulacion
-                                                            .Where(es => es.Nombre.Equals("ToRun"))
-                                                            .Single()
-                                                            .IdEstadoSimulacion;
+                simulacion.IdEstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("ToRun")).Single().IdEstadoSimulacion;
                 webDB.SaveChanges();
             }
             catch (SocketException se)
             {
                 PBioEventLog.WriteEntry("[SEND SIMULATION] Cannot connect to remote host: " + se.Message);
                 // Establecemos a ToRun la simulación para que se vuelva a enviar
-                webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
-                    .Single()
-                    .IdEstadoSimulacion = webDB.EstadoSimulacion
-                                                            .Where(es => es.Nombre.Equals("ToRun"))
-                                                            .Single()
-                                                            .IdEstadoSimulacion;
+                simulacion.IdEstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("ToRun")).Single().IdEstadoSimulacion;
                 webDB.SaveChanges();
             }
             catch (Exception error)
             {
                 PBioEventLog.WriteEntry("[SEND SIMULATION] Error desconocido: " + error);
                 // Establecemos a ToRun la simulación para que se vuelva a enviar
-                webDB.Simulacion.Where(s => s.IdSimulacion.Equals(simulacion.IdSimulacion))
-                    .Single()
-                    .IdEstadoSimulacion = webDB.EstadoSimulacion
-                                                            .Where(es => es.Nombre.Equals("ToRun"))
-                                                            .Single()
-                                                            .IdEstadoSimulacion;
+                simulacion.IdEstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("ToRun")).Single().IdEstadoSimulacion;
                 webDB.SaveChanges();
             }    
 

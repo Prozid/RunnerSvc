@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Configuration;
 
 namespace PBioSvc
 {
@@ -20,93 +21,10 @@ namespace PBioSvc
 
 		public PBioServiceConfiguration()
 		{
-		}
-
-		public PBioServiceConfiguration (String connectionString, int portSvc, int portDaemon, String ipDaemon, int maxUsers)
-		{
-			_ConnectionString = connectionString;
-			_PortDaemon = portDaemon;
-			_PortSvc = portSvc;
-			_IpDaemon = ipDaemon;
-            _MaxUsers = maxUsers;
-		}
-
-		public static PBioServiceConfiguration Defaults()
-		{
-			int pSvc = 1990;
-			int pDmn = 5959;
-			String ipDaemon = "192.168.1.4"; // IP máquina virtual: 192.168.1.4 Cluster0
-			String cs = "Server=localhost;Database=runnerDaemon;User ID=root;Password=dani;Pooling=false"; //String de conexión a la BD
-            int maxUsers = 5;
-            PBioServiceConfiguration configDefault = new PBioServiceConfiguration(cs, pSvc, pDmn, ipDaemon,maxUsers);
-            try
-            {
-                PBioServiceConfiguration.Serialize(configDefault);
-            }
-            catch
-            {
-                // TODO Informar de que no se puede guardar el archivo de configuración
-            }
-
-			return configDefault;
-		}
-
-        public static void Serialize(PBioServiceConfiguration svcConfig)
-		{
-			String file = DEFAULT_PATH;
-			System.Xml.Serialization.XmlSerializer xs 
-				= new System.Xml.Serialization.XmlSerializer(svcConfig.GetType());
-			
-			StreamWriter writer = File.CreateText(file);
-			xs.Serialize(writer,svcConfig);
-			writer.Flush();
-			writer.Close();
-		}
-
-        public static void Serialize(string file, PBioServiceConfiguration svcConfig)
-		{
-			System.Xml.Serialization.XmlSerializer xs 
-				= new System.Xml.Serialization.XmlSerializer(svcConfig.GetType());
-			
-			StreamWriter writer = File.CreateText(file);
-			xs.Serialize(writer,svcConfig);
-			writer.Flush();
-			writer.Close();
-		}
-
-        public static PBioServiceConfiguration Deserialize()
-		{
-			String file = DEFAULT_PATH;
-            PBioServiceConfiguration sc;
-            try
-            {
-                System.Xml.Serialization.XmlSerializer xs
-                    = new System.Xml.Serialization.XmlSerializer(typeof(PBioServiceConfiguration));
-                StreamReader reader = File.OpenText(file);
-                sc = (PBioServiceConfiguration)xs.Deserialize(reader);
-                reader.Close();
-            }
-            catch
-            {
-                sc = PBioServiceConfiguration.Defaults();
-            }
-			return sc;
-
-		}
-
-        public static PBioServiceConfiguration Deserialize(string file)
-		{
-            PBioServiceConfiguration sc;
-			try {
-				System.Xml.Serialization.XmlSerializer xs
-                = new System.Xml.Serialization.XmlSerializer(typeof(PBioServiceConfiguration));
-				StreamReader reader = File.OpenText(file);
-                sc = (PBioServiceConfiguration)xs.Deserialize(reader);
-				reader.Close ();
-			} catch {
-                sc = PBioServiceConfiguration.Defaults();
-			}
-			return sc;
+            this._PortSvc           = int.Parse(ConfigurationManager.AppSettings["service_port"].ToString());
+            this._PortDaemon        = int.Parse(ConfigurationManager.AppSettings["daemon_port"].ToString());
+            this._IpDaemon          = ConfigurationManager.AppSettings["daemon_ip"].ToString();
+            this._MaxUsers          = int.Parse(ConfigurationManager.AppSettings["max_by_user"].ToString());
 		}
 		
 		public String ConnectionString 

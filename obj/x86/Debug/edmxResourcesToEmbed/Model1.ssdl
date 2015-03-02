@@ -23,10 +23,6 @@
       <End Role="Carpeta" EntitySet="Carpeta" />
       <End Role="Proyecto" EntitySet="Proyecto" />
     </AssociationSet>
-    <AssociationSet Name="FK_Resultado_Simulacion" Association="webappDBModel.Store.FK_Resultado_Simulacion">
-      <End Role="Simulacion" EntitySet="Simulacion" />
-      <End Role="Resultado" EntitySet="Resultado" />
-    </AssociationSet>
     <AssociationSet Name="FK_Simulacion_EstadoSimulacion" Association="webappDBModel.Store.FK_Simulacion_EstadoSimulacion">
       <End Role="EstadoSimulacion" EntitySet="EstadoSimulacion" />
       <End Role="Simulacion" EntitySet="Simulacion" />
@@ -47,6 +43,10 @@
       <End Role="Proyecto" EntitySet="Proyecto" />
       <End Role="Simulacion" EntitySet="Simulacion" />
     </AssociationSet>
+    <AssociationSet Name="FK_Resultado_Simulacion" Association="webappDBModel.Store.FK_Resultado_Simulacion">
+      <End Role="Simulacion" EntitySet="Simulacion" />
+      <End Role="Resultado" EntitySet="Resultado" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Archivo">
     <Key>
@@ -59,9 +59,9 @@
     <Property Name="NombreArchivo" Type="varchar" Nullable="false" MaxLength="50" />
     <Property Name="ContentType" Type="varchar" Nullable="false" MaxLength="50" />
     <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
-    <Property Name="Descripcion" Type="varchar" MaxLength="256" />
+    <Property Name="Descripcion" Type="varchar" Nullable="true" MaxLength="256" />
     <Property Name="BaseDatos" Type="bit" Nullable="false" />
-    <Property Name="Datos" Type="text" />
+    <Property Name="Datos" Type="varchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Carpeta">
     <Key>
@@ -69,9 +69,9 @@
     </Key>
     <Property Name="IdCarpeta" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Nombre" Type="varchar" Nullable="false" MaxLength="50" />
-    <Property Name="IdCarpetaPadre" Type="uniqueidentifier" />
+    <Property Name="IdCarpetaPadre" Type="uniqueidentifier" Nullable="true" />
     <Property Name="Usuario" Type="varchar" Nullable="false" MaxLength="50" />
-    <Property Name="FechaCreac¡on" Type="datetime" Nullable="false" />
+    <Property Name="FechaCreac_on" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="EstadoSimulacion">
     <Key>
@@ -79,7 +79,7 @@
     </Key>
     <Property Name="IdEstadoSimulacion" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Nombre" Type="varchar" Nullable="false" MaxLength="50" />
-    <Property Name="Descripcion" Type="varchar" MaxLength="256" />
+    <Property Name="Descripcion" Type="varchar" Nullable="true" MaxLength="256" />
     <Property Name="NombreCorto" Type="varchar" Nullable="false" MaxLength="5" />
   </EntityType>
   <EntityType Name="Log">
@@ -96,8 +96,8 @@
     </Key>
     <Property Name="IdMetodoClasificacion" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Nombre" Type="varchar" Nullable="false" MaxLength="50" />
-    <Property Name="Descripcion" Type="varchar" MaxLength="256" />
-    <Property Name="ParametrosXDefecto" Type="text" Nullable="false" />
+    <Property Name="Descripcion" Type="varchar" Nullable="true" MaxLength="256" />
+    <Property Name="ParametrosXDefecto" Type="varchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="MetodoSeleccion">
     <Key>
@@ -105,8 +105,8 @@
     </Key>
     <Property Name="IdMetodoSeleccion" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Nombre" Type="varchar" Nullable="false" MaxLength="50" />
-    <Property Name="Descripcion" Type="varchar" MaxLength="256" />
-    <Property Name="ParametrosXDefecto" Type="text" Nullable="false" />
+    <Property Name="Descripcion" Type="varchar" Nullable="true" MaxLength="256" />
+    <Property Name="ParametrosXDefecto" Type="varchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Proyecto">
     <Key>
@@ -114,9 +114,9 @@
     </Key>
     <Property Name="IdProyecto" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Nombre" Type="varchar" Nullable="false" MaxLength="150" />
-    <Property Name="Descripcion" Type="varchar" MaxLength="256" />
-    <Property Name="FechaLanzUltSimulacion" Type="datetime" />
-    <Property Name="FechaCreacionProyecto" Type="datetime" />
+    <Property Name="Descripcion" Type="varchar" Nullable="true" MaxLength="256" />
+    <Property Name="FechaLanzUltSimulacion" Type="datetime" Nullable="true" />
+    <Property Name="FechaCreacionProyecto" Type="datetime" Nullable="true" />
     <Property Name="IdCarpeta" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Resultado">
@@ -125,22 +125,22 @@
     </Key>
     <Property Name="IdResultado" Type="uniqueidentifier" Nullable="false" />
     <Property Name="NumGenes" Type="int" Nullable="false" />
-    <Property Name="NombreGenes" Type="text" Nullable="false" />
-    <Property Name="IdGenes" Type="text" Nullable="false" />
+    <Property Name="NombreGenes" Type="varchar(max)" Nullable="false" />
+    <Property Name="IdGenes" Type="varchar(max)" Nullable="false" />
     <Property Name="Accuracy_Media" Type="float" Nullable="false" />
     <Property Name="Accuracy_Std" Type="float" Nullable="false" />
     <Property Name="Sensitivity_Media" Type="float" Nullable="false" />
     <Property Name="Sensitivity_Std" Type="float" Nullable="false" />
     <Property Name="Specificity_Media" Type="float" Nullable="false" />
     <Property Name="Specificity_Std" Type="float" Nullable="false" />
-    <Property Name="FechaLanzamiento" Type="datetime" />
-    <Property Name="FechaFinalizacion" Type="datetime" />
-    <Property Name="Duracion" Type="datetime" />
-    <Property Name="AccuracyXGenes" Type="text" Nullable="false" />
-    <Property Name="Mediana" Type="float" />
-    <Property Name="IdSimulacion" Type="uniqueidentifier" />
-    <Property Name="NombreGenesSolucion" Type="text" Nullable="false" />
-    <Property Name="IdGenesSolucion" Type="text" />
+    <Property Name="FechaLanzamiento" Type="datetime" Nullable="true" />
+    <Property Name="FechaFinalizacion" Type="datetime" Nullable="true" />
+    <Property Name="Duracion" Type="datetime" Nullable="true" />
+    <Property Name="AccuracyXGenes" Type="varchar(max)" Nullable="false" />
+    <Property Name="Mediana" Type="float" Nullable="true" />
+    <Property Name="IdSimulacion" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="NombreGenesSolucion" Type="varchar(max)" Nullable="false" />
+    <Property Name="IdGenesSolucion" Type="varchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Simulacion">
     <Key>
@@ -149,15 +149,15 @@
     <Property Name="IdSimulacion" Type="uniqueidentifier" Nullable="false" />
     <Property Name="IdProyecto" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Nombre" Type="varchar" Nullable="false" MaxLength="150" />
-    <Property Name="Descripcion" Type="varchar" MaxLength="256" />
+    <Property Name="Descripcion" Type="varchar" Nullable="true" MaxLength="256" />
     <Property Name="FechaCreacionSimulacion" Type="datetime" Nullable="false" />
     <Property Name="IdMetodoSeleccion" Type="uniqueidentifier" Nullable="false" />
     <Property Name="IdMetodoClasificacion" Type="uniqueidentifier" Nullable="false" />
     <Property Name="IdEstadoSimulacion" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="ParametrosSeleccion" Type="text" Nullable="false" />
-    <Property Name="ParametrosClasificacion" Type="text" Nullable="false" />
+    <Property Name="ParametrosSeleccion" Type="varchar(max)" Nullable="false" />
+    <Property Name="ParametrosClasificacion" Type="varchar(max)" Nullable="false" />
     <Property Name="Usuario" Type="varchar" Nullable="false" MaxLength="50" />
-    <Property Name="IdLog" Type="uniqueidentifier" />
+    <Property Name="IdLog" Type="uniqueidentifier" Nullable="true" />
     <Property Name="IdArchivo" Type="uniqueidentifier" Nullable="false" />
     <Property Name="IdCarpeta" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
@@ -167,9 +167,9 @@
     </Key>
     <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
     <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" Nullable="true" />
+    <Property Name="definition" Type="varbinary(max)" Nullable="true" />
   </EntityType>
   <Association Name="FK_Archivo_Carpeta">
     <End Role="Carpeta" Type="webappDBModel.Store.Carpeta" Multiplicity="1" />
@@ -204,18 +204,6 @@
       </Principal>
       <Dependent Role="Proyecto">
         <PropertyRef Name="IdCarpeta" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Resultado_Simulacion">
-    <End Role="Simulacion" Type="webappDBModel.Store.Simulacion" Multiplicity="0..1" />
-    <End Role="Resultado" Type="webappDBModel.Store.Resultado" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Simulacion">
-        <PropertyRef Name="IdSimulacion" />
-      </Principal>
-      <Dependent Role="Resultado">
-        <PropertyRef Name="IdSimulacion" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -276,6 +264,18 @@
       </Principal>
       <Dependent Role="Simulacion">
         <PropertyRef Name="IdProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Resultado_Simulacion">
+    <End Role="Simulacion" Type="webappDBModel.Store.Simulacion" Multiplicity="0..1" />
+    <End Role="Resultado" Type="webappDBModel.Store.Resultado" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Simulacion">
+        <PropertyRef Name="IdSimulacion" />
+      </Principal>
+      <Dependent Role="Resultado">
+        <PropertyRef Name="IdSimulacion" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

@@ -1,55 +1,7 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="runnerSvc.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PBioSvc.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="runnerStateDBConnectionString" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\runnerStateDB.mdf;Integrated Security=True;User Instance=True&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\runnerStateDB.mdf;Integrated Security=True;User Instance=True</Value>
-    </Setting>
-    <Setting Name="webappDBConnectionString" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\webappDB.mdf;Integrated Security=True;User Instance=True&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\webappDB.mdf;Integrated Security=True;User Instance=True</Value>
-    </Setting>
-    <Setting Name="runnerThreadDBConnectionString" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\runnerThreadDB.mdf;Integrated Security=True;User Instance=True&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\runnerThreadDB.mdf;Integrated Security=True;User Instance=True</Value>
-    </Setting>
-    <Setting Name="runnerDBConnectionString" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\runnerDB.mdf;Integrated Security=True;User Instance=True&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\runnerDB.mdf;Integrated Security=True;User Instance=True</Value>
-    </Setting>
-    <Setting Name="C__USERS_DANI_DOCUMENTS_VISUAL_STUDIO_2010_PROJECTS_RUNNERSVC_RUNNERSVC_BIN_DEBUG_WEBAPPDB_MDFConnectionString" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=.\SQLEXPRESS;Initial Catalog="C:\USERS\DANI\DOCUMENTS\VISUAL STUDIO 2010\PROJECTS\RUNNERSVC\RUNNERSVC\BIN\DEBUG\WEBAPPDB.MDF";Integrated Security=True&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=.\SQLEXPRESS;Initial Catalog="C:\USERS\DANI\DOCUMENTS\VISUAL STUDIO 2010\PROJECTS\RUNNERSVC\RUNNERSVC\BIN\DEBUG\WEBAPPDB.MDF";Integrated Security=True</Value>
-    </Setting>
-    <Setting Name="C__USERS_DANI_DOCUMENTS_VISUAL_STUDIO_2010_PROJECTS_RUNNERSVC_RUNNERSVC_RUNNERDB_MDFConnectionString" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=.\SQLEXPRESS;Initial Catalog="C:\USERS\DANI\DOCUMENTS\VISUAL STUDIO 2010\PROJECTS\RUNNERSVC\RUNNERSVC\RUNNERDB.MDF";Integrated Security=True&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=.\SQLEXPRESS;Initial Catalog="C:\USERS\DANI\DOCUMENTS\VISUAL STUDIO 2010\PROJECTS\RUNNERSVC\RUNNERSVC\RUNNERDB.MDF";Integrated Security=True</Value>
-    </Setting>
     <Setting Name="webappDBConnectionString1" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
@@ -57,14 +9,6 @@
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=.\SQLEXPRESS;Initial Catalog=webappDB;Integrated Security=True</Value>
-    </Setting>
-    <Setting Name="runnerDBConnectionString1" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=.\SQLEXPRESS;Initial Catalog=runnerDB;Integrated Security=True&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=.\SQLEXPRESS;Initial Catalog=runnerDB;Integrated Security=True</Value>
     </Setting>
   </Settings>
 </SettingsFile>
