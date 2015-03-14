@@ -104,6 +104,7 @@
     <Compile Include="Modelo\Resultado.cs" />
     <Compile Include="Modelo\Simulacion.cs" />
     <Compile Include="PBioConfigurationService.cs" />
+    <Compile Include="PBioEventLogger.cs" />
     <Compile Include="PBioSocket.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>

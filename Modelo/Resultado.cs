@@ -5,11 +5,15 @@ using System.Text;
 using System.Xml.Linq;
 using System.Xml;
 using System.IO;
+using System.Diagnostics;
 
 namespace PBioSvc
 {
     public partial class Resultado
     {
+        private const String ResultsFileTag = "<Results>";
+        private const String ErrorFileTag = "<Error>";
+
         public static void Serialize(string file, Resultado resultado)
         {
             System.Xml.Serialization.XmlSerializer xs
@@ -89,6 +93,68 @@ namespace PBioSvc
             writer.Close();
 
             return xml;
+        }
+
+        public static void SaveFromListener(String content)
+        {
+            EventLog PBioEventLog = PBioEventLogger.initLogger();
+            webappDBEntities webDB = new webappDBEntities();
+
+            // SAve results
+            // All the data has been read from the 
+            // client. Display it on the console.
+            PBioEventLog.WriteEntry("[RESULTS LISTENER] Read " + content.Length + " bytes from socket. \n");
+
+            // Chequeamos si es Resultados o Error
+            if (content.StartsWith(ErrorFileTag))
+            {
+                // Eliminamos ErrorTag
+                content.Replace(ErrorFileTag, "");
+
+                // Parseamos el XML
+                XDocument errorXML = XDocument.Parse(content);
+
+                // Guardamos error log en BD
+                Log l = Log.LoadFromXML(errorXML);
+                Guid idSimulacion = Log.GetIdSimulationOfLogFromXML(errorXML);
+
+                webDB.Log.Add(l);
+                webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).Log = l;
+                webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Error")).Single();
+                webDB.SaveChanges();
+
+                PBioEventLog.WriteEntry("[RESULTS LISTENER] Error file received: " + l.Texto);
+            }
+            else if (content.StartsWith(ResultsFileTag))
+            {
+                try
+                {
+                    // Eliminamos el ResultsTag
+                    content.Replace(ResultsFileTag, "");
+
+                    // Parseamos el XML
+                    XDocument resultadosXML = XDocument.Parse(content);
+
+                    // Convertimos a clase Resultado
+                    Resultado resultado = Resultado.LoadFromXML(resultadosXML);
+
+                    // Guardamos en base de datos los resultados
+                    webDB.Resultado.Add(resultado);
+
+                    // Establecemos como finalizada la simulación
+                    PBioEventLog.WriteEntry("[RESULTS LISTENER] Establecemos finalizada la simulación");
+                    webDB.Simulacion.Single(s => s.IdSimulacion.Equals(resultado.IdSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Terminate")).Single();
+                    webDB.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    PBioEventLog.WriteEntry("[RESULTS LISTENER] ERROR: " + e.ToString());
+                }
+            }
+            else
+            {
+                PBioEventLog.WriteEntry("[RESULTS LISTENER] Unknow tag.");
+            }
         }
     }
 }

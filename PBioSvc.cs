@@ -18,7 +18,6 @@ namespace PBioSvc
 {
     public partial class PBioSvc : ServiceBase
     {
-
         private PBioServiceConfiguration sConfig; // Configuración del servicio.
         private webappDBEntities webDB;  // Conexión con DB de la webApp.
         private Thread tListener;           // Thread para el listener.
@@ -48,11 +47,11 @@ namespace PBioSvc
             webDB = new webappDBEntities();
 
             //Cargamos la configuración
-            sConfig = new PBioServiceConfiguration(); // TODO Asegurar que carga bien la config.xml... Igual sería interesante almacenar el archivo de configuración en la carpeta dónde se instale el Manager
+            sConfig = new PBioServiceConfiguration();
 
             PBioEventLog.WriteEntry("Configuration loaded.");
             // Inicializamos el Listener donde recibiremos los resultados de las simulaciones
-            resultsListener = new ResultsListener(webDB,sConfig,PBioEventLog);
+            resultsListener = new ResultsListener(sConfig.PortSvc);
 
             // Inicializamos el serverSocket donde recibir los resultados de las simulaciones
             tListener = new Thread(new ThreadStart(resultsListener.StartListening));
