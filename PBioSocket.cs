@@ -57,6 +57,7 @@ namespace PBioSvc
                 Send(client, byteData);
                 sendDone.WaitOne();
 
+                PBioEventLog.WriteEntry("Data sended");
                 // Receive the response from the remote device.
                 Receive(client);
                 receiveDone.WaitOne();
@@ -127,6 +128,7 @@ namespace PBioSvc
 
                 // Read data from the remote device.
                 int bytesRead = client.EndReceive(ar);
+
 
                 if (bytesRead > 0)
                 {

@@ -203,7 +203,13 @@ namespace PBioSvc
                 // Send data
                 PBioEventLog.WriteEntry("[SEND SIMULATION] Try to connect to " + sConfig.IpDaemon + ":" + sConfig.PortDaemon + "...");
                 // Convert the string data to byte data using ASCII encoding.
-                byte[] byteData = Encoding.ASCII.GetBytes(datosXML.ToString());
+                String content = String.Empty;
+                content = datosXML.ToString();
+
+                 // Add PBIOEOF tag to the data
+                content += "<PBIOEOF>";
+
+                byte[] byteData = Encoding.ASCII.GetBytes(content);
                 String response_checksum = PBioSocketClient.StartClient(sConfig.IpDaemon, sConfig.PortDaemon, byteData);
 
                 var sha = new SHA256Managed();
@@ -215,12 +221,12 @@ namespace PBioSvc
                 if (response_checksum != null && response_checksum == checksum)
                 {
                     // Mostramos confirmación
-                    PBioEventLog.WriteEntry("[SEND SIMULATION]Confirmation: Sended: TODO show checksum, for example.");
+                    PBioEventLog.WriteEntry("[SEND SIMULATION] Checksum: OK.");
                 } else {
-                    PBioEventLog.WriteEntry("[SEND SIMULATION] Send failed.");
+                    PBioEventLog.WriteEntry("[SEND SIMULATION] Checksum: Failed. Simulation to state ToRun.");
                     // Establecemos a ToRun la simulación para que se vuelva a enviar
-                    //simulacion.IdEstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("ToRun")).Single().IdEstadoSimulacion;
-                    //webDB.SaveChanges();
+                    simulacion.IdEstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("ToRun")).Single().IdEstadoSimulacion;
+                    webDB.SaveChanges();
                 }
             }
             catch (System.TimeoutException error)
