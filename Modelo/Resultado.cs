@@ -11,8 +11,9 @@ namespace PBioSvc
 {
     public partial class Resultado
     {
-        private const String ResultsFileTag = "<Results>";
-        private const String ErrorFileTag = "<Error>";
+        private const String ResultsFileTag = "<Resultado>";
+        private const String ErrorFileTag = "<LogSimulacion>";
+        private const String EndFileTag = "<PBIOEOF>";
 
         public static void Serialize(string file, Resultado resultado)
         {
@@ -105,28 +106,40 @@ namespace PBioSvc
             // client. Display it on the console.
             PBioEventLog.WriteEntry("[RESULTS LISTENER] Read " + content.Length + " bytes from socket. \n");
 
+            // Remove <PBIOEOF>
+            content = content.Replace(EndFileTag, "");
+
             // Chequeamos si es Resultados o Error
             if (content.StartsWith(ErrorFileTag))
             {
-                // Eliminamos ErrorTag
-                content.Replace(ErrorFileTag, "");
+                PBioEventLog.WriteEntry("[RESULTS LISTENER] Error received. Processing:\n"+content);
+                try
+                {
+                    // Eliminamos ErrorTag
+                    //content.Replace(ErrorFileTag, "");
 
-                // Parseamos el XML
-                XDocument errorXML = XDocument.Parse(content);
+                    // Parseamos el XML
+                    XDocument errorXML = XDocument.Parse(content);
 
-                // Guardamos error log en BD
-                Log l = Log.LoadFromXML(errorXML);
-                Guid idSimulacion = Log.GetIdSimulationOfLogFromXML(errorXML);
+                    // Guardamos error log en BD
+                    Log l = Log.LoadFromXML(errorXML); 
+                    Guid idSimulacion = Log.GetIdSimulationOfLogFromXML(errorXML);
 
-                webDB.Log.Add(l);
-                webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).Log = l;
-                webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Error")).Single();
-                webDB.SaveChanges();
-
-                PBioEventLog.WriteEntry("[RESULTS LISTENER] Error file received: " + l.Texto);
+                    PBioEventLog.WriteEntry("[RESULTS LISTENER] Error file received: " + l.Texto);
+                    webDB.Log.Add(l);
+                    webDB.SaveChanges();
+                    webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).Log = l;
+                    webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Error")).Single();
+                    webDB.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    PBioEventLog.WriteEntry("[RESULTS LISTENER] ERROR processing error response: " + e.ToString());
+                }
             }
             else if (content.StartsWith(ResultsFileTag))
             {
+                PBioEventLog.WriteEntry("[RESULTS LISTENER] Results received. Processing...");
                 try
                 {
                     // Eliminamos el ResultsTag
@@ -153,7 +166,7 @@ namespace PBioSvc
             }
             else
             {
-                PBioEventLog.WriteEntry("[RESULTS LISTENER] Unknow tag.");
+                PBioEventLog.WriteEntry("[RESULTS LISTENER] Unknow tag:" + content.Substring(0,15));
             }
         }
     }

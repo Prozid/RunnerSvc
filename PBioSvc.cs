@@ -186,7 +186,7 @@ namespace PBioSvc
                     new XElement("IdProyecto", simulacion.IdProyecto.ToString()),
                     new XElement("Nombre", simulacion.Nombre),
                     new XElement("Descripcion",simulacion.Descripcion),
-                    new XElement("FechaCreacionSimulacion",simulacion.FechaCreacionSimulacion.ToString("yyyy-mm-ddThh:mm:ss")),
+                    new XElement("FechaCreacionSimulacion",simulacion.FechaCreacionSimulacion.ToString("yyyy-MM-ddThh:mm:ss")),
                     new XElement("IdEstadoSimulacion", simulacion.IdEstadoSimulacion.ToString()),
                     new XElement("IdMetodoClasificacion", simulacion.IdMetodoClasificacion.ToString()),
                     new XElement("IdMetodoSeleccion",simulacion.IdMetodoSeleccion.ToString()),

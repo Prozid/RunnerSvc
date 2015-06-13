@@ -14,7 +14,7 @@ namespace PBioSvc
             XDocument xml = new XDocument(
                 new XDeclaration("1.0", "utf-8", "yes"),
                 new XElement("LogSimulacion",
-                         new XElement("FechaSimulacion", this.FechaLog),
+                         new XElement("FechaLog", this.FechaLog),
                          new XElement("Texto", this.Texto))
                 );
             return xml;
@@ -52,20 +52,27 @@ namespace PBioSvc
         public static Log LoadFromXML(XDocument xml)
         {
             Log log = new Log();
+            log.IdLog = Guid.NewGuid();
+
             Simulacion sim;
             webappDBEntities webDB = new webappDBEntities();
             try
             {
                 if (xml.Root.Element("IdSimulacion") != null && xml.Root.Element("IdSimulacion").Value != "")
                 {
-                    sim = webDB.Simulacion.Single(s => s.IdSimulacion
-                        .Equals(
-                        Guid.Parse(
-                        xml.Root.Element("IdSimulacion")
-                        .Value)));
+                    String id = xml.Root.Element("IdSimulacion").Value;
+                    try
+                    {
+                        Guid idSimulacion = Guid.Parse(id);
+                        sim = webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion));
 
-                    log.FechaLog = DateTime.Parse(xml.Root.Element("FechaLog").Value);
-                    log.Texto = xml.Root.Element("Texto").Value;
+                        log.FechaLog = DateTime.Parse(xml.Root.Element("FechaLog").Value);
+                        log.Texto = xml.Root.Element("Texto").Value;
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Error parsing log of " + id + ". Exception \n:" + e.Message);
+                    }
                 }
                 else
                 {
@@ -88,11 +95,16 @@ namespace PBioSvc
             {
                 if (xml.Root.Element("IdSimulacion") != null && xml.Root.Element("IdSimulacion").Value != "")
                 {
-                    sim = webDB.Simulacion.Single(s => s.IdSimulacion
-                        .Equals(
-                        Guid.Parse(
-                        xml.Root.Element("IdSimulacion")
-                        .Value)));
+                    String id = xml.Root.Element("IdSimulacion").Value;
+                    try
+                    {
+                        Guid idSimulacion = Guid.Parse(id);
+                        sim = webDB.Simulacion.Single(s => s.IdSimulacion.Equals(idSimulacion));
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Error parsing log of " + id + ". Exception \n:" + e.Message);
+                    }
                 }
                 else
                 {
@@ -103,9 +115,7 @@ namespace PBioSvc
             {
                 throw e;
             }
-
             return sim.IdSimulacion;
-
         }
     }
 }

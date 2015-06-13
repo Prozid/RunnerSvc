@@ -6,6 +6,7 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace PBioSvc
 {
@@ -236,6 +237,7 @@ namespace PBioSvc
         {
             // Signal the main thread to continue.
             allDone.Set();
+            PBioEventLog.WriteEntry("[Listener] New connection...");
 
             // Get the socket that handles the client request.
             Socket listener = (Socket)ar.AsyncState;
@@ -269,7 +271,7 @@ namespace PBioSvc
                 // Check for end-of-file tag. If it is not there, read 
                 // more data.
                 content = state.sb.ToString();
-                if (content.IndexOf("<EOF>") > -1)
+                if (content.IndexOf("<PBIOEOF>") > -1)
                 {
                     Resultado.SaveFromListener(content);             
 
@@ -278,7 +280,11 @@ namespace PBioSvc
                     Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
                         content.Length, content);
                     // Echo the data back to the client.
-                    Send(handler, content.Length.ToString());
+                    var sha = new SHA256Managed();
+                    byte[] byte_checksum = sha.ComputeHash(Encoding.ASCII.GetBytes(content));
+                    String checksum = BitConverter.ToString(byte_checksum).Replace("-", String.Empty);                
+
+                    Send(handler, checksum);
                 }
                 else
                 {
