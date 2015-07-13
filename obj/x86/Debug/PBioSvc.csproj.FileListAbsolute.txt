@@ -1,7 +1,6 @@
 C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe.config
 C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.exe
 C:\Users\pbio\Documents\GitHub\RunnerSvc\bin\Debug\PBioSvc.pdb
-C:\Users\pbio\Documents\GitHub\RunnerSvc\obj\x86\Debug\PBioSvc.csprojResolveAssemblyReference.cache
 C:\Users\pbio\Documents\GitHub\RunnerSvc\obj\x86\Debug\PBioSvc.ProjectInstaller.resources
 C:\Users\pbio\Documents\GitHub\RunnerSvc\obj\x86\Debug\PBioSvc.PBioSvc.resources
 C:\Users\pbio\Documents\GitHub\RunnerSvc\obj\x86\Debug\PBioSvc.csproj.GenerateResource.Cache
