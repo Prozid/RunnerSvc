@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBioSvc", "PBioSvc.csproj", "{1FD527B0-26EA-4233-8402-884518AF6ED5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBioManager", "..\RunnerManager\PBioManager.csproj", "{9F818C87-FE39-456E-B5BD-BB78D562924A}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PBioServiceSetup", "..\PBioServiceSetup\PBioServiceSetup.vdproj", "{F729FF42-3B10-4371-9B63-7753E2A3D1D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,6 +17,12 @@ Global
 		{1FD527B0-26EA-4233-8402-884518AF6ED5}.Debug|x86.Build.0 = Debug|x86
 		{1FD527B0-26EA-4233-8402-884518AF6ED5}.Release|x86.ActiveCfg = Release|x86
 		{1FD527B0-26EA-4233-8402-884518AF6ED5}.Release|x86.Build.0 = Release|x86
+		{9F818C87-FE39-456E-B5BD-BB78D562924A}.Debug|x86.ActiveCfg = Debug|x86
+		{9F818C87-FE39-456E-B5BD-BB78D562924A}.Debug|x86.Build.0 = Debug|x86
+		{9F818C87-FE39-456E-B5BD-BB78D562924A}.Release|x86.ActiveCfg = Release|x86
+		{9F818C87-FE39-456E-B5BD-BB78D562924A}.Release|x86.Build.0 = Release|x86
+		{F729FF42-3B10-4371-9B63-7753E2A3D1D1}.Debug|x86.ActiveCfg = Debug
+		{F729FF42-3B10-4371-9B63-7753E2A3D1D1}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
