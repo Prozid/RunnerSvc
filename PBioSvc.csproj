@@ -210,6 +210,7 @@
   <ItemGroup>
     <Content Include="db_setup.sql" />
     <Content Include="Model1.edmx.sql" />
+    <Content Include="resultado.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

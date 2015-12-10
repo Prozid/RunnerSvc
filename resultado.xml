@@ -1,0 +1,68 @@
+﻿public System.Guid IdResultado { get; set; }
+public int NumGenes { get; set; }
+public string NombreGenes { get; set; }
+public string IdGenes { get; set; }
+public double Accuracy_Media { get; set; }
+public double Accuracy_Std { get; set; }
+public double Sensitivity_Media { get; set; }
+public double Sensitivity_Std { get; set; }
+public double Specificity_Media { get; set; }
+public double Specificity_Std { get; set; }
+public Nullable<System.DateTime>
+  FechaLanzamiento { get; set; }
+  public Nullable<System.DateTime>
+    FechaFinalizacion { get; set; }
+    public Nullable<System.DateTime>
+      Duracion { get; set; }
+      public string AccuracyXGenes { get; set; }
+      public Nullable<double>
+        Mediana { get; set; }
+        public Nullable<System.Guid> IdSimulacion { get; set; }
+        public string NombreGenesSolucion { get; set; }
+        public string IdGenesSolucion { get; set; }
+    
+        public virtual Simulacion Simulacion { get; set; }
+        
+<?xml version="1.0"?>
+<Resultado>
+  <NumGenes>4</NumGenes>
+  <NombreGenes>a01 a02 a05 a06 a07 a08 a13 a15 a20 a21 a25 a29 a31</NombreGenes>
+  <IdGenes>1 2 5 6 7 8 13 15 20 21 25 29 31</IdGenes>
+  <Accuracy_Media>0.881</Accuracy_Media>
+  <Accuracy_Std>0.022</Accuracy_Std>
+  <Sensitivity_Media>0.972</Sensitivity_Media>
+  <Sensitivity_Std>0.019</Sensitivity_Std>
+  <Specificity_Media>0.721</Specificity_Media>
+  <Specificity_Std>0.058</Specificity_Std>
+  <FechaLanzamiento>2015-01-25T07:35:48</FechaLanzamiento>
+  <FechaFinalizacion>2015-01-25T12:10:23</FechaFinalizacion>
+  <AccuracyXGenes>(1:0.74895+-0.026856,52)(2:0+-0,42)(5:0.78158+-0.028085,34)(6:0.52177+-0.031316,46)(7:0.71356+-0.031011,42)(8:0.56354+-0.0353,32)(13:0.67958+-0.03155,22)(15:0.69354+-0.031206,24)(20:0.49098+-0.037991,42)(21:0.69314+-0.033449,36)(25:0.65259+-0.031243,44)(29:0.65297+-0.035641,30)(31:0.69607+-0.032172,26)$(1  2:0+-0,22)(1  6:0.75898+-0.030968,20)(1  7:0.83121+-0.028022,18)(1  20:0.74985+-0.025626,22)(1  25:0.72325+-0.031192,20)(2  5:0+-0,16)(2  6:0+-0,20)(2  7:0+-0,20)(2  15:0+-0,14)(2  20:0+-0,18)(2  21:0+-0,18)(2  25:0+-0,22)(2  29:0+-0,20)(5  6:0.80019+-0.029092,22)(5  7:0.77178+-0.027461,18)(5  21:0.7708+-0.034691,14)(5  25:0.78324+-0.02583,22)(6  7:0.76487+-0.03661,24)(6  8:0.54092+-0.035496,18)(6  20:0.52213+-0.040917,20)(6  21:0.69461+-0.031998,22)(6  25:0.6842+-0.031672,22)(6  29:0.6768+-0.032251,20)(7  8:0.81812+-0.034106,18)(7  20:0.71261+-0.03095,14)(7  21:0.72999+-0.032782,18)(7  25:0.70038+-0.031291,20)(7  31:0.71148+-0.032669,20)(8  21:0.73745+-0.033148,16)(15  20:0.68704+-0.036933,16)(20  25:0.6303+-0.036433,20)(21  25:0.67332+-0.036922,20)(21  29:0.6615+-0.032159,18)$(6  21  25:0.68749+-0.029392,16)(5   6  21:0.81014+-0.029227,14)(6   7  21:0.76622+-0.031189,14)(6   8  21:0.73446+-0.034725,14)(5   6  25:0.80665+-0.029305,14)(5  21  25:0.78084+-0.029173,14)(2   6  29:0+-0,14)(2  21  29:0+-0,14)(2  5  6:0+-0,12)(2  5  7:0+-0,12)(2  6  7:0+-0,12)(5  6  7:0.80423+-0.029039,12)(6  7  8:0.81369+-0.028143,12)(1   6  20:0.75577+-0.027053,12)(2   6  20:0+-0,12)(6   7  20:0.76454+-0.035506,12)(2  15  20:0+-0,12)(2   6  21:0+-0,12)(1   2  25:0+-0,12)(2   6  25:0+-0,12)</AccuracyXGenes>
+  <NombreGenesSolucion>a01 a05 a06 a13</NombreGenesSolucion>
+  <IdGenesSolucion>1 5 6 13</IdGenesSolucion>
+  <IdSimulacion>5fa37df5-0b3d-4b95-9770-cbe1ec2ea981</IdSimulacion>
+</Resultado>
+
+<?xml version="1.0"?>
+<!--Simulacion-->
+<Simulacion>
+  <IdSimulacion>5fa37df5-0b3d-4b95-9770-cbe1ec2ea981</IdSimulacion>
+  <IdProyecto>bd80c243-d4ca-46ba-8fb1-b927a54eda17</IdProyecto>
+  <Nombre>Simulación A</Nombre>
+  <Descripcion>Simulación A.</Descripcion>
+  <FechaCreacionSimulacion>2015-01-25T07:31:48</FechaCreacionSimulacion>
+  <IdEstadoSimulacion>c295a7d4-8199-48dd-a92a-e05ab676f348</IdEstadoSimulacion>
+  <IdMetodoClasificacion>70f081b5-efd7-4fba-a3d5-30cc4a834329</IdMetodoClasificacion>
+  <IdMetodoSeleccion>0ad4b18e-9a08-4a76-829e-0390c8a953eb</IdMetodoSeleccion>
+  <ParametrosClasificacion>CLASIFICATION_METHOD=kNN;NUM_NEIGHBOURS=1;DISTANCE_TYPE=1</ParametrosClasificacion>
+  <ParametrosSeleccion/>
+  <Usuario>Dani</Usuario>
+</Simulacion>
+
+<?xml version="1.0"?>
+<LogSimulacion>
+  <FechaLog>2015-06-13T11:38:41.403367+02:00</FechaLog>
+  <Texto>Invalid MEX-file '/home/dani/Bioinformatica/Codigo/Microarrays_cluster/mi (Mutual Information)/estpa.mexglx': libstdc++.so.5: no se puede abrir el archivo del objeto compartido: No existe el archivo o el directorio.</Texto>
+<IdSimulacion>5fa37df5-0b3d-4b95-9770-cbe1ec2ea981</IdSimulacion>
+</LogSimulacion>
+
+        
