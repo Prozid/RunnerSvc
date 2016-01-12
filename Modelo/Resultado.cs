@@ -149,14 +149,17 @@ namespace PBioSvc
                     XDocument resultadosXML = XDocument.Parse(content);
 
                     // Convertimos a clase Resultado
+                    PBioEventLog.WriteEntry("[RESULTS LISTENER] Results:" + resultadosXML.ToString());
                     Resultado resultado = Resultado.LoadFromXML(resultadosXML);
 
                     // Guardamos en base de datos los resultados
                     webDB.Resultado.Add(resultado);
 
                     // Establecemos como finalizada la simulación
-                    PBioEventLog.WriteEntry("[RESULTS LISTENER] Establecemos finalizada la simulación");
-                    webDB.Simulacion.Single(s => s.IdSimulacion.Equals(resultado.IdSimulacion)).EstadoSimulacion = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Terminate")).Single();
+                    PBioEventLog.WriteEntry("[RESULTS LISTENER] Set the simulation finished - " + resultado.IdSimulacion.GetType().ToString() + " - " + resultado.IdSimulacion.ToString());
+                    Simulacion simulation = webDB.Simulacion.Single(s => s.IdSimulacion.Equals((Guid)resultado.IdSimulacion));
+                    EstadoSimulacion simulationState = webDB.EstadoSimulacion.Where(es => es.Nombre.Equals("Terminate")).Single();
+                    simulation.EstadoSimulacion = simulationState;
                     webDB.SaveChanges();
                 }
                 catch (Exception e)
